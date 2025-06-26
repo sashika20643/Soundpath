@@ -1,8 +1,8 @@
-# Category Management System
+# Sonic Atlas - Music Directory Platform
 
 ## Overview
 
-This is a full-stack category management application built with a modern tech stack featuring Express.js backend, React frontend, and PostgreSQL database. The system provides comprehensive CRUD operations for managing categories with different types (genre, setting, eventType) through a clean and intuitive web interface.
+This is a full-stack music directory application that celebrates the magic where music and location come together. Built as a "digital travel zine meets music atlas," the platform focuses on discovering extraordinary musical experiences around the world - from rooftop DJ sets in Medellín to folk concerts in Icelandic wilderness. The system features comprehensive event and category management with a cinematic, minimalist design using a dark color palette with orange accents.
 
 ## System Architecture
 
@@ -94,7 +94,31 @@ This is a full-stack category management application built with a modern tech st
 
 Preferred communication style: Simple, everyday language.
 
-## Changelog
+## Recent Changes
 
-Changelog:
-- June 26, 2025. Initial setup
+- June 26, 2025: Initial category and event management system setup
+- June 26, 2025: Enhanced event creation with city autocomplete and rich text editor
+- June 26, 2025: Created cinematic home page with dark theme, hero section, latest/random events display, and integrated submit functionality
+
+## Key Features
+
+### Home Page Experience
+- Cinematic hero section with "Sonic Atlas" branding and search functionality
+- Dark color palette (grays and blacks) with orange accent colors for buttons and highlights
+- Latest Discoveries section showcasing newest events
+- Hidden Gems section featuring randomized event selection
+- Integrated event submission modal accessible from multiple CTAs
+- Professional footer with navigation links and branding
+
+### Event Management
+- Rich text editor (React Quill) for detailed event descriptions with formatting
+- Intelligent city autocomplete with continent → country → city hierarchy
+- Comprehensive filtering by location, categories, and tags
+- Full CRUD operations with validation
+
+### Visual Design
+- Minimalist aesthetic focusing on visual storytelling
+- Orange outlined buttons as primary interactive elements
+- Responsive grid layouts for event displays
+- Smooth transitions and hover effects
+- Consistent typography and spacing
