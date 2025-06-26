@@ -53,3 +53,70 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+// Events table
+export const events = pgTable("events", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  heroImage: text("hero_image"),
+  shortDescription: text("short_description").notNull(),
+  longDescription: text("long_description").notNull(),
+  tags: text("tags").array(),
+  instagramLink: text("instagram_link"),
+  continent: text("continent"),
+  country: text("country"),
+  city: text("city"),
+  locationName: text("location_name"),
+  genreIds: text("genre_ids").array(),
+  settingIds: text("setting_ids").array(),
+  eventTypeIds: text("event_type_ids").array(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertEventSchema = createInsertSchema(events, {
+  title: z.string().min(2, "Title must be at least 2 characters").max(200, "Title must be less than 200 characters"),
+  shortDescription: z.string().min(10, "Short description must be at least 10 characters").max(500, "Short description must be less than 500 characters"),
+  longDescription: z.string().min(20, "Long description must be at least 20 characters"),
+  heroImage: z.string().url("Must be a valid URL").optional(),
+  instagramLink: z.string().url("Must be a valid Instagram URL").optional(),
+  tags: z.array(z.string()).optional(),
+  continent: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  locationName: z.string().optional(),
+  genreIds: z.array(z.string()).optional(),
+  settingIds: z.array(z.string()).optional(),
+  eventTypeIds: z.array(z.string()).optional(),
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateEventSchema = createInsertSchema(events, {
+  title: z.string().min(2, "Title must be at least 2 characters").max(200, "Title must be less than 200 characters"),
+  shortDescription: z.string().min(10, "Short description must be at least 10 characters").max(500, "Short description must be less than 500 characters"),
+  longDescription: z.string().min(20, "Long description must be at least 20 characters"),
+  heroImage: z.string().url("Must be a valid URL").optional(),
+  instagramLink: z.string().url("Must be a valid Instagram URL").optional(),
+  tags: z.array(z.string()).optional(),
+  continent: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  locationName: z.string().optional(),
+  genreIds: z.array(z.string()).optional(),
+  settingIds: z.array(z.string()).optional(),
+  eventTypeIds: z.array(z.string()).optional(),
+}).omit({
+  createdAt: true,
+  updatedAt: true,
+}).partial().extend({
+  id: z.string().uuid(),
+});
+
+export const selectEventSchema = createSelectSchema(events);
+
+export type InsertEvent = z.infer<typeof insertEventSchema>;
+export type UpdateEvent = z.infer<typeof updateEventSchema>;
+export type Event = typeof events.$inferSelect;
