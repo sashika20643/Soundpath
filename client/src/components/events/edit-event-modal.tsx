@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { CityAutocomplete } from "@/components/ui/city-autocomplete";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -210,11 +212,11 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
 
           <div>
             <Label htmlFor="longDescription">Full Description *</Label>
-            <Textarea
-              id="longDescription"
-              {...form.register("longDescription")}
-              placeholder="Detailed description with rich content"
-              rows={6}
+            <RichTextEditor
+              value={form.watch("longDescription") || ""}
+              onChange={(value) => form.setValue("longDescription", value)}
+              placeholder="Detailed description with rich content - supports formatting, links, and images"
+              height="250px"
             />
             {form.formState.errors.longDescription && (
               <p className="text-sm text-red-600 mt-1">{form.formState.errors.longDescription.message}</p>
@@ -272,10 +274,12 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
 
             <div>
               <Label htmlFor="city">City *</Label>
-              <Input
-                id="city"
-                {...form.register("city")}
-                placeholder="City name"
+              <CityAutocomplete
+                continent={selectedContinent}
+                country={form.watch("country") || ""}
+                value={form.watch("city") || ""}
+                onChange={(value) => form.setValue("city", value)}
+                placeholder="Search for a city..."
                 disabled={!form.watch("country")}
               />
             </div>
