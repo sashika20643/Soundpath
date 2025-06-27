@@ -1,4 +1,4 @@
-# Sonic Atlas - Music Directory Platform
+# Soundpath - Music Discovery Platform
 
 ## Overview
 
@@ -97,8 +97,13 @@ Preferred communication style: Simple, everyday language.
 ## Recent Changes
 
 - June 26, 2025: Initial category and event management system setup
-- June 26, 2025: Enhanced event creation with city autocomplete and rich text editor
-- June 26, 2025: Created cinematic home page with dark theme, hero section, latest/random events display, and integrated submit functionality
+- June 26, 2025: Enhanced event creation with city autocomplete and rich text editor  
+- June 26, 2025: Rebranded to "Soundpath" with complete home page redesign inspired by The Sound Trek
+- June 26, 2025: Added cinematic hero section with animated particles and gradient backgrounds
+- June 26, 2025: Implemented inline submit event form replacing modal popup
+- June 26, 2025: Added interactive map section with event location markers
+- June 26, 2025: Enhanced event cards with hero image support and improved animations
+- June 26, 2025: Added custom CSS animations (fade-in, float, pulse-glow, gradient-shift)
 
 ## Key Features
 
