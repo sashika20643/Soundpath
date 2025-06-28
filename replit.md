@@ -114,6 +114,11 @@ Preferred communication style: Simple, everyday language.
 - June 28, 2025: Created "🕵️‍♀️ Last Discoveries" section showing 6 most recent events by date
 - June 28, 2025: Created "💎 Hidden Gems" section showing 6 oldest events by date
 - June 28, 2025: Enhanced event cards with date display, location info, and category badges
+- June 28, 2025: Added skeleton loaders to all event cards in both discovery sections
+- June 28, 2025: Added "View Details" buttons to all event cards with hover effects
+- June 28, 2025: Created Event Details Page (/event/:id) with hero image, metadata, and rich content
+- June 28, 2025: Implemented fade-in animations on Event Details page load
+- June 28, 2025: Added responsive layout with clean typography and minimal Kinfolk aesthetic
 
 ## Key Features
 

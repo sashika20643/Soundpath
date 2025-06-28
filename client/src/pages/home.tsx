@@ -4,8 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CityAutocomplete } from "@/components/ui/city-autocomplete";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
@@ -13,10 +25,27 @@ import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { useEvents, useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Calendar, Music, Search, Globe, Heart, Star, Users, Map, Plus, Send, Volume2 } from "lucide-react";
+import {
+  MapPin,
+  Calendar,
+  Music,
+  Search,
+  Globe,
+  Heart,
+  Star,
+  Users,
+  Map,
+  Plus,
+  Send,
+  Volume2,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertEventSchema, type Event, type InsertEvent } from "@shared/schema";
+import {
+  insertEventSchema,
+  type Event,
+  type InsertEvent,
+} from "@shared/schema";
 import { cities } from "@/lib/cities";
 
 export default function Home() {
@@ -25,15 +54,19 @@ export default function Home() {
   const [selectedContinent, setSelectedContinent] = useState("");
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
-  
+
   const { data: allEvents = [], isLoading } = useEvents();
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
-  
+
   // Sort events for latest discoveries (most recent by date) and hidden gems (oldest by date)
-  const sortedByDateDesc = allEvents.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const sortedByDateAsc = allEvents.slice().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  
+  const sortedByDateDesc = allEvents
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedByDateAsc = allEvents
+    .slice()
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
   const latestEvents = sortedByDateDesc.slice(0, 6);
   const hiddenGems = sortedByDateAsc.slice(0, 6);
 
@@ -59,9 +92,11 @@ export default function Home() {
   });
 
   // Get categories by type
-  const genreCategories = categories.filter(cat => cat.type === 'genre');
-  const settingCategories = categories.filter(cat => cat.type === 'setting');
-  const eventTypeCategories = categories.filter(cat => cat.type === 'eventType');
+  const genreCategories = categories.filter((cat) => cat.type === "genre");
+  const settingCategories = categories.filter((cat) => cat.type === "setting");
+  const eventTypeCategories = categories.filter(
+    (cat) => cat.type === "eventType",
+  );
 
   // Shuffle events for random section - keeping for now but will replace
   useEffect(() => {
@@ -99,32 +134,45 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollRef} className="min-h-screen" style={{ backgroundColor: 'var(--color-warm-white)', color: 'var(--color-charcoal)' }}>
+    <div
+      ref={scrollRef}
+      className="min-h-screen"
+      style={{
+        backgroundColor: "var(--color-warm-white)",
+        color: "var(--color-charcoal)",
+      }}
+    >
       {/* Hero Section - Kinfolk Style */}
       <section className="section-padding-large min-h-screen flex items-center justify-center relative">
         <div className="max-w-6xl mx-auto text-center">
           <div className="scroll-animate mb-16">
-            <h1 className="font-serif text-hero mb-8" style={{ color: 'var(--color-charcoal)' }}>
+            <h1
+              className="font-serif text-hero mb-8"
+              style={{ color: "var(--color-charcoal)" }}
+            >
               Soundpath
             </h1>
-            <p className="text-large font-light mb-6" style={{ color: 'var(--color-dark-gray)' }}>
+            <p
+              className="text-large font-light mb-6"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
               The most breathtaking places on Earth to feel music
             </p>
-            <p className="text-editorial max-w-3xl mx-auto mb-12" style={{ color: 'var(--color-mid-gray)' }}>
-              Discover legendary venues, hidden amphitheaters, and transcendent festivals in remarkable settings. 
-              Each destination tells a story of where music and place create something extraordinary.
+            <p
+              className="text-editorial max-w-3xl mx-auto mb-12"
+              style={{ color: "var(--color-mid-gray)" }}
+            >
+              Discover legendary venues, hidden amphitheaters, and transcendent
+              festivals in remarkable settings. Each destination tells a story
+              of where music and place create something extraordinary.
             </p>
           </div>
 
           {/* Minimalist Action Buttons */}
           <div className="scroll-animate scroll-animate-delay-1 flex flex-col sm:flex-row gap-6 justify-center mb-16">
-            <button className="btn-minimal">
-              Explore Destinations
-            </button>
+            <button className="btn-minimal">Explore Destinations</button>
             <Link href="/events">
-              <button className="btn-primary">
-                Browse Collection
-              </button>
+              <button className="btn-primary">Browse Collection</button>
             </Link>
           </div>
 
@@ -136,12 +184,12 @@ export default function Home() {
                 placeholder="Search destinations, genres, experiences..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 className="w-full py-4 px-6 border border-gray-300 focus:border-gray-600 bg-white text-gray-800 placeholder-gray-500 text-center"
-                style={{ 
-                  backgroundColor: 'var(--color-warm-white)',
-                  borderColor: 'var(--color-light-gray)',
-                  color: 'var(--color-charcoal)'
+                style={{
+                  backgroundColor: "var(--color-warm-white)",
+                  borderColor: "var(--color-light-gray)",
+                  color: "var(--color-charcoal)",
                 }}
               />
             </div>
@@ -155,122 +203,188 @@ export default function Home() {
       </section>
 
       {/* World Map Section - Editorial Style */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-soft-beige)' }}>
+      <section
+        className="section-padding"
+        style={{ backgroundColor: "var(--color-soft-beige)" }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="scroll-animate text-center mb-20">
-            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+            <h2
+              className="font-serif text-section-title mb-8"
+              style={{ color: "var(--color-charcoal)" }}
+            >
               Around the World
             </h2>
-            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-              Navigate through musical destinations and discover experiences that await in every corner of the globe. 
-              Each pin represents a story waiting to be told.
+            <p
+              className="text-editorial max-w-2xl mx-auto"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
+              Navigate through musical destinations and discover experiences
+              that await in every corner of the globe. Each pin represents a
+              story waiting to be told.
             </p>
           </div>
-          
+
           {/* Minimalist Map Container */}
-          <div className="scroll-animate scroll-animate-delay-1 relative h-96 rounded-lg overflow-hidden" 
-               style={{ backgroundColor: 'var(--color-light-gray)' }}>
+          <div
+            className="scroll-animate scroll-animate-delay-1 relative h-96 rounded-lg overflow-hidden"
+            style={{ backgroundColor: "var(--color-light-gray)" }}
+          >
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-current flex items-center justify-center"
-                     style={{ borderColor: 'var(--color-mid-gray)', color: 'var(--color-mid-gray)' }}>
+                <div
+                  className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-current flex items-center justify-center"
+                  style={{
+                    borderColor: "var(--color-mid-gray)",
+                    color: "var(--color-mid-gray)",
+                  }}
+                >
                   <Globe className="w-8 h-8" />
                 </div>
-                <h3 className="font-serif text-2xl mb-3" style={{ color: 'var(--color-charcoal)' }}>
+                <h3
+                  className="font-serif text-2xl mb-3"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
                   Interactive Map
                 </h3>
-                <p className="text-editorial" style={{ color: 'var(--color-mid-gray)' }}>
+                <p
+                  className="text-editorial"
+                  style={{ color: "var(--color-mid-gray)" }}
+                >
                   {allEvents.length} musical experiences across the globe
                 </p>
               </div>
             </div>
-            
+
             {/* Subtle Event Location Indicators */}
             {allEvents.slice(0, 8).map((event, index) => (
               <div
                 key={event.id}
                 className="absolute w-3 h-3 rounded-full cursor-pointer hover:scale-125 transition-transform duration-300"
                 style={{
-                  backgroundColor: 'var(--color-charcoal)',
-                  left: `${20 + (index * 8)}%`,
+                  backgroundColor: "var(--color-charcoal)",
+                  left: `${20 + index * 8}%`,
                   top: `${30 + (index % 3) * 20}%`,
                 }}
                 title={`${event.title} - ${formatLocation(event)}`}
-              >
-              </div>
+              ></div>
             ))}
           </div>
         </div>
       </section>
 
       {/* 🕵️‍♀️ Last Discoveries Section - Most Recent Events */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-warm-white)' }}>
+      <section
+        className="section-padding"
+        style={{ backgroundColor: "var(--color-warm-white)" }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="scroll-animate text-center mb-20">
-            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+            <h2
+              className="font-serif text-section-title mb-8"
+              style={{ color: "var(--color-charcoal)" }}
+            >
               🕵️‍♀️ Last Discoveries
             </h2>
-            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-              The most recent musical destinations added to our collection, featuring the latest discoveries from explorers worldwide.
+            <p
+              className="text-editorial max-w-2xl mx-auto"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
+              The most recent musical destinations added to our collection,
+              featuring the latest discoveries from explorers worldwide.
             </p>
           </div>
 
           {isLoading ? (
             <div className="grid-magazine">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="scroll-animate scroll-animate-delay-1">
-                  <div className="h-80 rounded-lg mb-6" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                  <div className="h-4 rounded mb-3" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                  <div className="h-3 rounded w-3/4" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                <div key={i} className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                     style={{ transitionDelay: `${i * 0.1}s` }}>
+                  <div className="h-80 animate-pulse" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                  <div className="p-8">
+                    <div className="h-6 animate-pulse rounded mb-3" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    <div className="flex gap-4 mb-4">
+                      <div className="h-4 animate-pulse rounded w-24" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-4 animate-pulse rounded w-32" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    </div>
+                    <div className="flex gap-2 mb-4">
+                      <div className="h-6 animate-pulse rounded-full w-16" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-6 animate-pulse rounded-full w-20" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    </div>
+                    <div className="space-y-2 mb-6">
+                      <div className="h-4 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-4 animate-pulse rounded w-4/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-4 animate-pulse rounded w-3/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    </div>
+                    <div className="h-10 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="grid-magazine">
               {latestEvents.map((event, index) => (
-                <article key={event.id} className="scroll-animate card-minimal rounded-lg overflow-hidden group"
-                         style={{ transitionDelay: `${index * 0.1}s` }}>
+                <article
+                  key={event.id}
+                  className="scroll-animate card-minimal rounded-lg overflow-hidden group"
+                  style={{ transitionDelay: `${index * 0.1}s` }}
+                >
                   <div className="relative h-80 overflow-hidden">
                     {event.heroImage ? (
-                      <img 
-                        src={event.heroImage} 
+                      <img
+                        src={event.heroImage}
                         alt={event.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center"
-                           style={{ backgroundColor: 'var(--color-soft-beige)' }}>
-                        <div className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
-                             style={{ borderColor: 'var(--color-mid-gray)', color: 'var(--color-mid-gray)' }}>
+                      <div
+                        className="w-full h-full flex items-center justify-center"
+                        style={{ backgroundColor: "var(--color-soft-beige)" }}
+                      >
+                        <div
+                          className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                          style={{
+                            borderColor: "var(--color-mid-gray)",
+                            color: "var(--color-mid-gray)",
+                          }}
+                        >
                           <Music className="w-8 h-8" />
                         </div>
                       </div>
                     )}
                     <div className="absolute top-6 right-6">
-                      <span className="px-3 py-1 text-xs font-medium tracking-wide uppercase"
-                            style={{ 
-                              backgroundColor: 'var(--color-charcoal)', 
-                              color: 'var(--color-warm-white)' 
-                            }}>
+                      <span
+                        className="px-3 py-1 text-xs font-medium tracking-wide uppercase"
+                        style={{
+                          backgroundColor: "var(--color-charcoal)",
+                          color: "var(--color-warm-white)",
+                        }}
+                      >
                         New
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="p-8">
-                    <h3 className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
-                        style={{ color: 'var(--color-charcoal)' }}>
+                    <h3
+                      className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
                       {event.title}
                     </h3>
-                    <div className="flex items-center gap-4 mb-4 text-sm"
-                         style={{ color: 'var(--color-mid-gray)' }}>
+                    <div
+                      className="flex items-center gap-4 mb-4 text-sm"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        <span>{new Date(event.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}</span>
+                        <span>
+                          {new Date(event.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
                       </div>
                       <div className="flex items-center gap-1">
                         <MapPin className="w-4 h-4" />
@@ -280,29 +394,56 @@ export default function Home() {
                     {event.tags && event.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {event.tags.slice(0, 3).map((tag, tagIndex) => (
-                          <span key={tagIndex} className="px-3 py-1 text-xs rounded-full"
-                                style={{ 
-                                  backgroundColor: 'var(--color-cream)', 
-                                  color: 'var(--color-dark-gray)',
-                                  border: '1px solid var(--color-light-gray)'
-                                }}>
+                          <span
+                            key={tagIndex}
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-cream)",
+                              color: "var(--color-dark-gray)",
+                              border: "1px solid var(--color-light-gray)",
+                            }}
+                          >
                             {tag}
                           </span>
                         ))}
                         {event.tags.length > 3 && (
-                          <span className="px-3 py-1 text-xs rounded-full"
-                                style={{ 
-                                  backgroundColor: 'var(--color-light-gray)', 
-                                  color: 'var(--color-mid-gray)'
-                                }}>
+                          <span
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-light-gray)",
+                              color: "var(--color-mid-gray)",
+                            }}
+                          >
                             +{event.tags.length - 3}
                           </span>
                         )}
                       </div>
                     )}
-                    <p className="text-editorial line-clamp-3" style={{ color: 'var(--color-dark-gray)' }}>
+                    <p
+                      className="text-editorial line-clamp-3 mb-6"
+                      style={{ color: "var(--color-dark-gray)" }}
+                    >
                       {event.shortDescription}
                     </p>
+                    <button 
+                      onClick={() => window.location.href = `/event/${event.id}`}
+                      className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
+                      style={{ 
+                        borderColor: 'var(--color-light-gray)',
+                        color: 'var(--color-charcoal)',
+                        backgroundColor: 'transparent'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'var(--color-soft-beige)';
+                        e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.borderColor = 'var(--color-light-gray)';
+                      }}
+                    >
+                      View Details
+                    </button>
                   </div>
                 </article>
               ))}
@@ -311,14 +452,25 @@ export default function Home() {
 
           {latestEvents.length === 0 && !isLoading && (
             <div className="scroll-animate text-center py-20">
-              <div className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
-                   style={{ borderColor: 'var(--color-light-gray)', color: 'var(--color-mid-gray)' }}>
+              <div
+                className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
+                style={{
+                  borderColor: "var(--color-light-gray)",
+                  color: "var(--color-mid-gray)",
+                }}
+              >
                 <Music className="w-10 h-10" />
               </div>
-              <h3 className="font-serif text-2xl mb-4" style={{ color: 'var(--color-charcoal)' }}>
+              <h3
+                className="font-serif text-2xl mb-4"
+                style={{ color: "var(--color-charcoal)" }}
+              >
                 No discoveries yet
               </h3>
-              <p className="text-editorial" style={{ color: 'var(--color-mid-gray)' }}>
+              <p
+                className="text-editorial"
+                style={{ color: "var(--color-mid-gray)" }}
+              >
                 Be the first to share an extraordinary musical experience.
               </p>
             </div>
@@ -327,15 +479,24 @@ export default function Home() {
       </section>
 
       {/* Submit Discovery Section - Editorial Style */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-cream)' }}>
+      <section
+        className="section-padding"
+        style={{ backgroundColor: "var(--color-cream)" }}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="scroll-animate text-center mb-20">
-            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+            <h2
+              className="font-serif text-section-title mb-8"
+              style={{ color: "var(--color-charcoal)" }}
+            >
               Share Your Discovery
             </h2>
-            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-              Help others discover extraordinary musical experiences. Share the places where music and location 
-              create something unforgettable.
+            <p
+              className="text-editorial max-w-2xl mx-auto"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
+              Help others discover extraordinary musical experiences. Share the
+              places where music and location create something unforgettable.
             </p>
           </div>
 
@@ -344,8 +505,11 @@ export default function Home() {
               {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-3">
-                  <Label htmlFor="title" className="text-sm font-medium uppercase tracking-wide" 
-                         style={{ color: 'var(--color-charcoal)' }}>
+                  <Label
+                    htmlFor="title"
+                    className="text-sm font-medium uppercase tracking-wide"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
                     Event Title *
                   </Label>
                   <Input
@@ -353,19 +517,24 @@ export default function Home() {
                     {...form.register("title")}
                     placeholder="Sunset Concert at Red Rocks"
                     className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
-                    style={{ 
-                      borderBottomColor: 'var(--color-light-gray)',
-                      color: 'var(--color-charcoal)'
+                    style={{
+                      borderBottomColor: "var(--color-light-gray)",
+                      color: "var(--color-charcoal)",
                     }}
                   />
                   {form.formState.errors.title && (
-                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.title.message}</p>
+                    <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                      {form.formState.errors.title.message}
+                    </p>
                   )}
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="date" className="text-sm font-medium uppercase tracking-wide"
-                         style={{ color: 'var(--color-charcoal)' }}>
+                  <Label
+                    htmlFor="date"
+                    className="text-sm font-medium uppercase tracking-wide"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
                     Event Date *
                   </Label>
                   <Input
@@ -373,19 +542,24 @@ export default function Home() {
                     type="date"
                     {...form.register("date")}
                     className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
-                    style={{ 
-                      borderBottomColor: 'var(--color-light-gray)',
-                      color: 'var(--color-charcoal)'
+                    style={{
+                      borderBottomColor: "var(--color-light-gray)",
+                      color: "var(--color-charcoal)",
                     }}
                   />
                   {form.formState.errors.date && (
-                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.date.message}</p>
+                    <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                      {form.formState.errors.date.message}
+                    </p>
                   )}
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="heroImage" className="text-sm font-medium uppercase tracking-wide"
-                         style={{ color: 'var(--color-charcoal)' }}>
+                  <Label
+                    htmlFor="heroImage"
+                    className="text-sm font-medium uppercase tracking-wide"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
                     Hero Image URL
                   </Label>
                   <Input
@@ -393,27 +567,37 @@ export default function Home() {
                     {...form.register("heroImage")}
                     placeholder="https://example.com/image.jpg"
                     className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
-                    style={{ 
-                      borderBottomColor: 'var(--color-light-gray)',
-                      color: 'var(--color-charcoal)'
+                    style={{
+                      borderBottomColor: "var(--color-light-gray)",
+                      color: "var(--color-charcoal)",
                     }}
                   />
                   {form.formState.errors.heroImage && (
-                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.heroImage.message}</p>
+                    <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                      {form.formState.errors.heroImage.message}
+                    </p>
                   )}
                 </div>
               </div>
 
               {/* Location */}
               <div className="space-y-8">
-                <h3 className="font-serif text-xl" style={{ color: 'var(--color-charcoal)' }}>Location</h3>
+                <h3
+                  className="font-serif text-xl"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
+                  Location
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-3">
-                    <Label htmlFor="continent" className="text-sm font-medium uppercase tracking-wide"
-                           style={{ color: 'var(--color-charcoal)' }}>
+                    <Label
+                      htmlFor="continent"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
                       Continent *
                     </Label>
-                    <Select 
+                    <Select
                       value={form.watch("continent") || ""}
                       onValueChange={(value) => {
                         form.setValue("continent", value);
@@ -422,8 +606,10 @@ export default function Home() {
                         setSelectedContinent(value);
                       }}
                     >
-                      <SelectTrigger className="py-4 border-0 border-b-2 rounded-none bg-transparent"
-                                     style={{ borderBottomColor: 'var(--color-light-gray)' }}>
+                      <SelectTrigger
+                        className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                        style={{ borderBottomColor: "var(--color-light-gray)" }}
+                      >
                         <SelectValue placeholder="Select continent" />
                       </SelectTrigger>
                       <SelectContent>
@@ -437,11 +623,14 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="country" className="text-sm font-medium uppercase tracking-wide"
-                           style={{ color: 'var(--color-charcoal)' }}>
+                    <Label
+                      htmlFor="country"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
                       Country *
                     </Label>
-                    <Select 
+                    <Select
                       value={form.watch("country") || ""}
                       onValueChange={(value) => {
                         form.setValue("country", value);
@@ -449,25 +638,33 @@ export default function Home() {
                       }}
                       disabled={!form.watch("continent")}
                     >
-                      <SelectTrigger className="py-4 border-0 border-b-2 rounded-none bg-transparent"
-                                     style={{ borderBottomColor: 'var(--color-light-gray)' }}>
+                      <SelectTrigger
+                        className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                        style={{ borderBottomColor: "var(--color-light-gray)" }}
+                      >
                         <SelectValue placeholder="Select country" />
                       </SelectTrigger>
                       <SelectContent>
-                        {form.watch("continent") && 
-                          Object.keys(cities[form.watch("continent") as keyof typeof cities] || {}).map((country) => (
+                        {form.watch("continent") &&
+                          Object.keys(
+                            cities[
+                              form.watch("continent") as keyof typeof cities
+                            ] || {},
+                          ).map((country) => (
                             <SelectItem key={country} value={country}>
                               {country}
                             </SelectItem>
-                          ))
-                        }
+                          ))}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="city" className="text-sm font-medium uppercase tracking-wide"
-                           style={{ color: 'var(--color-charcoal)' }}>
+                    <Label
+                      htmlFor="city"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
                       City *
                     </Label>
                     <CityAutocomplete
@@ -484,11 +681,19 @@ export default function Home() {
 
               {/* Descriptions */}
               <div className="space-y-8">
-                <h3 className="font-serif text-xl" style={{ color: 'var(--color-charcoal)' }}>Description</h3>
-                
+                <h3
+                  className="font-serif text-xl"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
+                  Description
+                </h3>
+
                 <div className="space-y-3">
-                  <Label htmlFor="shortDescription" className="text-sm font-medium uppercase tracking-wide"
-                         style={{ color: 'var(--color-charcoal)' }}>
+                  <Label
+                    htmlFor="shortDescription"
+                    className="text-sm font-medium uppercase tracking-wide"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
                     Short Description *
                   </Label>
                   <Textarea
@@ -497,41 +702,52 @@ export default function Home() {
                     placeholder="A captivating summary of this musical experience..."
                     rows={4}
                     className="py-4 px-4 text-base border-2 rounded-lg resize-none"
-                    style={{ 
-                      borderColor: 'var(--color-light-gray)',
-                      backgroundColor: 'var(--color-warm-white)',
-                      color: 'var(--color-charcoal)'
+                    style={{
+                      borderColor: "var(--color-light-gray)",
+                      backgroundColor: "var(--color-warm-white)",
+                      color: "var(--color-charcoal)",
                     }}
                   />
                   {form.formState.errors.shortDescription && (
-                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.shortDescription.message}</p>
+                    <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                      {form.formState.errors.shortDescription.message}
+                    </p>
                   )}
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="longDescription" className="text-sm font-medium uppercase tracking-wide"
-                         style={{ color: 'var(--color-charcoal)' }}>
+                  <Label
+                    htmlFor="longDescription"
+                    className="text-sm font-medium uppercase tracking-wide"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
                     Full Story *
                   </Label>
                   <RichTextEditor
                     value={form.watch("longDescription") || ""}
-                    onChange={(value) => form.setValue("longDescription", value)}
+                    onChange={(value) =>
+                      form.setValue("longDescription", value)
+                    }
                     placeholder="Tell the full story of this extraordinary musical destination..."
                     height="200px"
                   />
                   {form.formState.errors.longDescription && (
-                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.longDescription.message}</p>
+                    <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                      {form.formState.errors.longDescription.message}
+                    </p>
                   )}
                 </div>
               </div>
 
               <div className="text-center pt-8">
-                <button 
+                <button
                   type="submit"
                   disabled={createEventMutation.isPending}
                   className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide"
                 >
-                  {createEventMutation.isPending ? "Submitting..." : "Submit Discovery"}
+                  {createEventMutation.isPending
+                    ? "Submitting..."
+                    : "Submit Discovery"}
                 </button>
               </div>
             </form>
@@ -540,62 +756,117 @@ export default function Home() {
       </section>
 
       {/* 💎 Hidden Gems Section - Oldest Events */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-soft-beige)' }}>
+      <section
+        className="section-padding"
+        style={{ backgroundColor: "var(--color-soft-beige)" }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="scroll-animate text-center mb-20">
-            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+            <h2
+              className="font-serif text-section-title mb-8"
+              style={{ color: "var(--color-charcoal)" }}
+            >
               💎 Hidden Gems
             </h2>
-            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-              Timeless musical treasures from our archives, featuring the earliest discoveries that continue to inspire wanderers.
+            <p
+              className="text-editorial max-w-2xl mx-auto"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
+              Timeless musical treasures from our archives, featuring the
+              earliest discoveries that continue to inspire wanderers.
             </p>
           </div>
 
-          <div className="grid-magazine">
-            {hiddenGems.map((event, index) => (
-              <article key={event.id} className="scroll-animate card-minimal rounded-lg overflow-hidden group"
-                       style={{ transitionDelay: `${index * 0.15}s` }}>
+          {isLoading ? (
+            <div className="grid-magazine">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                     style={{ transitionDelay: `${i * 0.15}s` }}>
+                  <div className="h-80 animate-pulse" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                  <div className="p-8">
+                    <div className="h-6 animate-pulse rounded mb-3" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    <div className="flex gap-4 mb-4">
+                      <div className="h-4 animate-pulse rounded w-24" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-4 animate-pulse rounded w-32" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    </div>
+                    <div className="flex gap-2 mb-4">
+                      <div className="h-6 animate-pulse rounded-full w-16" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-6 animate-pulse rounded-full w-20" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    </div>
+                    <div className="space-y-2 mb-6">
+                      <div className="h-4 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-4 animate-pulse rounded w-4/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div className="h-4 animate-pulse rounded w-3/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    </div>
+                    <div className="h-10 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid-magazine">
+              {hiddenGems.map((event, index) => (
+              <article
+                key={event.id}
+                className="scroll-animate card-minimal rounded-lg overflow-hidden group"
+                style={{ transitionDelay: `${index * 0.15}s` }}
+              >
                 <div className="relative h-80 overflow-hidden">
                   {event.heroImage ? (
-                    <img 
-                      src={event.heroImage} 
+                    <img
+                      src={event.heroImage}
                       alt={event.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center"
-                         style={{ backgroundColor: 'var(--color-light-gray)' }}>
-                      <div className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
-                           style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}>
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    >
+                      <div
+                        className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                        style={{
+                          borderColor: "var(--color-accent)",
+                          color: "var(--color-accent)",
+                        }}
+                      >
                         <Star className="w-8 h-8" />
                       </div>
                     </div>
                   )}
                   <div className="absolute top-6 right-6">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium"
-                          style={{ 
-                            backgroundColor: 'var(--color-accent)', 
-                            color: 'var(--color-warm-white)' 
-                          }}>
+                    <span
+                      className="px-3 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        backgroundColor: "var(--color-accent)",
+                        color: "var(--color-warm-white)",
+                      }}
+                    >
                       Classic
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-8">
-                  <h3 className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: 'var(--color-charcoal)' }}>
+                  <h3
+                    className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
                     {event.title}
                   </h3>
-                  <div className="flex items-center gap-4 mb-4 text-sm"
-                       style={{ color: 'var(--color-mid-gray)' }}>
+                  <div
+                    className="flex items-center gap-4 mb-4 text-sm"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      <span>{new Date(event.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}</span>
+                      <span>
+                        {new Date(event.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
@@ -605,162 +876,248 @@ export default function Home() {
                   {event.tags && event.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-4">
                       {event.tags.slice(0, 3).map((tag, tagIndex) => (
-                        <span key={tagIndex} className="px-3 py-1 text-xs rounded-full"
-                              style={{ 
-                                backgroundColor: 'var(--color-cream)', 
-                                color: 'var(--color-dark-gray)',
-                                border: '1px solid var(--color-light-gray)'
-                              }}>
+                        <span
+                          key={tagIndex}
+                          className="px-3 py-1 text-xs rounded-full"
+                          style={{
+                            backgroundColor: "var(--color-cream)",
+                            color: "var(--color-dark-gray)",
+                            border: "1px solid var(--color-light-gray)",
+                          }}
+                        >
                           {tag}
                         </span>
                       ))}
                       {event.tags.length > 3 && (
-                        <span className="px-3 py-1 text-xs rounded-full"
-                              style={{ 
-                                backgroundColor: 'var(--color-light-gray)', 
-                                color: 'var(--color-mid-gray)'
-                              }}>
+                        <span
+                          className="px-3 py-1 text-xs rounded-full"
+                          style={{
+                            backgroundColor: "var(--color-light-gray)",
+                            color: "var(--color-mid-gray)",
+                          }}
+                        >
                           +{event.tags.length - 3}
                         </span>
                       )}
                     </div>
                   )}
-                  <p className="text-editorial line-clamp-3" style={{ color: 'var(--color-dark-gray)' }}>
+                  <p
+                    className="text-editorial line-clamp-3 mb-6"
+                    style={{ color: "var(--color-dark-gray)" }}
+                  >
                     {event.shortDescription}
                   </p>
+                  <button 
+                    onClick={() => window.location.href = `/event/${event.id}`}
+                    className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
+                    style={{ 
+                      borderColor: 'var(--color-light-gray)',
+                      color: 'var(--color-charcoal)',
+                      backgroundColor: 'transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-cream)';
+                      e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.borderColor = 'var(--color-light-gray)';
+                    }}
+                  >
+                    View Details
+                  </button>
                 </div>
               </article>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Footer - Kinfolk Minimal */}
-      <footer className="section-padding" style={{ backgroundColor: 'var(--color-charcoal)', color: 'var(--color-warm-white)' }}>
+      <footer
+        className="section-padding"
+        style={{
+          backgroundColor: "var(--color-charcoal)",
+          color: "var(--color-warm-white)",
+        }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="scroll-animate text-center mb-16">
-            <h3 className="font-serif text-3xl mb-8" style={{ color: 'var(--color-warm-white)' }}>
+            <h3
+              className="font-serif text-3xl mb-8"
+              style={{ color: "var(--color-warm-white)" }}
+            >
               Soundpath
             </h3>
-            <p className="text-editorial max-w-lg mx-auto mb-12" style={{ color: 'var(--color-mid-gray)' }}>
-              Discovering breathtaking musical destinations worldwide. 
-              Where music and place create something extraordinary.
+            <p
+              className="text-editorial max-w-lg mx-auto mb-12"
+              style={{ color: "var(--color-mid-gray)" }}
+            >
+              Discovering breathtaking musical destinations worldwide. Where
+              music and place create something extraordinary.
             </p>
           </div>
-          
+
           <div className="scroll-animate scroll-animate-delay-1 grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
             <div>
-              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
-                  style={{ color: 'var(--color-warm-white)' }}>
+              <h4
+                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                style={{ color: "var(--color-warm-white)" }}
+              >
                 Explore
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/events" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                        style={{ color: 'var(--color-mid-gray)' }}>
+                  <Link
+                    href="/events"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     All Destinations
                   </Link>
                 </li>
                 <li>
-                  <Link href="/dashboard" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                        style={{ color: 'var(--color-mid-gray)' }}>
+                  <Link
+                    href="/dashboard"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Categories
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Featured
                   </a>
                 </li>
               </ul>
             </div>
-            
+
             <div>
-              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
-                  style={{ color: 'var(--color-warm-white)' }}>
+              <h4
+                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                style={{ color: "var(--color-warm-white)" }}
+              >
                 Community
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#submit" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#submit"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Submit Discovery
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Guidelines
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     About
                   </a>
                 </li>
               </ul>
             </div>
-            
+
             <div>
-              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
-                  style={{ color: 'var(--color-warm-white)' }}>
+              <h4
+                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                style={{ color: "var(--color-warm-white)" }}
+              >
                 Connect
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Newsletter
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Contact
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Support
                   </a>
                 </li>
               </ul>
             </div>
-            
+
             <div>
-              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
-                  style={{ color: 'var(--color-warm-white)' }}>
+              <h4
+                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                style={{ color: "var(--color-warm-white)" }}
+              >
                 Legal
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Privacy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Terms
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
-                     style={{ color: 'var(--color-mid-gray)' }}>
+                  <a
+                    href="#"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Cookies
                   </a>
                 </li>
               </ul>
             </div>
           </div>
-          
-          <div className="scroll-animate scroll-animate-delay-2 text-center pt-12" 
-               style={{ borderTop: '1px solid var(--color-dark-gray)' }}>
-            <p className="text-sm" style={{ color: 'var(--color-mid-gray)' }}>
+
+          <div
+            className="scroll-animate scroll-animate-delay-2 text-center pt-12"
+            style={{ borderTop: "1px solid var(--color-dark-gray)" }}
+          >
+            <p className="text-sm" style={{ color: "var(--color-mid-gray)" }}>
               © 2025 Soundpath. All rights reserved.
             </p>
           </div>
