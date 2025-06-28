@@ -142,25 +142,41 @@ export default function Home() {
         color: "var(--color-charcoal)",
       }}
     >
-      {/* Hero Section - Kinfolk Style */}
-      <section className="section-padding-large min-h-screen flex items-center justify-center relative">
-        <div className="max-w-6xl mx-auto text-center">
+      {/* Hero Section - Kinfolk Style with Background Image */}
+      <section className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg"
+            alt="Musical performance audience"
+            className="w-full h-full object-cover"
+          />
+          {/* Dark overlay for readability and theme consistency */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
+          {/* Subtle texture overlay to maintain minimalist aesthetic */}
+          <div className="absolute inset-0 opacity-20" style={{
+            background: `linear-gradient(45deg, transparent 40%, var(--color-warm-white) 50%, transparent 60%),
+                        linear-gradient(-45deg, transparent 40%, var(--color-warm-white) 50%, transparent 60%)`,
+            backgroundSize: '20px 20px'
+          }}></div>
+          {/* Additional soft vignette effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto text-center relative z-10">
           <div className="scroll-animate mb-16">
             <h1
-              className="font-serif text-hero mb-8"
-              style={{ color: "var(--color-charcoal)" }}
+              className="font-serif text-hero mb-8 text-white drop-shadow-lg"
             >
               Soundpath
             </h1>
             <p
-              className="text-large font-light mb-6"
-              style={{ color: "var(--color-dark-gray)" }}
+              className="text-large font-light mb-6 text-white/90 drop-shadow-md"
             >
               The most breathtaking places on Earth to feel music
             </p>
             <p
-              className="text-editorial max-w-3xl mx-auto mb-12"
-              style={{ color: "var(--color-mid-gray)" }}
+              className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm"
             >
               Discover legendary venues, hidden amphitheaters, and transcendent
               festivals in remarkable settings. Each destination tells a story
@@ -170,9 +186,13 @@ export default function Home() {
 
           {/* Minimalist Action Buttons */}
           <div className="scroll-animate scroll-animate-delay-1 flex flex-col sm:flex-row gap-6 justify-center mb-16">
-            <button className="btn-minimal">Explore Destinations</button>
+            <button className="px-8 py-3 text-sm font-medium rounded-lg border border-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50">
+              Explore Destinations
+            </button>
             <Link href="/events">
-              <button className="btn-primary">Browse Collection</button>
+              <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg">
+                Browse Collection
+              </button>
             </Link>
           </div>
 
@@ -185,12 +205,7 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                className="w-full py-4 px-6 border border-gray-300 focus:border-gray-600 bg-white text-gray-800 placeholder-gray-500 text-center"
-                style={{
-                  backgroundColor: "var(--color-warm-white)",
-                  borderColor: "var(--color-light-gray)",
-                  color: "var(--color-charcoal)",
-                }}
+                className="w-full py-4 px-6 border border-white/30 focus:border-white/60 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 text-center transition-all duration-300"
               />
             </div>
           </div>
@@ -198,7 +213,7 @@ export default function Home() {
 
         {/* Minimal scroll indicator */}
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
-          <div className="w-px h-16 bg-gray-300 animate-pulse"></div>
+          <div className="w-px h-16 bg-white/40 animate-pulse"></div>
         </div>
       </section>
 
@@ -298,25 +313,58 @@ export default function Home() {
           {isLoading ? (
             <div className="grid-magazine">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="scroll-animate card-minimal rounded-lg overflow-hidden"
-                     style={{ transitionDelay: `${i * 0.1}s` }}>
-                  <div className="h-80 animate-pulse" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                <div
+                  key={i}
+                  className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                  style={{ transitionDelay: `${i * 0.1}s` }}
+                >
+                  <div
+                    className="h-80 animate-pulse"
+                    style={{ backgroundColor: "var(--color-light-gray)" }}
+                  ></div>
                   <div className="p-8">
-                    <div className="h-6 animate-pulse rounded mb-3" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    <div
+                      className="h-6 animate-pulse rounded mb-3"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    ></div>
                     <div className="flex gap-4 mb-4">
-                      <div className="h-4 animate-pulse rounded w-24" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-4 animate-pulse rounded w-32" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-24"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-32"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
                     <div className="flex gap-2 mb-4">
-                      <div className="h-6 animate-pulse rounded-full w-16" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-6 animate-pulse rounded-full w-20" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div
+                        className="h-6 animate-pulse rounded-full w-16"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-6 animate-pulse rounded-full w-20"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
                     <div className="space-y-2 mb-6">
-                      <div className="h-4 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-4 animate-pulse rounded w-4/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-4 animate-pulse rounded w-3/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div
+                        className="h-4 animate-pulse rounded"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-4/5"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-3/5"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
-                    <div className="h-10 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    <div
+                      className="h-10 animate-pulse rounded"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    ></div>
                   </div>
                 </div>
               ))}
@@ -425,21 +473,26 @@ export default function Home() {
                     >
                       {event.shortDescription}
                     </p>
-                    <button 
-                      onClick={() => window.location.href = `/event/${event.id}`}
+                    <button
+                      onClick={() =>
+                        (window.location.href = `/event/${event.id}`)
+                      }
                       className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
-                      style={{ 
-                        borderColor: 'var(--color-light-gray)',
-                        color: 'var(--color-charcoal)',
-                        backgroundColor: 'transparent'
+                      style={{
+                        borderColor: "var(--color-light-gray)",
+                        color: "var(--color-charcoal)",
+                        backgroundColor: "transparent",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--color-soft-beige)';
-                        e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
+                        e.currentTarget.style.backgroundColor =
+                          "var(--color-soft-beige)";
+                        e.currentTarget.style.borderColor =
+                          "var(--color-mid-gray)";
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.borderColor = 'var(--color-light-gray)';
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.borderColor =
+                          "var(--color-light-gray)";
                       }}
                     >
                       View Details
@@ -780,25 +833,58 @@ export default function Home() {
           {isLoading ? (
             <div className="grid-magazine">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="scroll-animate card-minimal rounded-lg overflow-hidden"
-                     style={{ transitionDelay: `${i * 0.15}s` }}>
-                  <div className="h-80 animate-pulse" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                <div
+                  key={i}
+                  className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                  style={{ transitionDelay: `${i * 0.15}s` }}
+                >
+                  <div
+                    className="h-80 animate-pulse"
+                    style={{ backgroundColor: "var(--color-light-gray)" }}
+                  ></div>
                   <div className="p-8">
-                    <div className="h-6 animate-pulse rounded mb-3" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    <div
+                      className="h-6 animate-pulse rounded mb-3"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    ></div>
                     <div className="flex gap-4 mb-4">
-                      <div className="h-4 animate-pulse rounded w-24" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-4 animate-pulse rounded w-32" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-24"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-32"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
                     <div className="flex gap-2 mb-4">
-                      <div className="h-6 animate-pulse rounded-full w-16" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-6 animate-pulse rounded-full w-20" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div
+                        className="h-6 animate-pulse rounded-full w-16"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-6 animate-pulse rounded-full w-20"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
                     <div className="space-y-2 mb-6">
-                      <div className="h-4 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-4 animate-pulse rounded w-4/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
-                      <div className="h-4 animate-pulse rounded w-3/5" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                      <div
+                        className="h-4 animate-pulse rounded"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-4/5"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div
+                        className="h-4 animate-pulse rounded w-3/5"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
-                    <div className="h-10 animate-pulse rounded" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                    <div
+                      className="h-10 animate-pulse rounded"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    ></div>
                   </div>
                 </div>
               ))}
@@ -806,128 +892,133 @@ export default function Home() {
           ) : (
             <div className="grid-magazine">
               {hiddenGems.map((event, index) => (
-              <article
-                key={event.id}
-                className="scroll-animate card-minimal rounded-lg overflow-hidden group"
-                style={{ transitionDelay: `${index * 0.15}s` }}
-              >
-                <div className="relative h-80 overflow-hidden">
-                  {event.heroImage ? (
-                    <img
-                      src={event.heroImage}
-                      alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  ) : (
-                    <div
-                      className="w-full h-full flex items-center justify-center"
-                      style={{ backgroundColor: "var(--color-light-gray)" }}
-                    >
+                <article
+                  key={event.id}
+                  className="scroll-animate card-minimal rounded-lg overflow-hidden group"
+                  style={{ transitionDelay: `${index * 0.15}s` }}
+                >
+                  <div className="relative h-80 overflow-hidden">
+                    {event.heroImage ? (
+                      <img
+                        src={event.heroImage}
+                        alt={event.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                    ) : (
                       <div
-                        className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                        className="w-full h-full flex items-center justify-center"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      >
+                        <div
+                          className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                          style={{
+                            borderColor: "var(--color-accent)",
+                            color: "var(--color-accent)",
+                          }}
+                        >
+                          <Star className="w-8 h-8" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute top-6 right-6">
+                      <span
+                        className="px-3 py-1 rounded-full text-xs font-medium"
                         style={{
-                          borderColor: "var(--color-accent)",
-                          color: "var(--color-accent)",
+                          backgroundColor: "var(--color-accent)",
+                          color: "var(--color-warm-white)",
                         }}
                       >
-                        <Star className="w-8 h-8" />
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute top-6 right-6">
-                    <span
-                      className="px-3 py-1 rounded-full text-xs font-medium"
-                      style={{
-                        backgroundColor: "var(--color-accent)",
-                        color: "var(--color-warm-white)",
-                      }}
-                    >
-                      Classic
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-8">
-                  <h3
-                    className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-charcoal)" }}
-                  >
-                    {event.title}
-                  </h3>
-                  <div
-                    className="flex items-center gap-4 mb-4 text-sm"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>
-                        {new Date(event.date).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        Classic
                       </span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{formatLocation(event)}</span>
-                    </div>
                   </div>
-                  {event.tags && event.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {event.tags.slice(0, 3).map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="px-3 py-1 text-xs rounded-full"
-                          style={{
-                            backgroundColor: "var(--color-cream)",
-                            color: "var(--color-dark-gray)",
-                            border: "1px solid var(--color-light-gray)",
-                          }}
-                        >
-                          {tag}
+
+                  <div className="p-8">
+                    <h3
+                      className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
+                      {event.title}
+                    </h3>
+                    <div
+                      className="flex items-center gap-4 mb-4 text-sm"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        <span>
+                          {new Date(event.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
                         </span>
-                      ))}
-                      {event.tags.length > 3 && (
-                        <span
-                          className="px-3 py-1 text-xs rounded-full"
-                          style={{
-                            backgroundColor: "var(--color-light-gray)",
-                            color: "var(--color-mid-gray)",
-                          }}
-                        >
-                          +{event.tags.length - 3}
-                        </span>
-                      )}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        <span>{formatLocation(event)}</span>
+                      </div>
                     </div>
-                  )}
-                  <p
-                    className="text-editorial line-clamp-3 mb-6"
-                    style={{ color: "var(--color-dark-gray)" }}
-                  >
-                    {event.shortDescription}
-                  </p>
-                  <button 
-                    onClick={() => window.location.href = `/event/${event.id}`}
-                    className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
-                    style={{ 
-                      borderColor: 'var(--color-light-gray)',
-                      color: 'var(--color-charcoal)',
-                      backgroundColor: 'transparent'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--color-cream)';
-                      e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'transparent';
-                      e.currentTarget.style.borderColor = 'var(--color-light-gray)';
-                    }}
-                  >
-                    View Details
-                  </button>
-                </div>
-              </article>
+                    {event.tags && event.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {event.tags.slice(0, 3).map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-cream)",
+                              color: "var(--color-dark-gray)",
+                              border: "1px solid var(--color-light-gray)",
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {event.tags.length > 3 && (
+                          <span
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-light-gray)",
+                              color: "var(--color-mid-gray)",
+                            }}
+                          >
+                            +{event.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <p
+                      className="text-editorial line-clamp-3 mb-6"
+                      style={{ color: "var(--color-dark-gray)" }}
+                    >
+                      {event.shortDescription}
+                    </p>
+                    <button
+                      onClick={() =>
+                        (window.location.href = `/event/${event.id}`)
+                      }
+                      className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
+                      style={{
+                        borderColor: "var(--color-light-gray)",
+                        color: "var(--color-charcoal)",
+                        backgroundColor: "transparent",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                          "var(--color-cream)";
+                        e.currentTarget.style.borderColor =
+                          "var(--color-mid-gray)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.borderColor =
+                          "var(--color-light-gray)";
+                      }}
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </article>
               ))}
             </div>
           )}

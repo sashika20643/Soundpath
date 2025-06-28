@@ -119,6 +119,9 @@ Preferred communication style: Simple, everyday language.
 - June 28, 2025: Created Event Details Page (/event/:id) with hero image, metadata, and rich content
 - June 28, 2025: Implemented fade-in animations on Event Details page load
 - June 28, 2025: Added responsive layout with clean typography and minimal Kinfolk aesthetic
+- June 28, 2025: Added hero section background image (musical performance audience) to homepage
+- June 28, 2025: Applied dark overlays, subtle texture effects, and white text for theme consistency
+- June 28, 2025: Updated buttons and search input with glass morphism effects for better visibility
 
 ## Key Features
 
