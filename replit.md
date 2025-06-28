@@ -104,6 +104,11 @@ Preferred communication style: Simple, everyday language.
 - June 26, 2025: Added interactive map section with event location markers
 - June 26, 2025: Enhanced event cards with hero image support and improved animations
 - June 26, 2025: Added custom CSS animations (fade-in, float, pulse-glow, gradient-shift)
+- June 27, 2025: Complete redesign with Kinfolk magazine aesthetic - neutral colors, elegant typography, minimalist layout
+- June 27, 2025: Added Playfair Display serif font and Inter sans-serif for editorial typography
+- June 27, 2025: Implemented scroll-triggered animations for smooth, professional interaction
+- June 27, 2025: Redesigned with cream/beige/charcoal color palette replacing dark theme
+- June 27, 2025: Added magazine-style grid layouts and editorial content presentation
 
 ## Key Features
 

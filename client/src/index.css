@@ -1,8 +1,52 @@
+/* Import serif font for editorial typography */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Line clamp utilities and animations */
+/* Kinfolk-inspired CSS Variables */
+:root {
+  --color-cream: #faf8f4;
+  --color-warm-white: #fcfbf8;
+  --color-soft-beige: #f5f2ed;
+  --color-light-gray: #e8e5e0;
+  --color-mid-gray: #aca599;
+  --color-dark-gray: #5a5751;
+  --color-charcoal: #2d2b26;
+  --color-black: #1a1916;
+  --color-accent: #d4b896;
+  
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+  --spacing-2xl: 8rem;
+}
+
+/* Base typography and layout */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-charcoal);
+    background-color: var(--color-warm-white);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Kinfolk-inspired utilities */
 @layer utilities {
   .line-clamp-3 {
     overflow: hidden;
@@ -10,61 +54,146 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
-}
-
-/* Custom Animations */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  
+  .font-serif {
+    font-family: var(--font-serif);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .font-sans {
+    font-family: var(--font-sans);
   }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+  
+  .text-editorial {
+    font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+    line-height: 1.7;
+    font-weight: 400;
   }
-  50% {
-    transform: translateY(-10px);
+  
+  .section-padding {
+    padding: var(--spacing-xl) var(--spacing-md);
   }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(249, 115, 22, 0.8);
+  
+  .section-padding-large {
+    padding: var(--spacing-2xl) var(--spacing-md);
   }
 }
 
-.animate-fade-in {
-  animation: fade-in 1s ease-out;
+/* Smooth scroll-in animations */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+  will-change: opacity, transform;
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.scroll-animate.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+.scroll-animate-delay-1 {
+  transition-delay: 0.1s;
 }
 
-/* Cinematic background effects */
-.cinematic-bg {
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2d1b0e 50%, #1a1a1a 75%, #000000 100%);
-  background-size: 400% 400%;
-  animation: gradient-shift 20s ease infinite;
+.scroll-animate-delay-2 {
+  transition-delay: 0.2s;
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.scroll-animate-delay-3 {
+  transition-delay: 0.3s;
+}
+
+/* Kinfolk-style button */
+.btn-minimal {
+  background: transparent;
+  border: 1px solid var(--color-charcoal);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  padding: 0.875rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.btn-minimal:hover {
+  background-color: var(--color-charcoal);
+  color: var(--color-warm-white);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: var(--color-charcoal);
+  color: var(--color-warm-white);
+  border: 1px solid var(--color-charcoal);
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--color-charcoal);
+}
+
+/* Magazine-style grid */
+.grid-magazine {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+/* Full-bleed image containers */
+.image-full-bleed {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
+
+/* Card styling */
+.card-minimal {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-light-gray);
+  transition: all 0.4s ease;
+}
+
+.card-minimal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(45, 43, 38, 0.08);
+}
+
+/* Form styling */
+.form-minimal input,
+.form-minimal textarea,
+.form-minimal select {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-light-gray);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+}
+
+.form-minimal input:focus,
+.form-minimal textarea:focus,
+.form-minimal select:focus {
+  border-color: var(--color-charcoal);
+  box-shadow: 0 0 0 2px rgba(45, 43, 38, 0.1);
+}
+
+/* Typography scale */
+.text-hero {
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  font-weight: 500;
+}
+
+.text-large {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  line-height: 1.1;
+}
+
+.text-section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: var(--spacing-lg);
 }
 
 /* CSS variables for theming */

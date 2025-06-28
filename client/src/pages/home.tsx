@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { CityAutocomplete } from "@/components/ui/city-autocomplete";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { useEvents, useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/hooks/use-toast";
@@ -23,6 +24,7 @@ export default function Home() {
   const [randomEvents, setRandomEvents] = useState<Event[]>([]);
   const [selectedContinent, setSelectedContinent] = useState("");
   const { toast } = useToast();
+  const scrollRef = useScrollAnimation();
   
   const { data: allEvents = [], isLoading } = useEvents();
   const { data: categories = [] } = useCategories();
@@ -91,258 +93,274 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Cinematic Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background with concert atmosphere */}
-        <div className="absolute inset-0">
-          {/* Gradient overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-b from-orange-900/20 via-black/60 to-black"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
-          
-          {/* Animated particles */}
-          <div className="absolute inset-0 opacity-30">
-            {[...Array(50)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-orange-400 rounded-full animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${2 + Math.random() * 3}s`
-                }}
-              ></div>
-            ))}
-          </div>
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 text-center max-w-5xl mx-auto px-6">
-          <div className="mb-12 animate-fade-in">
-            <Volume2 className="w-20 h-20 mx-auto mb-8 text-orange-500 animate-pulse" />
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 tracking-tight">
-              <span className="bg-gradient-to-r from-white via-orange-200 to-orange-500 bg-clip-text text-transparent">
-                Soundpath
-              </span>
+    <div ref={scrollRef} className="min-h-screen" style={{ backgroundColor: 'var(--color-warm-white)', color: 'var(--color-charcoal)' }}>
+      {/* Hero Section - Kinfolk Style */}
+      <section className="section-padding-large min-h-screen flex items-center justify-center relative">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="scroll-animate mb-16">
+            <h1 className="font-serif text-hero mb-8" style={{ color: 'var(--color-charcoal)' }}>
+              Soundpath
             </h1>
-            <p className="text-2xl md:text-3xl text-orange-300 mb-6 font-light">
+            <p className="text-large font-light mb-6" style={{ color: 'var(--color-dark-gray)' }}>
               The most breathtaking places on Earth to feel music
             </p>
-            <p className="text-lg text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Discover legendary venues, hidden amphitheaters, and transcendent festivals in remarkable settings
+            <p className="text-editorial max-w-3xl mx-auto mb-12" style={{ color: 'var(--color-mid-gray)' }}>
+              Discover legendary venues, hidden amphitheaters, and transcendent festivals in remarkable settings. 
+              Each destination tells a story of where music and place create something extraordinary.
             </p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-            <Button 
-              size="lg"
-              className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105"
-            >
-              <Map className="w-6 h-6 mr-3" />
-              Explore The Map
-            </Button>
-            <Button 
-              size="lg"
-              variant="outline"
-              className="border-2 border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white px-8 py-4 text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105"
-            >
-              Featured Destinations
-            </Button>
+          {/* Minimalist Action Buttons */}
+          <div className="scroll-animate scroll-animate-delay-1 flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <button className="btn-minimal">
+              Explore Destinations
+            </button>
+            <Link href="/events">
+              <button className="btn-primary">
+                Browse Collection
+              </button>
+            </Link>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+          {/* Elegant Search */}
+          <div className="scroll-animate scroll-animate-delay-2 max-w-lg mx-auto">
+            <div className="relative">
               <Input
                 type="text"
-                placeholder="Search destinations, events, genres..."
+                placeholder="Search destinations, genres, experiences..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                className="pl-12 pr-4 py-4 bg-black/60 border-2 border-gray-700 text-white placeholder-gray-400 focus:border-orange-500 rounded-full text-lg backdrop-blur-sm"
+                className="w-full py-4 px-6 border border-gray-300 focus:border-gray-600 bg-white text-gray-800 placeholder-gray-500 text-center"
+                style={{ 
+                  backgroundColor: 'var(--color-warm-white)',
+                  borderColor: 'var(--color-light-gray)',
+                  color: 'var(--color-charcoal)'
+                }}
               />
             </div>
-            <Button 
-              onClick={handleSearch}
-              size="lg"
-              className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full transition-all duration-300"
-            >
-              Search
-            </Button>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-8 h-12 border-2 border-orange-400 rounded-full flex justify-center items-start pt-2">
-            <div className="w-1 h-4 bg-orange-400 rounded-full animate-pulse"></div>
-          </div>
+        {/* Minimal scroll indicator */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
+          <div className="w-px h-16 bg-gray-300 animate-pulse"></div>
         </div>
       </section>
 
-      {/* Interactive Map Section */}
-      <section className="py-20 px-6 bg-gray-900">
+      {/* World Map Section - Editorial Style */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--color-soft-beige)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Explore the World</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Navigate through musical destinations and discover experiences that await in every corner of the globe
+          <div className="scroll-animate text-center mb-20">
+            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+              Around the World
+            </h2>
+            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
+              Navigate through musical destinations and discover experiences that await in every corner of the globe. 
+              Each pin represents a story waiting to be told.
             </p>
           </div>
           
-          {/* Map Placeholder with Event Markers */}
-          <div className="relative h-96 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden border border-gray-700">
+          {/* Minimalist Map Container */}
+          <div className="scroll-animate scroll-animate-delay-1 relative h-96 rounded-lg overflow-hidden" 
+               style={{ backgroundColor: 'var(--color-light-gray)' }}>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <Map className="w-16 h-16 mx-auto mb-4 text-orange-500" />
-                <h3 className="text-2xl font-semibold text-white mb-2">Interactive Map Coming Soon</h3>
-                <p className="text-gray-400">
-                  Discover {allEvents.length} musical experiences across the globe
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-current flex items-center justify-center"
+                     style={{ borderColor: 'var(--color-mid-gray)', color: 'var(--color-mid-gray)' }}>
+                  <Globe className="w-8 h-8" />
+                </div>
+                <h3 className="font-serif text-2xl mb-3" style={{ color: 'var(--color-charcoal)' }}>
+                  Interactive Map
+                </h3>
+                <p className="text-editorial" style={{ color: 'var(--color-mid-gray)' }}>
+                  {allEvents.length} musical experiences across the globe
                 </p>
               </div>
             </div>
             
-            {/* Event Location Markers */}
+            {/* Subtle Event Location Indicators */}
             {allEvents.slice(0, 8).map((event, index) => (
               <div
                 key={event.id}
-                className="absolute w-4 h-4 bg-orange-500 rounded-full animate-pulse cursor-pointer hover:scale-150 transition-transform duration-300"
+                className="absolute w-3 h-3 rounded-full cursor-pointer hover:scale-125 transition-transform duration-300"
                 style={{
+                  backgroundColor: 'var(--color-charcoal)',
                   left: `${20 + (index * 8)}%`,
                   top: `${30 + (index % 3) * 20}%`,
                 }}
                 title={`${event.title} - ${formatLocation(event)}`}
               >
-                <div className="absolute inset-0 bg-orange-400 rounded-full animate-ping"></div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Latest Discoveries Section */}
-      <section className="py-20 px-6 bg-black">
+      {/* Latest Discoveries Section - Magazine Style */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--color-warm-white)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Latest Discoveries</h2>
-            <p className="text-xl text-gray-400">Fresh musical experiences from around the world</p>
+          <div className="scroll-animate text-center mb-20">
+            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+              Latest Discoveries
+            </h2>
+            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
+              Fresh musical experiences from around the world, curated for those who seek the extraordinary.
+            </p>
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid-magazine">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="bg-gray-800 h-64 rounded-xl mb-4"></div>
-                  <div className="bg-gray-800 h-4 rounded mb-2"></div>
-                  <div className="bg-gray-800 h-3 rounded w-3/4"></div>
+                <div key={i} className="scroll-animate scroll-animate-delay-1">
+                  <div className="h-80 rounded-lg mb-6" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                  <div className="h-4 rounded mb-3" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
+                  <div className="h-3 rounded w-3/4" style={{ backgroundColor: 'var(--color-light-gray)' }}></div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid-magazine">
               {latestEvents.map((event, index) => (
-                <Card key={event.id} className="bg-gray-900 border-gray-800 hover:border-orange-500 transition-all duration-500 group overflow-hidden transform hover:scale-105">
-                  <div className="relative h-64 overflow-hidden">
+                <article key={event.id} className="scroll-animate card-minimal rounded-lg overflow-hidden group"
+                         style={{ transitionDelay: `${index * 0.1}s` }}>
+                  <div className="relative h-80 overflow-hidden">
                     {event.heroImage ? (
                       <img 
                         src={event.heroImage} 
                         alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-orange-600/30 via-gray-800 to-gray-900 flex items-center justify-center">
-                        <Volume2 className="w-16 h-16 text-orange-400 group-hover:scale-110 transition-transform duration-300" />
+                      <div className="w-full h-full flex items-center justify-center"
+                           style={{ backgroundColor: 'var(--color-soft-beige)' }}>
+                        <div className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                             style={{ borderColor: 'var(--color-mid-gray)', color: 'var(--color-mid-gray)' }}>
+                          <Music className="w-8 h-8" />
+                        </div>
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-orange-600 text-white">
+                    <div className="absolute top-6 right-6">
+                      <span className="px-3 py-1 text-xs font-medium tracking-wide uppercase"
+                            style={{ 
+                              backgroundColor: 'var(--color-charcoal)', 
+                              color: 'var(--color-warm-white)' 
+                            }}>
                         New
-                      </Badge>
-                    </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-orange-300 transition-colors">
-                        {event.title}
-                      </h3>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <MapPin className="w-4 h-4" />
-                        <span className="text-sm">{formatLocation(event)}</span>
-                      </div>
+                      </span>
                     </div>
                   </div>
-                  <CardContent className="p-6">
-                    <p className="text-gray-400 text-sm line-clamp-3">
+                  
+                  <div className="p-8">
+                    <h3 className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
+                        style={{ color: 'var(--color-charcoal)' }}>
+                      {event.title}
+                    </h3>
+                    <div className="flex items-center gap-2 mb-4 text-sm"
+                         style={{ color: 'var(--color-mid-gray)' }}>
+                      <MapPin className="w-4 h-4" />
+                      <span>{formatLocation(event)}</span>
+                    </div>
+                    <p className="text-editorial line-clamp-3 mb-6" style={{ color: 'var(--color-dark-gray)' }}>
                       {event.shortDescription}
                     </p>
-                    <div className="flex items-center gap-2 mt-4 text-xs text-gray-500">
-                      <Calendar className="w-3 h-3" />
-                      {new Date(event.createdAt).toLocaleDateString()}
+                    <div className="text-xs uppercase tracking-wide" style={{ color: 'var(--color-mid-gray)' }}>
+                      {new Date(event.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </article>
               ))}
             </div>
           )}
 
           {latestEvents.length === 0 && !isLoading && (
-            <div className="text-center py-16">
-              <Volume2 className="w-20 h-20 mx-auto mb-6 text-gray-700" />
-              <h3 className="text-2xl font-semibold text-gray-500 mb-4">No discoveries yet</h3>
-              <p className="text-gray-600 text-lg">Be the first to share an extraordinary musical experience!</p>
+            <div className="scroll-animate text-center py-20">
+              <div className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
+                   style={{ borderColor: 'var(--color-light-gray)', color: 'var(--color-mid-gray)' }}>
+                <Music className="w-10 h-10" />
+              </div>
+              <h3 className="font-serif text-2xl mb-4" style={{ color: 'var(--color-charcoal)' }}>
+                No discoveries yet
+              </h3>
+              <p className="text-editorial" style={{ color: 'var(--color-mid-gray)' }}>
+                Be the first to share an extraordinary musical experience.
+              </p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Submit Event Section */}
-      <section className="py-20 px-6 bg-gray-900">
+      {/* Submit Discovery Section - Editorial Style */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--color-cream)' }}>
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Submit Event</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Share your discovery of an extraordinary musical experience and help others find breathtaking destinations
+          <div className="scroll-animate text-center mb-20">
+            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+              Share Your Discovery
+            </h2>
+            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
+              Help others discover extraordinary musical experiences. Share the places where music and location 
+              create something unforgettable.
             </p>
           </div>
 
-          <Card className="bg-black border-gray-800 shadow-2xl">
-            <CardContent className="p-8">
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* Basic Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="title" className="text-white">Event Title *</Label>
-                    <Input
-                      id="title"
-                      {...form.register("title")}
-                      placeholder="Sunset Concert at Red Rocks"
-                      className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-orange-500"
-                    />
-                    {form.formState.errors.title && (
-                      <p className="text-sm text-red-400 mt-1">{form.formState.errors.title.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <Label htmlFor="heroImage" className="text-white">Hero Image URL</Label>
-                    <Input
-                      id="heroImage"
-                      {...form.register("heroImage")}
-                      placeholder="https://example.com/image.jpg"
-                      className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-orange-500"
-                    />
-                    {form.formState.errors.heroImage && (
-                      <p className="text-sm text-red-400 mt-1">{form.formState.errors.heroImage.message}</p>
-                    )}
-                  </div>
+          <div className="scroll-animate scroll-animate-delay-1 form-minimal">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+              {/* Basic Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <Label htmlFor="title" className="text-sm font-medium uppercase tracking-wide" 
+                         style={{ color: 'var(--color-charcoal)' }}>
+                    Event Title *
+                  </Label>
+                  <Input
+                    id="title"
+                    {...form.register("title")}
+                    placeholder="Sunset Concert at Red Rocks"
+                    className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
+                    style={{ 
+                      borderBottomColor: 'var(--color-light-gray)',
+                      color: 'var(--color-charcoal)'
+                    }}
+                  />
+                  {form.formState.errors.title && (
+                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.title.message}</p>
+                  )}
                 </div>
 
-                {/* Location */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <Label htmlFor="continent" className="text-white">Continent *</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="heroImage" className="text-sm font-medium uppercase tracking-wide"
+                         style={{ color: 'var(--color-charcoal)' }}>
+                    Hero Image URL
+                  </Label>
+                  <Input
+                    id="heroImage"
+                    {...form.register("heroImage")}
+                    placeholder="https://example.com/image.jpg"
+                    className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
+                    style={{ 
+                      borderBottomColor: 'var(--color-light-gray)',
+                      color: 'var(--color-charcoal)'
+                    }}
+                  />
+                  {form.formState.errors.heroImage && (
+                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.heroImage.message}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="space-y-8">
+                <h3 className="font-serif text-xl" style={{ color: 'var(--color-charcoal)' }}>Location</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="continent" className="text-sm font-medium uppercase tracking-wide"
+                           style={{ color: 'var(--color-charcoal)' }}>
+                      Continent *
+                    </Label>
                     <Select 
                       value={form.watch("continent") || ""}
                       onValueChange={(value) => {
@@ -352,7 +370,8 @@ export default function Home() {
                         setSelectedContinent(value);
                       }}
                     >
-                      <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                      <SelectTrigger className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                                     style={{ borderBottomColor: 'var(--color-light-gray)' }}>
                         <SelectValue placeholder="Select continent" />
                       </SelectTrigger>
                       <SelectContent>
@@ -365,8 +384,11 @@ export default function Home() {
                     </Select>
                   </div>
 
-                  <div>
-                    <Label htmlFor="country" className="text-white">Country *</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="country" className="text-sm font-medium uppercase tracking-wide"
+                           style={{ color: 'var(--color-charcoal)' }}>
+                      Country *
+                    </Label>
                     <Select 
                       value={form.watch("country") || ""}
                       onValueChange={(value) => {
@@ -375,7 +397,8 @@ export default function Home() {
                       }}
                       disabled={!form.watch("continent")}
                     >
-                      <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                      <SelectTrigger className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                                     style={{ borderBottomColor: 'var(--color-light-gray)' }}>
                         <SelectValue placeholder="Select country" />
                       </SelectTrigger>
                       <SelectContent>
@@ -390,8 +413,11 @@ export default function Home() {
                     </Select>
                   </div>
 
-                  <div>
-                    <Label htmlFor="city" className="text-white">City *</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="city" className="text-sm font-medium uppercase tracking-wide"
+                           style={{ color: 'var(--color-charcoal)' }}>
+                      City *
+                    </Label>
                     <CityAutocomplete
                       continent={selectedContinent}
                       country={form.watch("country") || ""}
@@ -402,24 +428,39 @@ export default function Home() {
                     />
                   </div>
                 </div>
+              </div>
 
-                {/* Descriptions */}
-                <div>
-                  <Label htmlFor="shortDescription" className="text-white">Short Description *</Label>
+              {/* Descriptions */}
+              <div className="space-y-8">
+                <h3 className="font-serif text-xl" style={{ color: 'var(--color-charcoal)' }}>Description</h3>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="shortDescription" className="text-sm font-medium uppercase tracking-wide"
+                         style={{ color: 'var(--color-charcoal)' }}>
+                    Short Description *
+                  </Label>
                   <Textarea
                     id="shortDescription"
                     {...form.register("shortDescription")}
                     placeholder="A captivating summary of this musical experience..."
-                    rows={3}
-                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-orange-500"
+                    rows={4}
+                    className="py-4 px-4 text-base border-2 rounded-lg resize-none"
+                    style={{ 
+                      borderColor: 'var(--color-light-gray)',
+                      backgroundColor: 'var(--color-warm-white)',
+                      color: 'var(--color-charcoal)'
+                    }}
                   />
                   {form.formState.errors.shortDescription && (
-                    <p className="text-sm text-red-400 mt-1">{form.formState.errors.shortDescription.message}</p>
+                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.shortDescription.message}</p>
                   )}
                 </div>
 
-                <div>
-                  <Label htmlFor="longDescription" className="text-white">Full Description *</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="longDescription" className="text-sm font-medium uppercase tracking-wide"
+                         style={{ color: 'var(--color-charcoal)' }}>
+                    Full Story *
+                  </Label>
                   <RichTextEditor
                     value={form.watch("longDescription") || ""}
                     onChange={(value) => form.setValue("longDescription", value)}
@@ -427,148 +468,219 @@ export default function Home() {
                     height="200px"
                   />
                   {form.formState.errors.longDescription && (
-                    <p className="text-sm text-red-400 mt-1">{form.formState.errors.longDescription.message}</p>
+                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.longDescription.message}</p>
                   )}
                 </div>
+              </div>
 
-                <div className="flex justify-center">
-                  <Button 
-                    type="submit"
-                    size="lg"
-                    disabled={createEventMutation.isPending}
-                    className="bg-orange-600 hover:bg-orange-700 text-white px-12 py-4 text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105"
-                  >
-                    {createEventMutation.isPending ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                        Submitting...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5 mr-3" />
-                        Submit Discovery
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+              <div className="text-center pt-8">
+                <button 
+                  type="submit"
+                  disabled={createEventMutation.isPending}
+                  className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide"
+                >
+                  {createEventMutation.isPending ? "Submitting..." : "Submit Discovery"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
 
-      {/* Hidden Gems Section */}
-      <section className="py-20 px-6 bg-black">
+      {/* Hidden Gems Section - Editorial Collection */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--color-soft-beige)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Hidden Gems</h2>
-            <p className="text-xl text-gray-400">Curated musical treasures from around the globe</p>
+          <div className="scroll-animate text-center mb-20">
+            <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
+              Hidden Gems
+            </h2>
+            <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
+              Curated musical treasures from around the globe, selected for their unique character and transformative power.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid-magazine">
             {randomEvents.map((event, index) => (
-              <Card key={event.id} className="bg-gray-900 border-gray-800 hover:border-orange-500 transition-all duration-500 group overflow-hidden transform hover:scale-105">
-                <div className="relative h-64 overflow-hidden">
+              <article key={event.id} className="scroll-animate card-minimal rounded-lg overflow-hidden group"
+                       style={{ transitionDelay: `${index * 0.15}s` }}>
+                <div className="relative h-80 overflow-hidden">
                   {event.heroImage ? (
                     <img 
                       src={event.heroImage} 
                       alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-purple-600/30 via-gray-800 to-gray-900 flex items-center justify-center">
-                      <Star className="w-16 h-16 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="w-full h-full flex items-center justify-center"
+                         style={{ backgroundColor: 'var(--color-light-gray)' }}>
+                      <div className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                           style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}>
+                        <Star className="w-8 h-8" />
+                      </div>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-purple-600 text-white">
-                      #{index + 1}
-                    </Badge>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">
-                      {event.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-gray-300">
-                      <MapPin className="w-4 h-4" />
-                      <span className="text-sm">{formatLocation(event)}</span>
-                    </div>
+                  <div className="absolute top-6 left-6">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                          style={{ 
+                            backgroundColor: 'var(--color-accent)', 
+                            color: 'var(--color-warm-white)' 
+                          }}>
+                      {index + 1}
+                    </span>
                   </div>
                 </div>
-                <CardContent className="p-6">
-                  <p className="text-gray-400 text-sm line-clamp-3">
+                
+                <div className="p-8">
+                  <h3 className="font-serif text-xl mb-3 group-hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: 'var(--color-charcoal)' }}>
+                    {event.title}
+                  </h3>
+                  <div className="flex items-center gap-2 mb-4 text-sm"
+                       style={{ color: 'var(--color-mid-gray)' }}>
+                    <MapPin className="w-4 h-4" />
+                    <span>{formatLocation(event)}</span>
+                  </div>
+                  <p className="text-editorial line-clamp-3 mb-6" style={{ color: 'var(--color-dark-gray)' }}>
                     {event.shortDescription}
                   </p>
-                  <div className="flex items-center gap-2 mt-4 text-xs text-gray-500">
-                    <Calendar className="w-3 h-3" />
-                    {new Date(event.createdAt).toLocaleDateString()}
+                  <div className="text-xs uppercase tracking-wide" style={{ color: 'var(--color-mid-gray)' }}>
+                    Selected Collection
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-950 py-16 px-6">
+      {/* Footer - Kinfolk Minimal */}
+      <footer className="section-padding" style={{ backgroundColor: 'var(--color-charcoal)', color: 'var(--color-warm-white)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center gap-3 mb-6">
-                <Volume2 className="w-10 h-10 text-orange-500" />
-                <h3 className="text-3xl font-bold text-white">Soundpath</h3>
-              </div>
-              <p className="text-gray-400 mb-6 max-w-lg leading-relaxed">
-                Discover legendary venues, hidden amphitheaters, and transcendent festivals in remarkable settings. 
-                Your guide to the most breathtaking places on Earth to feel music.
-              </p>
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors cursor-pointer">
-                  <Volume2 className="w-5 h-5 text-gray-400 hover:text-white" />
-                </div>
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors cursor-pointer">
-                  <Map className="w-5 h-5 text-gray-400 hover:text-white" />
-                </div>
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors cursor-pointer">
-                  <Globe className="w-5 h-5 text-gray-400 hover:text-white" />
-                </div>
-              </div>
-            </div>
-            
+          <div className="scroll-animate text-center mb-16">
+            <h3 className="font-serif text-3xl mb-8" style={{ color: 'var(--color-warm-white)' }}>
+              Soundpath
+            </h3>
+            <p className="text-editorial max-w-lg mx-auto mb-12" style={{ color: 'var(--color-mid-gray)' }}>
+              Discovering breathtaking musical destinations worldwide. 
+              Where music and place create something extraordinary.
+            </p>
+          </div>
+          
+          <div className="scroll-animate scroll-animate-delay-1 grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
             <div>
-              <h4 className="text-white font-semibold mb-6 text-lg">Explore</h4>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
+                  style={{ color: 'var(--color-warm-white)' }}>
+                Explore
+              </h4>
               <ul className="space-y-3">
-                <li><Link href="/events" className="text-gray-400 hover:text-orange-400 transition-colors">All Destinations</Link></li>
-                <li><Link href="/dashboard" className="text-gray-400 hover:text-orange-400 transition-colors">Categories</Link></li>
-                <li><a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">Featured</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">Map</a></li>
+                <li>
+                  <Link href="/events" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                        style={{ color: 'var(--color-mid-gray)' }}>
+                    All Destinations
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                        style={{ color: 'var(--color-mid-gray)' }}>
+                    Categories
+                  </Link>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Featured
+                  </a>
+                </li>
               </ul>
             </div>
             
             <div>
-              <h4 className="text-white font-semibold mb-6 text-lg">Community</h4>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
+                  style={{ color: 'var(--color-warm-white)' }}>
+                Community
+              </h4>
               <ul className="space-y-3">
-                <li><a href="#submit" className="text-gray-400 hover:text-orange-400 transition-colors">Submit Discovery</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">Guidelines</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">About</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">Contact</a></li>
+                <li>
+                  <a href="#submit" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Submit Discovery
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Guidelines
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    About
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
+                  style={{ color: 'var(--color-warm-white)' }}>
+                Connect
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Newsletter
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Support
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" 
+                  style={{ color: 'var(--color-warm-white)' }}>
+                Legal
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Terms
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" 
+                     style={{ color: 'var(--color-mid-gray)' }}>
+                    Cookies
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-gray-800 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-500 mb-4 md:mb-0">
-                © 2025 Soundpath. Discovering breathtaking musical destinations worldwide.
-              </p>
-              <div className="flex space-x-6">
-                <a href="#" className="text-gray-500 hover:text-orange-400 transition-colors text-sm">Privacy</a>
-                <a href="#" className="text-gray-500 hover:text-orange-400 transition-colors text-sm">Terms</a>
-                <a href="#" className="text-gray-500 hover:text-orange-400 transition-colors text-sm">Cookies</a>
-              </div>
-            </div>
+          <div className="scroll-animate scroll-animate-delay-2 text-center pt-12" 
+               style={{ borderTop: '1px solid var(--color-dark-gray)' }}>
+            <p className="text-sm" style={{ color: 'var(--color-mid-gray)' }}>
+              © 2025 Soundpath. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
