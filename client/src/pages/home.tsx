@@ -151,16 +151,10 @@ export default function Home() {
             alt="Musical performance audience"
             className="w-full h-full object-cover"
           />
-          {/* Dark overlay for readability and theme consistency */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
-          {/* Subtle texture overlay to maintain minimalist aesthetic */}
-          <div className="absolute inset-0 opacity-20" style={{
-            background: `linear-gradient(45deg, transparent 40%, var(--color-warm-white) 50%, transparent 60%),
-                        linear-gradient(-45deg, transparent 40%, var(--color-warm-white) 50%, transparent 60%)`,
-            backgroundSize: '20px 20px'
-          }}></div>
-          {/* Additional soft vignette effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
+          {/* Strong dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90"></div>
+          {/* Additional center focus overlay */}
+          <div className="absolute inset-0 bg-radial-gradient from-black/40 via-transparent to-black/60"></div>
         </div>
         
         <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -205,7 +199,11 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                className="w-full py-4 px-6 border border-white/30 focus:border-white/60 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 text-center transition-all duration-300"
+                className="w-full py-4 px-6 border-2 border-white/50 focus:border-white bg-white/20 backdrop-blur-md text-white placeholder-white/80 text-center transition-all duration-300 shadow-lg"
+                style={{
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)'
+                }}
               />
             </div>
           </div>

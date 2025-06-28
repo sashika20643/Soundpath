@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRoute } from "wouter";
-import { ArrowLeft, MapPin, Calendar, ExternalLink, Star } from "lucide-react";
+import { useRoute, Link } from "wouter";
+import { ArrowLeft, MapPin, Calendar, ExternalLink, Star, Home, Search, Menu } from "lucide-react";
 import { useEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -121,7 +121,55 @@ export default function EventDetails() {
   const eventCategories = getEventCategories(event);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-warm-white)' }} ref={scrollRef}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-warm-white)', color: 'var(--color-charcoal)' }} ref={scrollRef}>
+      {/* Navigation Bar */}
+      <nav className="relative z-50 border-b" style={{ backgroundColor: 'var(--color-warm-white)', borderColor: 'var(--color-light-gray)' }}>
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/">
+              <h2 className="font-serif text-2xl" style={{ color: 'var(--color-charcoal)' }}>
+                Soundpath
+              </h2>
+            </Link>
+            
+            <div className="flex items-center gap-6">
+              <button
+                onClick={() => window.history.back()}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
+                style={{ 
+                  borderColor: 'var(--color-light-gray)',
+                  color: 'var(--color-charcoal)',
+                  backgroundColor: 'transparent'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--color-soft-beige)';
+                  e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.borderColor = 'var(--color-light-gray)';
+                }}
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back</span>
+              </button>
+              
+              <div className="hidden md:flex items-center gap-8 text-sm">
+                <Link href="/" className="hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-dark-gray)' }}>
+                  Home
+                </Link>
+                <Link href="/events" className="hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-dark-gray)' }}>
+                  Events
+                </Link>
+                <Link href="/dashboard" className="hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-dark-gray)' }}>
+                  Categories
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Image Section */}
       <section className={`relative h-96 overflow-hidden transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {event.heroImage ? (
@@ -140,21 +188,6 @@ export default function EventDetails() {
           </div>
         )}
         
-        {/* Back Button */}
-        <div className="absolute top-6 left-6">
-          <button
-            onClick={() => window.history.back()}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm transition-all duration-300 hover:shadow-lg"
-            style={{ 
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              color: 'var(--color-charcoal)'
-            }}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Back</span>
-          </button>
-        </div>
-
         {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
       </section>
@@ -188,9 +221,21 @@ export default function EventDetails() {
           </div>
         </div>
 
+        {/* Short Description */}
+        {event.shortDescription && (
+          <div className={`scroll-animate mb-8 transition-all duration-1000 delay-350 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-xl leading-relaxed" style={{ color: 'var(--color-dark-gray)' }}>
+              {event.shortDescription}
+            </p>
+          </div>
+        )}
+
         {/* Categories/Tags */}
         {(eventCategories.length > 0 || (event.tags && event.tags.length > 0)) && (
           <div className={`scroll-animate mb-12 transition-all duration-1000 delay-400 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h3 className="font-serif text-xl mb-4" style={{ color: 'var(--color-charcoal)' }}>
+              Categories & Tags
+            </h3>
             <div className="flex flex-wrap gap-3">
               {eventCategories.map((category) => (
                 <span key={category.id} className="px-4 py-2 text-sm rounded-full border"
@@ -217,6 +262,9 @@ export default function EventDetails() {
 
         {/* Long Description */}
         <div className={`scroll-animate mb-12 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <h3 className="font-serif text-xl mb-6" style={{ color: 'var(--color-charcoal)' }}>
+            About This Experience
+          </h3>
           <div 
             className="prose prose-lg max-w-none text-editorial leading-relaxed"
             style={{ color: 'var(--color-dark-gray)' }}
@@ -252,6 +300,100 @@ export default function EventDetails() {
           </div>
         )}
       </section>
+
+      {/* Footer - Kinfolk Minimal */}
+      <footer className="section-padding" style={{ backgroundColor: 'var(--color-charcoal)', color: 'var(--color-warm-white)' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="scroll-animate text-center mb-16">
+            <h3 className="font-serif text-3xl mb-8" style={{ color: 'var(--color-warm-white)' }}>
+              Soundpath
+            </h3>
+            <p className="text-editorial max-w-lg mx-auto mb-12" style={{ color: 'var(--color-mid-gray)' }}>
+              Discovering breathtaking musical destinations worldwide. Where music and place create something extraordinary.
+            </p>
+          </div>
+
+          <div className="scroll-animate scroll-animate-delay-1 grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
+            <div>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" style={{ color: 'var(--color-warm-white)' }}>
+                Explore
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <Link href="/events" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    All Destinations
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Categories
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" style={{ color: 'var(--color-warm-white)' }}>
+                Discover
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <Link href="/" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Latest Discoveries
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Hidden Gems
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" style={{ color: 'var(--color-warm-white)' }}>
+                Connect
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Submit Experience
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Community
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-sans text-sm font-medium uppercase tracking-wide mb-4" style={{ color: 'var(--color-warm-white)' }}>
+                About
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Our Story
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-mid-gray)' }}>
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="scroll-animate scroll-animate-delay-2 border-t pt-8 text-center" style={{ borderColor: 'var(--color-dark-gray)' }}>
+            <p className="text-sm" style={{ color: 'var(--color-mid-gray)' }}>
+              © 2025 Soundpath. Crafted for music lovers and wanderers.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
