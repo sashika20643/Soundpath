@@ -30,7 +30,12 @@ export default function Home() {
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
   
-  const latestEvents = allEvents.slice(0, 6);
+  // Sort events for latest discoveries (most recent by date) and hidden gems (oldest by date)
+  const sortedByDateDesc = allEvents.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedByDateAsc = allEvents.slice().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  
+  const latestEvents = sortedByDateDesc.slice(0, 6);
+  const hiddenGems = sortedByDateAsc.slice(0, 6);
 
   // Form setup
   const form = useForm<InsertEvent>({
@@ -40,6 +45,7 @@ export default function Home() {
       heroImage: "",
       shortDescription: "",
       longDescription: "",
+      date: "",
       tags: [],
       instagramLink: "",
       continent: "",
@@ -57,7 +63,7 @@ export default function Home() {
   const settingCategories = categories.filter(cat => cat.type === 'setting');
   const eventTypeCategories = categories.filter(cat => cat.type === 'eventType');
 
-  // Shuffle events for random section
+  // Shuffle events for random section - keeping for now but will replace
   useEffect(() => {
     if (allEvents.length > 0) {
       const shuffled = [...allEvents].sort(() => Math.random() - 0.5);
@@ -197,15 +203,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Latest Discoveries Section - Magazine Style */}
+      {/* 🕵️‍♀️ Last Discoveries Section - Most Recent Events */}
       <section className="section-padding" style={{ backgroundColor: 'var(--color-warm-white)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="scroll-animate text-center mb-20">
             <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
-              Latest Discoveries
+              🕵️‍♀️ Last Discoveries
             </h2>
             <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-              Fresh musical experiences from around the world, curated for those who seek the extraordinary.
+              The most recent musical destinations added to our collection, featuring the latest discoveries from explorers worldwide.
             </p>
           </div>
 
@@ -256,21 +262,47 @@ export default function Home() {
                         style={{ color: 'var(--color-charcoal)' }}>
                       {event.title}
                     </h3>
-                    <div className="flex items-center gap-2 mb-4 text-sm"
+                    <div className="flex items-center gap-4 mb-4 text-sm"
                          style={{ color: 'var(--color-mid-gray)' }}>
-                      <MapPin className="w-4 h-4" />
-                      <span>{formatLocation(event)}</span>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(event.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        <span>{formatLocation(event)}</span>
+                      </div>
                     </div>
-                    <p className="text-editorial line-clamp-3 mb-6" style={{ color: 'var(--color-dark-gray)' }}>
+                    {event.tags && event.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {event.tags.slice(0, 3).map((tag, tagIndex) => (
+                          <span key={tagIndex} className="px-3 py-1 text-xs rounded-full"
+                                style={{ 
+                                  backgroundColor: 'var(--color-cream)', 
+                                  color: 'var(--color-dark-gray)',
+                                  border: '1px solid var(--color-light-gray)'
+                                }}>
+                            {tag}
+                          </span>
+                        ))}
+                        {event.tags.length > 3 && (
+                          <span className="px-3 py-1 text-xs rounded-full"
+                                style={{ 
+                                  backgroundColor: 'var(--color-light-gray)', 
+                                  color: 'var(--color-mid-gray)'
+                                }}>
+                            +{event.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <p className="text-editorial line-clamp-3" style={{ color: 'var(--color-dark-gray)' }}>
                       {event.shortDescription}
                     </p>
-                    <div className="text-xs uppercase tracking-wide" style={{ color: 'var(--color-mid-gray)' }}>
-                      {new Date(event.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </div>
                   </div>
                 </article>
               ))}
@@ -310,7 +342,7 @@ export default function Home() {
           <div className="scroll-animate scroll-animate-delay-1 form-minimal">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
               {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-3">
                   <Label htmlFor="title" className="text-sm font-medium uppercase tracking-wide" 
                          style={{ color: 'var(--color-charcoal)' }}>
@@ -328,6 +360,26 @@ export default function Home() {
                   />
                   {form.formState.errors.title && (
                     <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.title.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="date" className="text-sm font-medium uppercase tracking-wide"
+                         style={{ color: 'var(--color-charcoal)' }}>
+                    Event Date *
+                  </Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    {...form.register("date")}
+                    className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
+                    style={{ 
+                      borderBottomColor: 'var(--color-light-gray)',
+                      color: 'var(--color-charcoal)'
+                    }}
+                  />
+                  {form.formState.errors.date && (
+                    <p className="text-sm mt-2" style={{ color: '#dc2626' }}>{form.formState.errors.date.message}</p>
                   )}
                 </div>
 
@@ -487,20 +539,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Hidden Gems Section - Editorial Collection */}
+      {/* 💎 Hidden Gems Section - Oldest Events */}
       <section className="section-padding" style={{ backgroundColor: 'var(--color-soft-beige)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="scroll-animate text-center mb-20">
             <h2 className="font-serif text-section-title mb-8" style={{ color: 'var(--color-charcoal)' }}>
-              Hidden Gems
+              💎 Hidden Gems
             </h2>
             <p className="text-editorial max-w-2xl mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-              Curated musical treasures from around the globe, selected for their unique character and transformative power.
+              Timeless musical treasures from our archives, featuring the earliest discoveries that continue to inspire wanderers.
             </p>
           </div>
 
           <div className="grid-magazine">
-            {randomEvents.map((event, index) => (
+            {hiddenGems.map((event, index) => (
               <article key={event.id} className="scroll-animate card-minimal rounded-lg overflow-hidden group"
                        style={{ transitionDelay: `${index * 0.15}s` }}>
                 <div className="relative h-80 overflow-hidden">
@@ -519,13 +571,13 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-                  <div className="absolute top-6 left-6">
-                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                  <div className="absolute top-6 right-6">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium"
                           style={{ 
                             backgroundColor: 'var(--color-accent)', 
                             color: 'var(--color-warm-white)' 
                           }}>
-                      {index + 1}
+                      Classic
                     </span>
                   </div>
                 </div>
@@ -535,17 +587,47 @@ export default function Home() {
                       style={{ color: 'var(--color-charcoal)' }}>
                     {event.title}
                   </h3>
-                  <div className="flex items-center gap-2 mb-4 text-sm"
+                  <div className="flex items-center gap-4 mb-4 text-sm"
                        style={{ color: 'var(--color-mid-gray)' }}>
-                    <MapPin className="w-4 h-4" />
-                    <span>{formatLocation(event)}</span>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(event.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-4 h-4" />
+                      <span>{formatLocation(event)}</span>
+                    </div>
                   </div>
-                  <p className="text-editorial line-clamp-3 mb-6" style={{ color: 'var(--color-dark-gray)' }}>
+                  {event.tags && event.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {event.tags.slice(0, 3).map((tag, tagIndex) => (
+                        <span key={tagIndex} className="px-3 py-1 text-xs rounded-full"
+                              style={{ 
+                                backgroundColor: 'var(--color-cream)', 
+                                color: 'var(--color-dark-gray)',
+                                border: '1px solid var(--color-light-gray)'
+                              }}>
+                          {tag}
+                        </span>
+                      ))}
+                      {event.tags.length > 3 && (
+                        <span className="px-3 py-1 text-xs rounded-full"
+                              style={{ 
+                                backgroundColor: 'var(--color-light-gray)', 
+                                color: 'var(--color-mid-gray)'
+                              }}>
+                          +{event.tags.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <p className="text-editorial line-clamp-3" style={{ color: 'var(--color-dark-gray)' }}>
                     {event.shortDescription}
                   </p>
-                  <div className="text-xs uppercase tracking-wide" style={{ color: 'var(--color-mid-gray)' }}>
-                    Selected Collection
-                  </div>
                 </div>
               </article>
             ))}

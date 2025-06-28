@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, uuid, index } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -61,6 +61,7 @@ export const events = pgTable("events", {
   heroImage: text("hero_image"),
   shortDescription: text("short_description").notNull(),
   longDescription: text("long_description").notNull(),
+  date: text("date").notNull(), // ISO date string (YYYY-MM-DD)
   tags: text("tags").array(),
   instagramLink: text("instagram_link"),
   continent: text("continent"),
@@ -72,12 +73,16 @@ export const events = pgTable("events", {
   eventTypeIds: text("event_type_ids").array(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => ({
+  // Index on date for efficient sorting
+  dateIdx: index("events_date_idx").on(table.date),
+}));
 
 export const insertEventSchema = createInsertSchema(events, {
   title: z.string().min(2, "Title must be at least 2 characters").max(200, "Title must be less than 200 characters"),
   shortDescription: z.string().min(10, "Short description must be at least 10 characters").max(500, "Short description must be less than 500 characters"),
   longDescription: z.string().min(20, "Long description must be at least 20 characters"),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
   heroImage: z.string().url("Must be a valid URL").optional(),
   instagramLink: z.string().url("Must be a valid Instagram URL").optional(),
   tags: z.array(z.string()).optional(),
