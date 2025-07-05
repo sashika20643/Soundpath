@@ -55,7 +55,7 @@ export default function Home() {
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
 
-  const { data: allEvents = [], isLoading } = useEvents();
+  const { data: allEvents = [], isLoading, error } = useEvents();
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
@@ -69,6 +69,8 @@ export default function Home() {
 
   const latestEvents = sortedByDateDesc.slice(0, 6);
   const hiddenGems = sortedByDateAsc.slice(0, 6);
+
+
 
   // Form setup
   const form = useForm<InsertEvent>({
@@ -144,9 +146,9 @@ export default function Home() {
     >
       {/* Hero Section - Kinfolk Style with Background Image */}
       <section className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
-        {/* Background Image */}
+        {/* Background Image*/}
         <div className="absolute inset-0 z-0">
-          <img 
+          <img
             src="https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg"
             alt="Musical performance audience"
             className="w-full h-full object-cover"
@@ -156,22 +158,16 @@ export default function Home() {
           {/* Additional center focus overlay */}
           <div className="absolute inset-0 bg-radial-gradient from-black/40 via-transparent to-black/60"></div>
         </div>
-        
+
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <div className="scroll-animate mb-16">
-            <h1
-              className="font-serif text-hero mb-8 text-white drop-shadow-lg"
-            >
+            <h1 className="font-serif text-hero mb-8 text-white drop-shadow-lg">
               Soundpath
             </h1>
-            <p
-              className="text-large font-light mb-6 text-white/90 drop-shadow-md"
-            >
+            <p className="text-large font-light mb-6 text-white/90 drop-shadow-md">
               The most breathtaking places on Earth to feel music
             </p>
-            <p
-              className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm"
-            >
+            <p className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm">
               Discover legendary venues, hidden amphitheaters, and transcendent
               festivals in remarkable settings. Each destination tells a story
               of where music and place create something extraordinary.
@@ -201,8 +197,8 @@ export default function Home() {
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 className="w-full py-4 px-6 border-2 border-white/50 focus:border-white bg-white/20 backdrop-blur-md text-white placeholder-white/80 text-center transition-all duration-300 shadow-lg"
                 style={{
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)'
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
                 }}
               />
             </div>

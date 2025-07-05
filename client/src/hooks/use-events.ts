@@ -7,6 +7,8 @@ export function useEvents(filters?: EventsFilters) {
   return useQuery({
     queryKey: ['/api/events', filters],
     queryFn: () => eventApi.getEvents(filters),
+    staleTime: 1 * 60 * 1000, // 1 minute
+    refetchOnMount: true,
   });
 }
 
