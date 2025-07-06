@@ -181,14 +181,14 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
                 <label className="text-sm font-medium text-gray-700">
                   Country
                 </label>
-                <Select value={filters.country || ""} onValueChange={(value) => 
-                  onFiltersChange({ ...filters, country: value, city: "" })
+                <Select value={filters.country || "all"} onValueChange={(value) => 
+                  onFiltersChange({ ...filters, country: value === "all" ? "" : value, city: "" })
                 }>
                   <SelectTrigger className="border-gray-300 focus:ring-orange-500 focus:border-orange-500">
                     <SelectValue placeholder="Select country" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Countries</SelectItem>
+                    <SelectItem value="all">All Countries</SelectItem>
                     {countries.map(country => (
                       <SelectItem key={country} value={country}>{country}</SelectItem>
                     ))}
@@ -202,15 +202,15 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
                   City
                 </label>
                 <Select 
-                  value={filters.city || ""} 
-                  onValueChange={(value) => onFiltersChange({ ...filters, city: value })}
+                  value={filters.city || "all"} 
+                  onValueChange={(value) => onFiltersChange({ ...filters, city: value === "all" ? "" : value })}
                   disabled={!filters.country}
                 >
                   <SelectTrigger className="border-gray-300 focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100">
                     <SelectValue placeholder={filters.country ? "Select city" : "Select country first"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Cities</SelectItem>
+                    <SelectItem value="all">All Cities</SelectItem>
                     {availableCities.map(city => (
                       <SelectItem key={city} value={city}>{city}</SelectItem>
                     ))}
