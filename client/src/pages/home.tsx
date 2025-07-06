@@ -765,11 +765,7 @@ export default function Home() {
           ) : (
             <div className="grid-magazine">
               {hiddenGems.map((event, index) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  index={index}
-                />
+                <EventCard key={event.id} event={event} index={index} />
               ))}
             </div>
           )}

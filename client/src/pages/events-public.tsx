@@ -41,26 +41,35 @@ export default function EventsPublic() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     // Scroll to top when page changes
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <Layout>
-      <div ref={scrollRef} className="min-h-screen" style={{ backgroundColor: 'var(--color-warm-white)' }}>
+      <div
+        ref={scrollRef}
+        className="min-h-screen"
+        style={{ backgroundColor: "var(--color-warm-white)" }}
+      >
         {/* Hero Section */}
         <section className="section-padding pt-20">
           <div className="max-w-6xl mx-auto text-center">
             <div className="scroll-animate mb-16">
-              <h1 className="font-serif text-5xl md:text-6xl leading-tight mb-8" 
-                  style={{ color: 'var(--color-charcoal)' }}>
+              <h1
+                className="font-serif text-5xl md:text-6xl leading-tight mb-8"
+                style={{ color: "var(--color-charcoal)" }}
+              >
                 Discover Musical
                 <br />
                 <span className="italic">Experiences</span>
               </h1>
-              <p className="text-editorial text-xl max-w-2xl mx-auto leading-relaxed" 
-                 style={{ color: 'var(--color-dark-gray)' }}>
-                Explore extraordinary musical destinations worldwide. From intimate venues to grand amphitheaters, 
-                find experiences that resonate with your soul.
+              <p
+                className="text-editorial text-xl max-w-2xl mx-auto leading-relaxed"
+                style={{ color: "var(--color-dark-gray)" }}
+              >
+                Explore extraordinary musical destinations worldwide. From
+                intimate venues to grand amphitheaters, find experiences that
+                resonate with your soul.
               </p>
             </div>
 
@@ -81,32 +90,57 @@ export default function EventsPublic() {
             {/* Results Header */}
             <div className="scroll-animate mb-12">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-serif text-3xl" style={{ color: 'var(--color-charcoal)' }}>
-                  {totalEvents > 0 ? `${totalEvents} Events Found` : 'No Events Found'}
+                <h2
+                  className="font-serif text-3xl"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
+                  {totalEvents > 0
+                    ? `${totalEvents} Events Found`
+                    : "No Events Found"}
                 </h2>
                 {totalEvents > 0 && (
-                  <p className="text-sm" style={{ color: 'var(--color-mid-gray)' }}>
+                  <p
+                    className="text-sm"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     Page {currentPage} of {totalPages}
                   </p>
                 )}
               </div>
-              {Object.values(filters).some(value => Array.isArray(value) ? value.length > 0 : Boolean(value)) && (
+              {Object.values(filters).some((value) =>
+                Array.isArray(value) ? value.length > 0 : Boolean(value),
+              ) && (
                 <div className="flex flex-wrap gap-2">
                   {filters.search && (
-                    <span className="px-3 py-1 text-xs rounded-full" 
-                          style={{ backgroundColor: 'var(--color-cream)', color: 'var(--color-charcoal)' }}>
+                    <span
+                      className="px-3 py-1 text-xs rounded-full"
+                      style={{
+                        backgroundColor: "var(--color-cream)",
+                        color: "var(--color-charcoal)",
+                      }}
+                    >
                       Search: "{filters.search}"
                     </span>
                   )}
                   {filters.country && (
-                    <span className="px-3 py-1 text-xs rounded-full" 
-                          style={{ backgroundColor: 'var(--color-cream)', color: 'var(--color-charcoal)' }}>
+                    <span
+                      className="px-3 py-1 text-xs rounded-full"
+                      style={{
+                        backgroundColor: "var(--color-cream)",
+                        color: "var(--color-charcoal)",
+                      }}
+                    >
                       Country: {filters.country}
                     </span>
                   )}
                   {filters.city && (
-                    <span className="px-3 py-1 text-xs rounded-full" 
-                          style={{ backgroundColor: 'var(--color-cream)', color: 'var(--color-charcoal)' }}>
+                    <span
+                      className="px-3 py-1 text-xs rounded-full"
+                      style={{
+                        backgroundColor: "var(--color-cream)",
+                        color: "var(--color-charcoal)",
+                      }}
+                    >
                       City: {filters.city}
                     </span>
                   )}
@@ -177,11 +211,7 @@ export default function EventsPublic() {
             ) : currentEvents.length > 0 ? (
               <div className="grid-magazine">
                 {currentEvents.map((event, index) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    index={index}
-                  />
+                  <EventCard key={event.id} event={event} index={index} />
                 ))}
               </div>
             ) : (
@@ -195,11 +225,18 @@ export default function EventsPublic() {
                 >
                   <span className="text-4xl">🎵</span>
                 </div>
-                <h3 className="font-serif text-2xl mb-4" style={{ color: 'var(--color-charcoal)' }}>
+                <h3
+                  className="font-serif text-2xl mb-4"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
                   No Events Found
                 </h3>
-                <p className="text-editorial max-w-md mx-auto" style={{ color: 'var(--color-dark-gray)' }}>
-                  Try adjusting your search filters to discover more musical experiences.
+                <p
+                  className="text-editorial max-w-md mx-auto"
+                  style={{ color: "var(--color-dark-gray)" }}
+                >
+                  Try adjusting your search filters to discover more musical
+                  experiences.
                 </p>
               </div>
             )}
