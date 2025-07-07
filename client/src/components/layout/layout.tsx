@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { Home, Music, User, LogIn } from "lucide-react";
+import { APP_CONFIG } from "@shared/config";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,7 +19,7 @@ export function Layout({ children }: LayoutProps) {
             {/* Logo */}
             <Link href="/">
               <h2 className="font-serif text-2xl cursor-pointer hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-charcoal)' }}>
-                Soundpath
+                {APP_CONFIG.name}
               </h2>
             </Link>
             

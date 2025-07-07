@@ -8,9 +8,12 @@ import { EditCategoryModal } from "@/components/categories/edit-category-modal";
 import { DeleteCategoryModal } from "@/components/categories/delete-category-modal";
 import { Button } from "@/components/ui/button";
 import { useCategories } from "@/hooks/use-categories";
+import { usePageMetadata } from "@/hooks/use-page-metadata";
 import type { Category } from "@shared/schema";
 
 export default function Dashboard() {
+  usePageMetadata('dashboard');
+  
   const [filters, setFilters] = useState<{ type?: string; search?: string }>({});
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

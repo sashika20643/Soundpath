@@ -13,14 +13,18 @@ import {
 import { useEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { usePageMetadata } from "@/hooks/use-page-metadata";
 import type { Event, Category } from "@shared/schema";
 
 export default function EventDetails() {
   const [, params] = useRoute("/event/:id");
   const scrollRef = useScrollAnimation();
   const [isLoaded, setIsLoaded] = useState(false);
-
+  
+  // Set dynamic page metadata based on event data
   const { data: event, isLoading: eventLoading } = useEvent(params?.id || "");
+  usePageMetadata('eventDetails', event ? `${event.title} - Sonic Paths` : undefined, event?.description);
+
   const { data: categories = [] } = useCategories();
 
   useEffect(() => {

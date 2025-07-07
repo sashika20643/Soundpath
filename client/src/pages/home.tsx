@@ -24,9 +24,11 @@ import { Badge } from "@/components/ui/badge";
 import { CityAutocomplete } from "@/components/ui/city-autocomplete";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { usePageMetadata } from "@/hooks/use-page-metadata";
 import { useEvents, useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/hooks/use-toast";
+import { APP_CONFIG } from "@shared/config";
 import {
   MapPin,
   Calendar,
@@ -51,6 +53,8 @@ import {
 import { cities } from "@/lib/cities";
 
 export default function Home() {
+  usePageMetadata('home');
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [randomEvents, setRandomEvents] = useState<Event[]>([]);
   const [selectedContinent, setSelectedContinent] = useState("");
@@ -162,10 +166,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <div className="scroll-animate mb-16">
             <h1 className="font-serif text-hero mb-8 text-white drop-shadow-lg">
-              Soundpath
+              {APP_CONFIG.name}
             </h1>
             <p className="text-large font-light mb-6 text-white/90 drop-shadow-md">
-              The most breathtaking places on Earth to feel music
+              {APP_CONFIG.tagline}
             </p>
             <p className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm">
               Discover legendary venues, hidden amphitheaters, and transcendent

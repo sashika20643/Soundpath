@@ -1,4 +1,4 @@
-# Soundpath - Music Discovery Platform
+# Sonic Paths - Music Discovery Platform
 
 ## Overview
 
@@ -122,16 +122,23 @@ Preferred communication style: Simple, everyday language.
 - June 28, 2025: Added hero section background image (musical performance audience) to homepage
 - June 28, 2025: Applied dark overlays, subtle texture effects, and white text for theme consistency
 - June 28, 2025: Updated buttons and search input with glass morphism effects for better visibility
+- July 7, 2025: Rebranded application from "Soundpath" to "Sonic Paths" throughout entire application
+- July 7, 2025: Created centralized app configuration in shared/config.ts with app name, tagline, and SEO metadata
+- July 7, 2025: Implemented comprehensive SEO optimization with page-specific meta titles, descriptions, and keywords
+- July 7, 2025: Added usePageMetadata hook for dynamic SEO management across all pages
+- July 7, 2025: Updated HTML head with Open Graph and Twitter Card meta tags for better social sharing
+- July 7, 2025: Fixed advanced search form Select component errors preventing proper dropdown functionality
 
 ## Key Features
 
 ### Home Page Experience
-- Cinematic hero section with "Sonic Atlas" branding and search functionality
+- Cinematic hero section with "Sonic Paths" branding and search functionality
 - Dark color palette (grays and blacks) with orange accent colors for buttons and highlights
 - Latest Discoveries section showcasing newest events
 - Hidden Gems section featuring randomized event selection
 - Integrated event submission modal accessible from multiple CTAs
 - Professional footer with navigation links and branding
+- Centralized app configuration with single source of truth for branding and SEO
 
 ### Event Management
 - Rich text editor (React Quill) for detailed event descriptions with formatting
