@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/layout";
 import { Link } from "wouter";
-import { Layout } from "@/components/layout/layout";
 import { EventCard } from "@/components/events/event-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
