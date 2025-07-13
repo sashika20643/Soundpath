@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Layout } from "@/components/layout/layout";
 import { EventCard } from "@/components/events/event-card";
+import { EventSearchForm } from "@/components/events/event-search-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,6 +30,7 @@ import { useEvents, useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/hooks/use-toast";
 import { APP_CONFIG } from "@shared/config";
+import type { EventsFilters } from "@/lib/api";
 import {
   MapPin,
   Calendar,
@@ -58,6 +60,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [randomEvents, setRandomEvents] = useState<Event[]>([]);
   const [selectedContinent, setSelectedContinent] = useState("");
+  const [searchFilters, setSearchFilters] = useState<EventsFilters>({});
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
 
@@ -114,6 +117,25 @@ export default function Home() {
 
   const handleSearch = () => {
     window.location.href = `/events?search=${encodeURIComponent(searchQuery)}`;
+  };
+
+  const handleSearchFiltersChange = (newFilters: EventsFilters) => {
+    setSearchFilters(newFilters);
+  };
+
+  const handleAdvancedSearch = () => {
+    // Build query string from filters
+    const params = new URLSearchParams();
+    if (searchFilters.search) params.set('search', searchFilters.search);
+    if (searchFilters.continent) params.set('continent', searchFilters.continent);
+    if (searchFilters.country) params.set('country', searchFilters.country);
+    if (searchFilters.city) params.set('city', searchFilters.city);
+    if (searchFilters.genreIds?.length) params.set('genreIds', searchFilters.genreIds.join(','));
+    if (searchFilters.settingIds?.length) params.set('settingIds', searchFilters.settingIds.join(','));
+    if (searchFilters.eventTypeIds?.length) params.set('eventTypeIds', searchFilters.eventTypeIds.join(','));
+    if (searchFilters.tags?.length) params.set('tags', searchFilters.tags.join(','));
+    
+    window.location.href = `/events?${params.toString()}`;
   };
 
   const formatLocation = (event: Event) => {
@@ -190,22 +212,13 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Elegant Search */}
-          <div className="scroll-animate scroll-animate-delay-2 max-w-lg mx-auto">
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="Search destinations, genres, experiences..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                className="w-full py-4 px-6 border-2 border-white/50 focus:border-white bg-white/20 backdrop-blur-md text-white placeholder-white/80 text-center transition-all duration-300 shadow-lg"
-                style={{
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                }}
-              />
-            </div>
+          {/* Advanced Search Form */}
+          <div className="scroll-animate scroll-animate-delay-2 max-w-4xl mx-auto">
+            <EventSearchForm
+              filters={searchFilters}
+              onFiltersChange={handleSearchFiltersChange}
+              onSearch={handleAdvancedSearch}
+            />
           </div>
         </div>
 
