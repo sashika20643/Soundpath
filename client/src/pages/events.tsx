@@ -14,8 +14,8 @@ import type { Event } from "@shared/schema";
 import type { EventsFilters } from "@/lib/api";
 
 export default function Events() {
-  usePageMetadata('events');
-  
+  usePageMetadata("events");
+
   const [filters, setFilters] = useState<EventsFilters>({});
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
