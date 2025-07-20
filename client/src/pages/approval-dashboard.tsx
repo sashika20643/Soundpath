@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Layout } from "@/components/layout/layout";
+import { Sidebar } from "@/components/layout/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,9 +13,17 @@ import { Link } from "wouter";
 
 export default function ApprovalDashboard() {
   usePageMetadata("dashboard");
+  const [activeTab, setActiveTab] = useState("pending");
 
-  const { data: pendingEvents = [], isLoading: loadingPending } = useEvents({ approved: false });
-  const { data: approvedEvents = [], isLoading: loadingApproved } = useEvents({ approved: true });
+  // Fetch events based on active tab
+  const { data: pendingEvents = [], isLoading: loadingPending } = useEvents({ 
+    approved: false 
+  });
+  
+  const { data: approvedEvents = [], isLoading: loadingApproved } = useEvents({ 
+    approved: true 
+  });
+  
   const approveEventMutation = useApproveEvent();
 
   const handleApprove = (eventId: string, approved: boolean) => {
@@ -95,18 +103,20 @@ export default function ApprovalDashboard() {
   );
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-background">
-        <div className="max-w-7xl mx-auto py-12 px-6">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Event Approval Dashboard</h1>
-            <p className="text-muted-foreground">
-              Review and approve events submitted by the community
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar />
+      
+      <main className="flex-1 p-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Event Approvals</h1>
+            <p className="text-gray-600">
+              Review and approve events submitted by users
             </p>
           </div>
 
-          <Tabs defaultValue="pending" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 max-w-md">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full max-w-md grid-cols-2">
               <TabsTrigger value="pending">
                 Pending ({pendingEvents.length})
               </TabsTrigger>
@@ -192,7 +202,7 @@ export default function ApprovalDashboard() {
             </TabsContent>
           </Tabs>
         </div>
-      </div>
-    </Layout>
+      </main>
+    </div>
   );
 }
