@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEvents, useApproveEvent } from "@/hooks/use-events";
@@ -16,21 +22,27 @@ export default function ApprovalDashboard() {
   const [activeTab, setActiveTab] = useState("pending");
 
   // Fetch events based on active tab
-  const { data: pendingEvents = [], isLoading: loadingPending } = useEvents({ 
-    approved: false 
+  const { data: pendingEvents = [], isLoading: loadingPending } = useEvents({
+    approved: false,
   });
-  
-  const { data: approvedEvents = [], isLoading: loadingApproved } = useEvents({ 
-    approved: true 
+
+  const { data: approvedEvents = [], isLoading: loadingApproved } = useEvents({
+    approved: true,
   });
-  
+
   const approveEventMutation = useApproveEvent();
 
   const handleApprove = (eventId: string, approved: boolean) => {
     approveEventMutation.mutate({ id: eventId, approved });
   };
 
-  const EventCard = ({ event, showActions = true }: { event: Event; showActions?: boolean }) => (
+  const EventCard = ({
+    event,
+    showActions = true,
+  }: {
+    event: Event;
+    showActions?: boolean;
+  }) => (
     <Card className="hover:shadow-lg transition-all duration-200">
       <CardHeader>
         <div className="flex justify-between items-start">
@@ -52,7 +64,7 @@ export default function ApprovalDashboard() {
           </Badge>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         {event.heroImage && (
           <img
@@ -61,11 +73,11 @@ export default function ApprovalDashboard() {
             className="w-full h-48 object-cover rounded-lg"
           />
         )}
-        
+
         <p className="text-sm text-muted-foreground line-clamp-3">
           {event.shortDescription}
         </p>
-        
+
         <div className="flex items-center justify-between pt-4">
           <Link href={`/event/${event.id}`}>
             <Button variant="outline" size="sm">
@@ -73,7 +85,7 @@ export default function ApprovalDashboard() {
               View Details
             </Button>
           </Link>
-          
+
           {showActions && !event.approved && (
             <div className="flex gap-2">
               <Button
@@ -105,17 +117,23 @@ export default function ApprovalDashboard() {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      
+
       <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto space-y-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Event Approvals</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Event Approvals
+            </h1>
             <p className="text-gray-600">
               Review and approve events submitted by users
             </p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full max-w-md grid-cols-2">
               <TabsTrigger value="pending">
                 Pending ({pendingEvents.length})
@@ -124,7 +142,7 @@ export default function ApprovalDashboard() {
                 Approved ({approvedEvents.length})
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="pending" className="mt-6">
               {loadingPending ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -162,7 +180,7 @@ export default function ApprovalDashboard() {
                 </div>
               )}
             </TabsContent>
-            
+
             <TabsContent value="approved" className="mt-6">
               {loadingApproved ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -186,7 +204,9 @@ export default function ApprovalDashboard() {
                 <Card>
                   <CardContent className="text-center py-12">
                     <XCircle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                    <p className="text-lg font-medium mb-2">No approved events</p>
+                    <p className="text-lg font-medium mb-2">
+                      No approved events
+                    </p>
                     <p className="text-muted-foreground">
                       Approved events will appear here
                     </p>
@@ -195,7 +215,11 @@ export default function ApprovalDashboard() {
               ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {approvedEvents.map((event) => (
-                    <EventCard key={event.id} event={event} showActions={false} />
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      showActions={false}
+                    />
                   ))}
                 </div>
               )}
