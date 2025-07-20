@@ -7,8 +7,9 @@ export function useEvents(filters?: EventsFilters) {
   return useQuery({
     queryKey: ['/api/events', filters],
     queryFn: () => eventApi.getEvents(filters),
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: 0, // No cache for approval dashboard
     refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 }
 
