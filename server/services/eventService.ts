@@ -3,19 +3,19 @@ import { CustomError } from "../middlewares/errorHandler";
 import type { InsertEvent, UpdateEvent, Event } from "@shared/schema";
 
 export class EventService {
-  async getAllEvents(filters?: {
-    continent?: string;
-    country?: string;
-    city?: string;
-    genreIds?: string[];
-    settingIds?: string[];
-    eventTypeIds?: string[];
-    tags?: string[];
-    search?: string;
-    approved?: boolean;
+  async getAllEvents(filters?: { 
+    continent?: string; 
+    country?: string; 
+    city?: string; 
+    genreIds?: string[]; 
+    settingIds?: string[]; 
+    eventTypeIds?: string[]; 
+    tags?: string[]; 
+    search?: string; 
+    approved?: string;
   }): Promise<Event[]> {
     try {
-      console.log("Fetching events with filters:", filters);
+      console.log("Fetching events with filters:",filters);
       return await storage.getEvents(filters);
     } catch (error) {
       throw new CustomError("Failed to fetch events", 500);
@@ -35,24 +35,21 @@ export class EventService {
     }
   }
 
-  async createEvent(
-    eventData: InsertEvent,
-    approved: boolean = false,
-  ): Promise<Event> {
+  async createEvent(eventData: InsertEvent, approved: boolean = false): Promise<Event> {
     try {
       // Check if event with same title already exists
       const existingEvents = await storage.getEvents({
         search: eventData.title,
       });
-
+      
       const duplicate = existingEvents.find(
-        (event) => event.title.toLowerCase() === eventData.title.toLowerCase(),
+        event => event.title.toLowerCase() === eventData.title.toLowerCase()
       );
-
+      
       if (duplicate) {
         throw new CustomError(
           `An event with the title "${eventData.title}" already exists`,
-          409,
+          409
         );
       }
 
@@ -63,10 +60,7 @@ export class EventService {
     }
   }
 
-  async updateEvent(
-    id: string,
-    eventData: Partial<UpdateEvent>,
-  ): Promise<Event> {
+  async updateEvent(id: string, eventData: Partial<UpdateEvent>): Promise<Event> {
     try {
       // Check if event exists
       const existingEvent = await storage.getEvent(id);
@@ -77,17 +71,15 @@ export class EventService {
       // Check for title conflicts if title is being updated
       if (eventData.title) {
         const allEvents = await storage.getEvents();
-
+        
         const duplicate = allEvents.find(
-          (event) =>
-            event.id !== id &&
-            event.title.toLowerCase() === eventData.title!.toLowerCase(),
+          event => event.id !== id && event.title.toLowerCase() === eventData.title!.toLowerCase()
         );
-
+        
         if (duplicate) {
           throw new CustomError(
             `An event with the title "${eventData.title}" already exists`,
-            409,
+            409
           );
         }
       }

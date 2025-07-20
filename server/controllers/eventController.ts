@@ -26,7 +26,7 @@ export class EventController {
         eventTypeIds, 
         tags, 
         search,
-        approved: approved !== undefined ? approved === 'true' : undefined
+        approved
       });
       
       res.json(ResponseFormatter.success(events, "Events retrieved successfully"));
