@@ -23,6 +23,7 @@ export interface EventsFilters {
   eventTypeIds?: string[];
   tags?: string[];
   search?: string;
+  approved?: boolean;
 }
 
 export const categoryApi = {
@@ -81,6 +82,7 @@ export const eventApi = {
     if (filters?.eventTypeIds?.length) params.append('eventTypeIds', filters.eventTypeIds.join(','));
     if (filters?.tags?.length) params.append('tags', filters.tags.join(','));
     if (filters?.search) params.append('search', filters.search);
+    if (filters?.approved !== undefined) params.append('approved', filters.approved.toString());
     
     const url = `/api/events${params.toString() ? `?${params.toString()}` : ''}`;
     const response = await fetch(url, { credentials: 'include' });
@@ -104,7 +106,7 @@ export const eventApi = {
     return result.data!;
   },
 
-  createEvent: async (event: InsertEvent): Promise<Event> => {
+  createEvent: async (event: InsertEvent & { fromDashboard?: boolean }): Promise<Event> => {
     const response = await apiRequest('POST', '/api/events', event);
     const result: ApiResponse<Event> = await response.json();
     return result.data!;
@@ -118,5 +120,11 @@ export const eventApi = {
 
   deleteEvent: async (id: string): Promise<void> => {
     await apiRequest('DELETE', `/api/events/${id}`);
+  },
+
+  approveEvent: async (id: string, approved: boolean): Promise<Event> => {
+    const response = await apiRequest('PATCH', `/api/events/${id}/approve`, { approved });
+    const result: ApiResponse<Event> = await response.json();
+    return result.data!;
   },
 };

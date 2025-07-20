@@ -18,6 +18,7 @@ import {
   getEventValidator,
   getEventsValidator,
   deleteEventValidator,
+  approveEventValidator,
 } from "./validators/eventValidator";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -81,6 +82,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     "/api/events/:id",
     validateRequest(deleteEventValidator),
     eventController.deleteEvent.bind(eventController)
+  );
+
+  app.patch(
+    "/api/events/:id/approve",
+    validateRequest(approveEventValidator),
+    eventController.approveEvent.bind(eventController)
   );
 
   // Note: Error handling middleware will be added after Vite setup

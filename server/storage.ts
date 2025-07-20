@@ -1,4 +1,4 @@
-import { users, categories, events, type User, type InsertUser, type Category, type InsertCategory, type UpdateCategory, type Event, type InsertEvent, type UpdateEvent } from "@shared/schema";
+import { users, categories, events, type User, type InsertUser, type Category, type InsertCategory, type UpdateCategory, type Event, type InsertEvent, type UpdateEvent, type ApproveEvent } from "@shared/schema";
 import { db } from "./db";
 import { eq, like, and, desc } from "drizzle-orm";
 
@@ -25,11 +25,13 @@ export interface IStorage {
     eventTypeIds?: string[]; 
     tags?: string[]; 
     search?: string; 
+    approved?: boolean;
   }): Promise<Event[]>;
   getEvent(id: string): Promise<Event | undefined>;
-  createEvent(event: InsertEvent): Promise<Event>;
+  createEvent(event: InsertEvent, approved?: boolean): Promise<Event>;
   updateEvent(id: string, event: Partial<UpdateEvent>): Promise<Event | undefined>;
   deleteEvent(id: string): Promise<boolean>;
+  approveEvent(id: string, approved: boolean): Promise<Event | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -118,6 +120,7 @@ export class DatabaseStorage implements IStorage {
     eventTypeIds?: string[]; 
     tags?: string[]; 
     search?: string; 
+    approved?: boolean;
   }): Promise<Event[]> {
     let query = db.select().from(events);
     
@@ -139,6 +142,10 @@ export class DatabaseStorage implements IStorage {
       conditions.push(like(events.title, `%${filters.search}%`));
     }
     
+    if (filters?.approved !== undefined) {
+      conditions.push(eq(events.approved, filters.approved));
+    }
+    
     // Note: For array filtering (genreIds, settingIds, eventTypeIds, tags), 
     // we'd need to use PostgreSQL array functions for proper filtering
     // For now, we'll implement basic filtering and enhance later
@@ -156,11 +163,12 @@ export class DatabaseStorage implements IStorage {
     return event || undefined;
   }
 
-  async createEvent(event: InsertEvent): Promise<Event> {
+  async createEvent(event: InsertEvent, approved: boolean = false): Promise<Event> {
     const [newEvent] = await db
       .insert(events)
       .values({
         ...event,
+        approved,
         createdAt: new Date(),
         updatedAt: new Date(),
       })
@@ -183,6 +191,18 @@ export class DatabaseStorage implements IStorage {
   async deleteEvent(id: string): Promise<boolean> {
     const result = await db.delete(events).where(eq(events.id, id));
     return (result.rowCount || 0) > 0;
+  }
+  
+  async approveEvent(id: string, approved: boolean): Promise<Event | undefined> {
+    const [updatedEvent] = await db
+      .update(events)
+      .set({
+        approved,
+        updatedAt: new Date(),
+      })
+      .where(eq(events.id, id))
+      .returning();
+    return updatedEvent || undefined;
   }
 }
 

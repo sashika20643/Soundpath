@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, uuid, index } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, uuid, index, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -71,6 +71,7 @@ export const events = pgTable("events", {
   genreIds: text("genre_ids").array(),
   settingIds: text("setting_ids").array(),
   eventTypeIds: text("event_type_ids").array(),
+  approved: boolean("approved").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => ({
@@ -97,6 +98,7 @@ export const insertEventSchema = createInsertSchema(events, {
   id: true,
   createdAt: true,
   updatedAt: true,
+  approved: true,
 });
 
 export const updateEventSchema = createInsertSchema(events, {
@@ -122,6 +124,13 @@ export const updateEventSchema = createInsertSchema(events, {
 
 export const selectEventSchema = createSelectSchema(events);
 
+// Schema for approving events
+export const approveEventSchema = z.object({
+  id: z.string().uuid(),
+  approved: z.boolean(),
+});
+
 export type InsertEvent = z.infer<typeof insertEventSchema>;
 export type UpdateEvent = z.infer<typeof updateEventSchema>;
+export type ApproveEvent = z.infer<typeof approveEventSchema>;
 export type Event = typeof events.$inferSelect;

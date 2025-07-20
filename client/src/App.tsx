@@ -8,6 +8,7 @@ import Dashboard from "@/pages/dashboard";
 import EventsPublic from "@/pages/events-public";
 import DashboardEvents from "@/pages/dashboards/events";
 import EventDetails from "@/pages/event-details";
+import ApprovalDashboard from "@/pages/approval-dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/events" component={EventsPublic} />
       <Route path="/dashboards/events" component={DashboardEvents} />
+      <Route path="/admin/approvals" component={ApprovalDashboard} />
       <Route path="/event/:id" component={EventDetails} />
       <Route component={NotFound} />
     </Switch>

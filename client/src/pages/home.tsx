@@ -61,7 +61,7 @@ export default function Home() {
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
 
-  const { data: allEvents = [], isLoading, error } = useEvents();
+  const { data: allEvents = [], isLoading, error } = useEvents({ approved: true });
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
@@ -124,10 +124,11 @@ export default function Home() {
   // Handle form submission
   const onSubmit = async (data: InsertEvent) => {
     try {
-      await createEventMutation.mutateAsync(data);
+      // Events from home page require approval (approved: false)
+      await createEventMutation.mutateAsync({ ...data, fromDashboard: false });
       toast({
         title: "Event submitted successfully!",
-        description: "Your musical discovery has been added to Soundpath.",
+        description: "Your musical discovery has been submitted for review. It will appear publicly once approved.",
       });
       form.reset();
     } catch (error) {

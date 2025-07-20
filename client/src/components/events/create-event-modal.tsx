@@ -81,6 +81,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       settingIds: selectedSettings,
       eventTypeIds: selectedEventTypes,
       tags: selectedTags,
+      fromDashboard: true, // Dashboard events are automatically approved
     };
 
     createEventMutation.mutate(eventData, {

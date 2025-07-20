@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { insertEventSchema, updateEventSchema } from "@shared/schema";
+import { insertEventSchema, updateEventSchema, approveEventSchema } from "@shared/schema";
 
 export const createEventValidator = {
   body: insertEventSchema,
@@ -28,11 +28,21 @@ export const getEventsValidator = {
     eventTypeIds: z.string().optional().transform(val => val ? val.split(',') : undefined),
     tags: z.string().optional().transform(val => val ? val.split(',') : undefined),
     search: z.string().optional(),
+    approved: z.string().optional().transform(val => val === 'true' ? true : val === 'false' ? false : undefined),
   }),
 };
 
 export const deleteEventValidator = {
   params: z.object({
     id: z.string().uuid("Invalid event ID format"),
+  }),
+};
+
+export const approveEventValidator = {
+  params: z.object({
+    id: z.string().uuid("Invalid event ID format"),
+  }),
+  body: z.object({
+    approved: z.boolean(),
   }),
 };

@@ -18,7 +18,7 @@ export default function EventsPublic() {
   const [filters, setFilters] = useState<EventsFilters>({});
   const scrollRef = useScrollAnimation();
 
-  const { data: allEvents = [], isLoading } = useEvents(filters);
+  const { data: allEvents = [], isLoading } = useEvents({ ...filters, approved: true });
 
   // Calculate pagination
   const totalEvents = allEvents.length;

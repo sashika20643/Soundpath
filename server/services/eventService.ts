@@ -12,6 +12,7 @@ export class EventService {
     eventTypeIds?: string[]; 
     tags?: string[]; 
     search?: string; 
+    approved?: boolean;
   }): Promise<Event[]> {
     try {
       return await storage.getEvents(filters);
@@ -33,7 +34,7 @@ export class EventService {
     }
   }
 
-  async createEvent(eventData: InsertEvent): Promise<Event> {
+  async createEvent(eventData: InsertEvent, approved: boolean = false): Promise<Event> {
     try {
       // Check if event with same title already exists
       const existingEvents = await storage.getEvents({
@@ -51,7 +52,7 @@ export class EventService {
         );
       }
 
-      return await storage.createEvent(eventData);
+      return await storage.createEvent(eventData, approved);
     } catch (error) {
       if (error instanceof CustomError) throw error;
       throw new CustomError("Failed to create event", 500);
@@ -108,6 +109,25 @@ export class EventService {
     } catch (error) {
       if (error instanceof CustomError) throw error;
       throw new CustomError("Failed to delete event", 500);
+    }
+  }
+
+  async approveEvent(id: string, approved: boolean): Promise<Event> {
+    try {
+      const event = await storage.getEvent(id);
+      if (!event) {
+        throw new CustomError("Event not found", 404);
+      }
+
+      const approvedEvent = await storage.approveEvent(id, approved);
+      if (!approvedEvent) {
+        throw new CustomError("Failed to approve event", 500);
+      }
+
+      return approvedEvent;
+    } catch (error) {
+      if (error instanceof CustomError) throw error;
+      throw new CustomError("Failed to approve event", 500);
     }
   }
 }

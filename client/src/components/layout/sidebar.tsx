@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { FaCubes, FaTags, FaUsers, FaCalendarAlt, FaChartBar, FaCog } from "react-icons/fa";
+import { FaCubes, FaTags, FaUsers, FaCalendarAlt, FaChartBar, FaCog, FaCheckCircle } from "react-icons/fa";
 
 export function Sidebar() {
   const [location] = useLocation();
@@ -11,6 +11,7 @@ export function Sidebar() {
         { icon: FaTags, label: "Categories", href: "/", active: location === "/" },
         { icon: FaUsers, label: "Users", href: "/users", active: location === "/users" },
         { icon: FaCalendarAlt, label: "Events", href: "/events", active: location === "/events" },
+        { icon: FaCheckCircle, label: "Event Approvals", href: "/admin/approvals", active: location === "/admin/approvals" },
         { icon: FaChartBar, label: "Analytics", href: "/analytics", active: location === "/analytics" },
       ],
     },

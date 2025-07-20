@@ -25,7 +25,7 @@ export function useCreateEvent() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (event: InsertEvent) => eventApi.createEvent(event),
+    mutationFn: (event: InsertEvent & { fromDashboard?: boolean }) => eventApi.createEvent(event),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/events'] });
       toast({
@@ -86,6 +86,31 @@ export function useDeleteEvent() {
         variant: "destructive",
         title: "Error",
         description: error.message || "Failed to delete event",
+      });
+    },
+  });
+}
+
+export function useApproveEvent() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: ({ id, approved }: { id: string; approved: boolean }) =>
+      eventApi.approveEvent(id, approved),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/events'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/events', data.id] });
+      toast({
+        title: "Success",
+        description: `Event ${data.approved ? 'approved' : 'rejected'} successfully`,
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to update event approval status",
       });
     },
   });
