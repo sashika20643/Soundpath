@@ -151,16 +151,21 @@ export class DatabaseStorage implements IStorage {
     eventTypeIds?: string[];
     tags?: string[];
     search?: string;
-    approved?: string;
+    approved?: any;
   }): Promise<Event[]> {
     let query = db.select().from(events);
 
     const conditions = [];
-    if (filters?.approved === "false") {
-      conditions.push(eq(events.approved, false));
-    }
-    if (filters?.approved === "true") {
+    console.log("Filtering for ", filters?.approved);
+
+    const approvedRaw = filters?.approved;
+    if (filters?.approved == true || filters?.approved == undefined) {
+      console.log("Filtering for approved ones", typeof approvedRaw);
       conditions.push(eq(events.approved, true));
+    }
+    if (filters?.approved == false) {
+      console.log("Filtering for approved ones", typeof approvedRaw);
+      conditions.push(eq(events.approved, false));
     }
     if (filters?.continent) {
       conditions.push(eq(events.continent, filters.continent));

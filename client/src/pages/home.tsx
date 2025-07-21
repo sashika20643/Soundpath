@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/layout";
 import { Link } from "wouter";
 import { EventCard } from "@/components/events/event-card";
+import { EventMap } from "@/components/map/EventMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -241,50 +242,13 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Minimalist Map Container */}
-            <div
-              className="scroll-animate scroll-animate-delay-1 relative h-96 rounded-lg overflow-hidden"
-              style={{ backgroundColor: "var(--color-light-gray)" }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div
-                    className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-current flex items-center justify-center"
-                    style={{
-                      borderColor: "var(--color-mid-gray)",
-                      color: "var(--color-mid-gray)",
-                    }}
-                  >
-                    <Globe className="w-8 h-8" />
-                  </div>
-                  <h3
-                    className="font-serif text-2xl mb-3"
-                    style={{ color: "var(--color-charcoal)" }}
-                  >
-                    Interactive Map
-                  </h3>
-                  <p
-                    className="text-editorial"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    {allEvents.length} musical experiences across the globe
-                  </p>
-                </div>
-              </div>
-
-              {/* Subtle Event Location Indicators */}
-              {allEvents.slice(0, 8).map((event, index) => (
-                <div
-                  key={event.id}
-                  className="absolute w-3 h-3 rounded-full cursor-pointer hover:scale-125 transition-transform duration-300"
-                  style={{
-                    backgroundColor: "var(--color-charcoal)",
-                    left: `${20 + index * 8}%`,
-                    top: `${30 + (index % 3) * 20}%`,
-                  }}
-                  title={`${event.title} - ${formatLocation(event)}`}
-                ></div>
-              ))}
+            {/* Interactive Google Maps */}
+            <div className="scroll-animate scroll-animate-delay-1">
+              <EventMap 
+                events={allEvents} 
+                height="500px"
+                className="mx-auto rounded-lg"
+              />
             </div>
           </div>
         </section>

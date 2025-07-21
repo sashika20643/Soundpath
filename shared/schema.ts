@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, uuid, index, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, uuid, index, boolean, real } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -67,6 +67,8 @@ export const events = pgTable("events", {
   continent: text("continent"),
   country: text("country"),
   city: text("city"),
+  latitude: real("latitude"),
+  longitude: real("longitude"),
   locationName: text("location_name"),
   genreIds: text("genre_ids").array(),
   settingIds: text("setting_ids").array(),
@@ -90,6 +92,8 @@ export const insertEventSchema = createInsertSchema(events, {
   continent: z.string().optional(),
   country: z.string().optional(),
   city: z.string().optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
   locationName: z.string().optional(),
   genreIds: z.array(z.string()).optional(),
   settingIds: z.array(z.string()).optional(),
