@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CityAutocomplete } from "@/components/ui/city-autocomplete";
+import { GooglePlacesAutocomplete } from "@/components/ui/google-places-autocomplete";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -66,6 +67,9 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       continent: "",
       country: "",
       city: "",
+      locationName: "",
+      latitude: undefined,
+      longitude: undefined,
       instagramLink: "",
       genreIds: [],
       settingIds: [],
@@ -84,9 +88,20 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       fromDashboard: true, // Dashboard events are automatically approved
     };
 
+    // Console log the request payload for testing
+    console.log('🧪 DASHBOARD FORM SUBMISSION PAYLOAD:', {
+      ...eventData,
+      timestamp: new Date().toISOString(),
+      formType: 'dashboard_admin_form'
+    });
+
     createEventMutation.mutate(eventData, {
       onSuccess: () => {
+        console.log('✅ DASHBOARD FORM SUBMISSION SUCCESS');
         handleClose();
+      },
+      onError: (error) => {
+        console.error('❌ DASHBOARD FORM SUBMISSION ERROR:', error);
       },
     });
   };
@@ -199,61 +214,53 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
           </div>
 
           {/* Location */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-4">
             <div>
-              <Label>Continent *</Label>
-              <Select 
-                value={selectedContinent}
-                onValueChange={(value) => {
-                  setSelectedContinent(value);
-                  form.setValue("continent", value);
-                  form.setValue("country", "");
-                  form.setValue("city", "");
+              <Label htmlFor="location">Event Location *</Label>
+              <GooglePlacesAutocomplete
+                value={form.watch("locationName") || ""}
+                onChange={(value, placeDetails) => {
+                  console.log('City selected:', value, placeDetails);
+                  form.setValue("locationName", value);
+                  if (placeDetails) {
+                    form.setValue("latitude", placeDetails.latitude);
+                    form.setValue("longitude", placeDetails.longitude);
+                    form.setValue("continent", placeDetails.continent || "");
+                    form.setValue("country", placeDetails.country || "");
+                    form.setValue("city", placeDetails.city || "");
+                  }
                 }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select continent" />
-                </SelectTrigger>
-                <SelectContent>
-                  {continents.map(continent => (
-                    <SelectItem key={continent} value={continent}>{continent}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Country *</Label>
-              <Select 
-                value={form.watch("country")}
-                onValueChange={(value) => {
-                  form.setValue("country", value);
-                  form.setValue("city", "");
-                }}
-                disabled={!selectedContinent}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableCountries.map(country => (
-                    <SelectItem key={country} value={country}>{country}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="city">City *</Label>
-              <CityAutocomplete
-                continent={selectedContinent}
-                country={form.watch("country") || ""}
-                value={form.watch("city") || ""}
-                onChange={(value) => form.setValue("city", value)}
-                placeholder="Search for a city..."
-                disabled={!form.watch("country")}
+                placeholder="Search for a city or venue..."
               />
+              {form.formState.errors.locationName && (
+                <p className="text-sm text-red-600 mt-1">Please select a valid location</p>
+              )}
             </div>
+            
+            {/* Display selected location details */}
+            {form.watch("latitude") && form.watch("longitude") && (
+              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-800">
+                  <strong>Selected:</strong> {form.watch("city")}, {form.watch("country")}, {form.watch("continent")}
+                </p>
+                <p className="text-xs text-blue-600 mt-1">
+                  Coordinates: {form.watch("latitude")?.toFixed(6)}, {form.watch("longitude")?.toFixed(6)}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="date">Event Date *</Label>
+            <Input
+              id="date"
+              type="date"
+              {...form.register("date")}
+              className="w-full"
+            />
+            {form.formState.errors.date && (
+              <p className="text-sm text-red-600 mt-1">{form.formState.errors.date.message}</p>
+            )}
           </div>
 
           <div>
@@ -337,16 +344,42 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
             </div>
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              disabled={createEventMutation.isPending}
-            >
-              {createEventMutation.isPending ? "Creating..." : "Create Event"}
-            </Button>
+          <DialogFooter className="flex flex-col gap-4">
+            {/* Form validation errors */}
+            {Object.keys(form.formState.errors).length > 0 && (
+              <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                <p className="text-sm font-medium text-red-800">
+                  Please fix the following errors:
+                </p>
+                <ul className="mt-2 text-sm text-red-700">
+                  {Object.entries(form.formState.errors).map(([field, error]) => (
+                    <li key={field} className="list-disc ml-5">
+                      {field}: {error?.message || "This field is required"}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            <div className="flex gap-3 justify-end">
+              <Button type="button" variant="outline" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={createEventMutation.isPending}
+                className="flex items-center"
+              >
+                {createEventMutation.isPending ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Creating Event...
+                  </>
+                ) : (
+                  "Create Event"
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>
