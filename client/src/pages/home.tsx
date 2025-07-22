@@ -53,6 +53,7 @@ import {
   type InsertEvent,
 } from "@shared/schema";
 import { cities } from "@/lib/cities";
+import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
 
 export default function Home() {
   usePageMetadata("home");
@@ -505,48 +506,132 @@ export default function Home() {
                   >
                     Location
                   </h3>
-                  <div className="space-y-3">
-                    <Label
-                      htmlFor="location"
-                      className="text-sm font-medium uppercase tracking-wide"
-                      style={{ color: "var(--color-charcoal)" }}
-                    >
-                      Event Location *
-                    </Label>
-                    <GooglePlacesAutocomplete
-                      value={form.watch("locationName") || ""}
-                      onChange={(value, placeDetails) => {
-                        console.log('City selected:', value, placeDetails);
-                        form.setValue("locationName", value);
-                        if (placeDetails) {
-                          form.setValue("latitude", placeDetails.latitude);
-                          form.setValue("longitude", placeDetails.longitude);
-                          form.setValue("continent", placeDetails.continent || "");
-                          form.setValue("country", placeDetails.country || "");
-                          form.setValue("city", placeDetails.city || "");
-                        }
-                      }}
-                      placeholder="Search for a city or venue..."
-                      className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
-                    />
-                    {form.formState.errors.locationName && (
-                      <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
-                        Please select a valid location
-                      </p>
-                    )}
-                    
-                    {/* Display selected location details */}
-                    {form.watch("latitude") && form.watch("longitude") && (
-                      <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: "var(--color-soft-beige)" }}>
-                        <p className="text-sm" style={{ color: "var(--color-dark-gray)" }}>
-                          <strong>Selected:</strong> {form.watch("city")}, {form.watch("country")}, {form.watch("continent")}
-                        </p>
-                        <p className="text-xs mt-1" style={{ color: "var(--color-mid-gray)" }}>
-                          Coordinates: {form.watch("latitude")?.toFixed(6)}, {form.watch("longitude")?.toFixed(6)}
-                        </p>
-                      </div>
-                    )}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="space-y-3">
+                      <Label
+                        htmlFor="continent"
+                        className="text-sm font-medium uppercase tracking-wide"
+                        style={{ color: "var(--color-charcoal)" }}
+                      >
+                        Continent *
+                      </Label>
+                      <Select
+                        value={form.watch("continent") || ""}
+                        onValueChange={(value) => {
+                          form.setValue("continent", value);
+                          form.setValue("country", "");
+                          form.setValue("city", "");
+                          setSelectedContinent(value);
+                          // Auto-generate coordinates for continent center
+                          const continentCoords = getContinentCoordinates(value);
+                          if (continentCoords) {
+                            form.setValue("latitude", continentCoords.lat);
+                            form.setValue("longitude", continentCoords.lng);
+                          }
+                        }}
+                      >
+                        <SelectTrigger
+                          className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                          style={{
+                            borderBottomColor: "var(--color-light-gray)",
+                          }}
+                        >
+                          <SelectValue placeholder="Select continent" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(cities).map((continent) => (
+                            <SelectItem key={continent} value={continent}>
+                              {continent}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label
+                        htmlFor="country"
+                        className="text-sm font-medium uppercase tracking-wide"
+                        style={{ color: "var(--color-charcoal)" }}
+                      >
+                        Country *
+                      </Label>
+                      <Select
+                        value={form.watch("country") || ""}
+                        onValueChange={(value) => {
+                          form.setValue("country", value);
+                          form.setValue("city", "");
+                          // Auto-generate coordinates for country center
+                          const countryCoords = getCountryCoordinates(value);
+                          if (countryCoords) {
+                            form.setValue("latitude", countryCoords.lat);
+                            form.setValue("longitude", countryCoords.lng);
+                          }
+                        }}
+                        disabled={!form.watch("continent")}
+                      >
+                        <SelectTrigger
+                          className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                          style={{
+                            borderBottomColor: "var(--color-light-gray)",
+                          }}
+                        >
+                          <SelectValue placeholder="Select country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {form.watch("continent") &&
+                            Object.keys(
+                              cities[
+                                form.watch("continent") as keyof typeof cities
+                              ] || {},
+                            ).map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {country}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label
+                        htmlFor="city"
+                        className="text-sm font-medium uppercase tracking-wide"
+                        style={{ color: "var(--color-charcoal)" }}
+                      >
+                        City *
+                      </Label>
+                      <CityAutocomplete
+                        continent={selectedContinent}
+                        country={form.watch("country") || ""}
+                        value={form.watch("city") || ""}
+                        onChange={(value) => {
+                          form.setValue("city", value);
+                          // Auto-generate coordinates for city
+                          const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", value);
+                          if (cityCoords) {
+                            form.setValue("latitude", cityCoords.lat);
+                            form.setValue("longitude", cityCoords.lng);
+                            form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                          }
+                        }}
+                        placeholder="Search for a city..."
+                        disabled={!form.watch("country")}
+                      />
+                    </div>
                   </div>
+                  
+                  {/* Display selected location coordinates */}
+                  {form.watch("latitude") && form.watch("longitude") && (
+                    <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: "var(--color-soft-beige)" }}>
+                      <p className="text-sm" style={{ color: "var(--color-dark-gray)" }}>
+                        <strong>Location:</strong> {form.watch("city")}, {form.watch("country")}, {form.watch("continent")}
+                      </p>
+                      <p className="text-xs mt-1" style={{ color: "var(--color-mid-gray)" }}>
+                        Coordinates: {form.watch("latitude")?.toFixed(6)}, {form.watch("longitude")?.toFixed(6)}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Descriptions */}

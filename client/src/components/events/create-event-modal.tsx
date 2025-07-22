@@ -23,6 +23,7 @@ import {
 import { insertEventSchema, type InsertEvent } from "@shared/schema";
 import { useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
+import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
 
 interface CreateEventModalProps {
   isOpen: boolean;
@@ -54,6 +55,11 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
   const { data: genres = [] } = useCategories({ type: "genre" });
   const { data: settings = [] } = useCategories({ type: "setting" });
   const { data: eventTypes = [] } = useCategories({ type: "eventType" });
+
+  // Computed values for dropdowns
+  const availableCountries = selectedContinent 
+    ? countries[selectedContinent as keyof typeof countries] || []
+    : [];
 
   const createEventMutation = useCreateEvent();
 
@@ -150,7 +156,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
     }
   };
 
-  const availableCountries = selectedContinent ? countries[selectedContinent as keyof typeof countries] || [] : [];
+
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -214,41 +220,95 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
           </div>
 
           {/* Location */}
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <Label htmlFor="location">Event Location *</Label>
-              <GooglePlacesAutocomplete
-                value={form.watch("locationName") || ""}
-                onChange={(value, placeDetails) => {
-                  console.log('City selected:', value, placeDetails);
-                  form.setValue("locationName", value);
-                  if (placeDetails) {
-                    form.setValue("latitude", placeDetails.latitude);
-                    form.setValue("longitude", placeDetails.longitude);
-                    form.setValue("continent", placeDetails.continent || "");
-                    form.setValue("country", placeDetails.country || "");
-                    form.setValue("city", placeDetails.city || "");
+              <Label>Continent *</Label>
+              <Select 
+                value={selectedContinent}
+                onValueChange={(value) => {
+                  setSelectedContinent(value);
+                  form.setValue("continent", value);
+                  form.setValue("country", "");
+                  form.setValue("city", "");
+                  // Auto-generate coordinates for continent center
+                  const continentCoords = getContinentCoordinates(value);
+                  if (continentCoords) {
+                    form.setValue("latitude", continentCoords.lat);
+                    form.setValue("longitude", continentCoords.lng);
                   }
                 }}
-                placeholder="Search for a city or venue..."
-              />
-              {form.formState.errors.locationName && (
-                <p className="text-sm text-red-600 mt-1">Please select a valid location</p>
-              )}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select continent" />
+                </SelectTrigger>
+                <SelectContent>
+                  {continents.map(continent => (
+                    <SelectItem key={continent} value={continent}>{continent}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            
-            {/* Display selected location details */}
-            {form.watch("latitude") && form.watch("longitude") && (
-              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-sm text-blue-800">
-                  <strong>Selected:</strong> {form.watch("city")}, {form.watch("country")}, {form.watch("continent")}
-                </p>
-                <p className="text-xs text-blue-600 mt-1">
-                  Coordinates: {form.watch("latitude")?.toFixed(6)}, {form.watch("longitude")?.toFixed(6)}
-                </p>
-              </div>
-            )}
+
+            <div>
+              <Label>Country *</Label>
+              <Select 
+                value={form.watch("country")}
+                onValueChange={(value) => {
+                  form.setValue("country", value);
+                  form.setValue("city", "");
+                  // Auto-generate coordinates for country center
+                  const countryCoords = getCountryCoordinates(value);
+                  if (countryCoords) {
+                    form.setValue("latitude", countryCoords.lat);
+                    form.setValue("longitude", countryCoords.lng);
+                  }
+                }}
+                disabled={!selectedContinent}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableCountries.map(country => (
+                    <SelectItem key={country} value={country}>{country}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="city">City *</Label>
+              <CityAutocomplete
+                continent={selectedContinent}
+                country={form.watch("country") || ""}
+                value={form.watch("city") || ""}
+                onChange={(value) => {
+                  form.setValue("city", value);
+                  // Auto-generate coordinates for city
+                  const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", value);
+                  if (cityCoords) {
+                    form.setValue("latitude", cityCoords.lat);
+                    form.setValue("longitude", cityCoords.lng);
+                    form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                  }
+                }}
+                placeholder="Search for a city..."
+                disabled={!form.watch("country")}
+              />
+            </div>
           </div>
+          
+          {/* Display selected location coordinates */}
+          {form.watch("latitude") && form.watch("longitude") && (
+            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-800">
+                <strong>Location:</strong> {form.watch("city")}, {form.watch("country")}, {form.watch("continent")}
+              </p>
+              <p className="text-xs text-blue-600 mt-1">
+                Coordinates: {form.watch("latitude")?.toFixed(6)}, {form.watch("longitude")?.toFixed(6)}
+              </p>
+            </div>
+          )}
 
           <div>
             <Label htmlFor="date">Event Date *</Label>
