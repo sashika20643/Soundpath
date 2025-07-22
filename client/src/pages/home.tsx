@@ -3,11 +3,26 @@ import { Layout } from "@/components/layout/layout";
 import { Link } from "wouter";
 import { EventCard } from "@/components/events/event-card";
 import { EventMap } from "@/components/map/EventMap";
-import { PlacesAutocomplete } from "@/components/ui/places-autocomplete";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { CityAutocomplete } from "@/components/ui/city-autocomplete";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
@@ -20,7 +35,13 @@ import {
   Calendar,
   Music,
   Search,
+  Globe,
+  Heart,
+  Star,
+  Users,
   Map,
+  Plus,
+  Send,
   Volume2,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -30,11 +51,14 @@ import {
   type Event,
   type InsertEvent,
 } from "@shared/schema";
+import { cities } from "@/lib/cities";
 
 export default function Home() {
   usePageMetadata("home");
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [randomEvents, setRandomEvents] = useState<Event[]>([]);
+  const [selectedContinent, setSelectedContinent] = useState("");
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
 
@@ -53,7 +77,7 @@ export default function Home() {
   const latestEvents = sortedByDateDesc.slice(0, 6);
   const hiddenGems = sortedByDateAsc.slice(0, 6);
 
-  // Form setup with Google Places support
+  // Form setup
   const form = useForm<InsertEvent>({
     resolver: zodResolver(insertEventSchema),
     defaultValues: {
@@ -67,8 +91,6 @@ export default function Home() {
       continent: "",
       country: "",
       city: "",
-      latitude: undefined,
-      longitude: undefined,
       locationName: "",
       genreIds: [],
       settingIds: [],
@@ -76,19 +98,20 @@ export default function Home() {
     },
   });
 
-  // Add state for Places Autocomplete data
-  const [cityPlace, setCityPlace] = useState("");
-  const [countryPlace, setCountryPlace] = useState("");
-  const [coordinates, setCoordinates] = useState<{lat: number, lng: number} | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
   // Get categories by type
   const genreCategories = categories.filter((cat) => cat.type === "genre");
   const settingCategories = categories.filter((cat) => cat.type === "setting");
   const eventTypeCategories = categories.filter(
     (cat) => cat.type === "eventType",
   );
+
+  // Shuffle events for random section - keeping for now but will replace
+  useEffect(() => {
+    if (allEvents.length > 0) {
+      const shuffled = [...allEvents].sort(() => Math.random() - 0.5);
+      setRandomEvents(shuffled.slice(0, 6));
+    }
+  }, [allEvents]);
 
   const handleSearch = () => {
     window.location.href = `/events?search=${encodeURIComponent(searchQuery)}`;
@@ -99,237 +122,289 @@ export default function Home() {
     return parts.join(", ");
   };
 
-  // Handle form submission with enhanced logging and validation
+  // Handle form submission
   const onSubmit = async (data: InsertEvent) => {
-    console.log('Form submission started - Original data:', data);
-    
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
     try {
-      // Add coordinates if available
-      const eventData = {
-        ...data,
-        latitude: coordinates?.lat,
-        longitude: coordinates?.lng,
-        fromDashboard: false // Events from home page require approval
-      };
-
-      console.log('Event data with coordinates:', eventData);
-      console.log('Request payload:', JSON.stringify(eventData, null, 2));
-
-      // Submit to API
-      const result = await createEventMutation.mutateAsync(eventData);
-      
-      console.log('Event creation result:', result);
-
-      setSubmitStatus('success');
+      // Events from home page require approval (approved: false)
+      await createEventMutation.mutateAsync({ ...data, fromDashboard: false });
       toast({
         title: "Event submitted successfully!",
         description: "Your musical discovery has been submitted for review. It will appear publicly once approved.",
       });
-      
-      // Reset form and state
       form.reset();
-      setCityPlace("");
-      setCountryPlace("");
-      setCoordinates(null);
-      
     } catch (error) {
-      console.error('Event submission failed:', error);
-      setSubmitStatus('error');
-      
       toast({
         title: "Failed to submit event",
         description: "Please check your information and try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
     }
-  };
-
-  // Handle Places Autocomplete city selection
-  const handleCitySelect = (value: string, placeDetails?: any) => {
-    console.log('City selected:', value, placeDetails);
-    setCityPlace(value);
-    form.setValue("city", value);
-    
-    if (placeDetails && placeDetails.address_components) {
-      // Extract location details from place
-      let cityName = '';
-      let countryName = '';
-      
-      placeDetails.address_components.forEach((component: any) => {
-        if (component.types.includes('locality')) {
-          cityName = component.long_name;
-        } else if (component.types.includes('country')) {
-          countryName = component.long_name;
-        }
-      });
-      
-      if (cityName) form.setValue("city", cityName);
-      if (countryName) {
-        form.setValue("country", countryName);
-        setCountryPlace(countryName);
-        
-        // Auto-select continent based on country
-        const continent = getContinent(countryName);
-        if (continent) {
-          form.setValue("continent", continent);
-        }
-      }
-    }
-  };
-
-  // Handle coordinate changes from Places Autocomplete
-  const handleCoordinatesChange = (lat: number, lng: number) => {
-    console.log('Coordinates changed:', { lat, lng });
-    setCoordinates({ lat, lng });
-    form.setValue("latitude", lat);
-    form.setValue("longitude", lng);
-  };
-
-  // Helper function to determine continent from country
-  const getContinent = (country: string): string => {
-    const continentMap: { [key: string]: string } = {
-      // North America
-      'United States': 'North America',
-      'Canada': 'North America',
-      'Mexico': 'North America',
-      
-      // South America  
-      'Brazil': 'South America',
-      'Argentina': 'South America',
-      'Colombia': 'South America',
-      'Chile': 'South America',
-      
-      // Europe
-      'United Kingdom': 'Europe',
-      'France': 'Europe',
-      'Germany': 'Europe',
-      'Italy': 'Europe',
-      'Spain': 'Europe',
-      'Iceland': 'Europe',
-      'Slovenia': 'Europe',
-      
-      // Asia
-      'Japan': 'Asia',
-      'China': 'Asia',
-      'India': 'Asia',
-      'Thailand': 'Asia',
-      
-      // Africa
-      'South Africa': 'Africa',
-      'Egypt': 'Africa',
-      'Morocco': 'Africa',
-      
-      // Oceania
-      'Australia': 'Oceania',
-      'New Zealand': 'Oceania',
-    };
-    
-    return continentMap[country] || '';
   };
 
   return (
     <Layout>
-      <div ref={scrollRef} className="overflow-hidden">
-        {/* Hero Section with Background */}
-        <section
-          className="relative min-h-screen flex items-center section-padding"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          {/* Dark overlay */}
-          <div
-            className="absolute inset-0"
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
-          ></div>
+      <div
+        ref={scrollRef}
+        className="min-h-screen"
+        style={{
+          backgroundColor: "var(--color-warm-white)",
+          color: "var(--color-charcoal)",
+        }}
+      >
+        {/* Hero Section - Kinfolk Style with Background Image */}
+        <section className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
+          {/* Background Image*/}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg"
+              alt="Musical performance audience"
+              className="w-full h-full object-cover"
+            />
+            {/* Strong dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90"></div>
+            {/* Additional center focus overlay */}
+            <div className="absolute inset-0 bg-radial-gradient from-black/40 via-transparent to-black/60"></div>
+          </div>
 
-          <div className="relative max-w-7xl mx-auto text-center">
-            <div className="scroll-animate">
-              <h1
-                className="font-serif text-5xl md:text-7xl mb-8 leading-tight"
-                style={{ color: "var(--color-warm-white)" }}
-              >
+          <div className="max-w-6xl mx-auto text-center relative z-10">
+            <div className="scroll-animate mb-16">
+              <h1 className="font-serif text-hero mb-8 text-white drop-shadow-lg">
                 {APP_CONFIG.name}
               </h1>
-              <p
-                className="text-editorial text-xl md:text-2xl mb-16 max-w-3xl mx-auto"
-                style={{ color: "var(--color-light-gray)" }}
-              >
+              <p className="text-large font-light mb-6 text-white/90 drop-shadow-md">
                 {APP_CONFIG.tagline}
               </p>
+              <p className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm">
+                Discover legendary venues, hidden amphitheaters, and
+                transcendent festivals in remarkable settings. Each destination
+                tells a story of where music and place create something
+                extraordinary.
+              </p>
+            </div>
 
-              {/* Search Bar */}
-              <div className="max-w-2xl mx-auto mb-16">
-                <div className="flex gap-4">
-                  <Input
-                    type="text"
-                    placeholder="Search destinations, artists, or experiences..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 py-4 px-6 text-lg bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white placeholder-white/70"
-                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  />
-                  <Button
-                    onClick={handleSearch}
-                    className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-500 rounded-full"
-                  >
-                    <Search className="w-5 h-5" />
-                  </Button>
-                </div>
-              </div>
+            {/* Minimalist Action Buttons */}
+            <div className="scroll-animate scroll-animate-delay-1 flex flex-col sm:flex-row gap-6 justify-center mb-16">
+              <button className="px-8 py-3 text-sm font-medium rounded-lg border border-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50">
+                Explore Destinations
+              </button>
+              <Link href="/events">
+                <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg">
+                  Browse Collection
+                </button>
+              </Link>
+            </div>
 
-              <div className="flex justify-center">
-                <Button
-                  onClick={() => document.getElementById("submit")?.scrollIntoView({ behavior: "smooth" })}
-                  className="btn-primary px-8 py-4 text-lg font-medium bg-transparent border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white rounded-full"
-                >
-                  Share Your Discovery
-                </Button>
+            {/* Elegant Search */}
+            <div className="scroll-animate scroll-animate-delay-2 max-w-lg mx-auto">
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search destinations, genres, experiences..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                  className="w-full py-4 px-6 border-2 border-white/50 focus:border-white bg-white/20 backdrop-blur-md text-white placeholder-white/80 text-center transition-all duration-300 shadow-lg"
+                  style={{
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                  }}
+                />
               </div>
             </div>
           </div>
+
+          {/* Minimal scroll indicator */}
+          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
+            <div className="w-px h-16 bg-white/40 animate-pulse"></div>
+          </div>
         </section>
 
-        {/* Submit Event Form Section */}
+        {/* World Map Section - Editorial Style */}
         <section
-          id="submit"
           className="section-padding"
-          style={{ backgroundColor: "var(--color-warm-white)" }}
+          style={{ backgroundColor: "var(--color-soft-beige)" }}
         >
-          <div className="max-w-4xl mx-auto">
-            <div className="scroll-animate text-center mb-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="scroll-animate text-center mb-20">
               <h2
                 className="font-serif text-section-title mb-8"
                 style={{ color: "var(--color-charcoal)" }}
               >
-                Share a Musical Discovery
+                Around the World
               </h2>
               <p
                 className="text-editorial max-w-2xl mx-auto"
                 style={{ color: "var(--color-dark-gray)" }}
               >
-                Found an extraordinary place where music comes alive? Share your discovery with fellow explorers and help build our global atlas of musical destinations.
+                Navigate through musical destinations and discover experiences
+                that await in every corner of the globe. Each pin represents a
+                story waiting to be told.
               </p>
             </div>
 
-            <div className="scroll-animate">
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
-                {/* Basic Information */}
-                <div className="space-y-8">
-                  <h3
-                    className="font-serif text-xl"
-                    style={{ color: "var(--color-charcoal)" }}
-                  >
-                    Basic Information
-                  </h3>
+            {/* Interactive Google Maps */}
+            <div className="scroll-animate scroll-animate-delay-1">
+              <EventMap 
+                events={allEvents} 
+                height="500px"
+                className="mx-auto rounded-lg"
+              />
+            </div>
+          </div>
+        </section>
 
+        {/* 🕵️‍♀️ Last Discoveries Section - Most Recent Events */}
+        <section
+          className="section-padding"
+          style={{ backgroundColor: "var(--color-warm-white)" }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="scroll-animate text-center mb-20">
+              <h2
+                className="font-serif text-section-title mb-8"
+                style={{ color: "var(--color-charcoal)" }}
+              >
+                🕵️‍♀️ Last Discoveries
+              </h2>
+              <p
+                className="text-editorial max-w-2xl mx-auto"
+                style={{ color: "var(--color-dark-gray)" }}
+              >
+                The most recent musical destinations added to our collection,
+                featuring the latest discoveries from explorers worldwide.
+              </p>
+            </div>
+
+            {isLoading ? (
+              <div className="grid-magazine">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                    style={{ transitionDelay: `${i * 0.1}s` }}
+                  >
+                    <div
+                      className="h-80 animate-pulse"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    ></div>
+                    <div className="p-8">
+                      <div
+                        className="h-6 animate-pulse rounded mb-3"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div className="flex gap-4 mb-4">
+                        <div
+                          className="h-4 animate-pulse rounded w-24"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-32"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div className="flex gap-2 mb-4">
+                        <div
+                          className="h-6 animate-pulse rounded-full w-16"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-6 animate-pulse rounded-full w-20"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div className="space-y-2 mb-6">
+                        <div
+                          className="h-4 animate-pulse rounded"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-4/5"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-3/5"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div
+                        className="h-10 animate-pulse rounded"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid-magazine">
+                {latestEvents.map((event, index) => (
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    index={index}
+                    showNewBadge={true}
+                  />
+                ))}
+              </div>
+            )}
+
+            {latestEvents.length === 0 && !isLoading && (
+              <div className="scroll-animate text-center py-20">
+                <div
+                  className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
+                  style={{
+                    borderColor: "var(--color-light-gray)",
+                    color: "var(--color-mid-gray)",
+                  }}
+                >
+                  <Music className="w-10 h-10" />
+                </div>
+                <h3
+                  className="font-serif text-2xl mb-4"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
+                  No discoveries yet
+                </h3>
+                <p
+                  className="text-editorial"
+                  style={{ color: "var(--color-mid-gray)" }}
+                >
+                  Be the first to share an extraordinary musical experience.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Submit Discovery Section - Editorial Style */}
+        <section
+          className="section-padding"
+          style={{ backgroundColor: "var(--color-cream)" }}
+        >
+          <div className="max-w-4xl mx-auto">
+            <div className="scroll-animate text-center mb-20">
+              <h2
+                className="font-serif text-section-title mb-8"
+                style={{ color: "var(--color-charcoal)" }}
+              >
+                Share Your Discovery
+              </h2>
+              <p
+                className="text-editorial max-w-2xl mx-auto"
+                style={{ color: "var(--color-dark-gray)" }}
+              >
+                Help others discover extraordinary musical experiences. Share
+                the places where music and location create something
+                unforgettable.
+              </p>
+            </div>
+
+            <div className="scroll-animate scroll-animate-delay-1 form-minimal">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-12"
+              >
+                {/* Basic Information */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-3">
                     <Label
                       htmlFor="title"
@@ -406,7 +481,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Location with Google Places Autocomplete */}
+                {/* Location */}
                 <div className="space-y-8">
                   <h3
                     className="font-serif text-xl"
@@ -414,20 +489,41 @@ export default function Home() {
                   >
                     Location
                   </h3>
-                  
-                  {/* Google Places Autocomplete for City */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <PlacesAutocomplete
-                      id="city"
-                      label="City"
-                      placeholder="Start typing city name..."
-                      value={cityPlace}
-                      onChange={handleCitySelect}
-                      onCoordinatesChange={handleCoordinatesChange}
-                      types={['(cities)']}
-                      required
-                      error={form.formState.errors.city?.message}
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="space-y-3">
+                      <Label
+                        htmlFor="continent"
+                        className="text-sm font-medium uppercase tracking-wide"
+                        style={{ color: "var(--color-charcoal)" }}
+                      >
+                        Continent *
+                      </Label>
+                      <Select
+                        value={form.watch("continent") || ""}
+                        onValueChange={(value) => {
+                          form.setValue("continent", value);
+                          form.setValue("country", "");
+                          form.setValue("city", "");
+                          setSelectedContinent(value);
+                        }}
+                      >
+                        <SelectTrigger
+                          className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                          style={{
+                            borderBottomColor: "var(--color-light-gray)",
+                          }}
+                        >
+                          <SelectValue placeholder="Select continent" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(cities).map((continent) => (
+                            <SelectItem key={continent} value={continent}>
+                              {continent}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
                     <div className="space-y-3">
                       <Label
@@ -437,81 +533,55 @@ export default function Home() {
                       >
                         Country *
                       </Label>
-                      <Input
-                        id="country"
-                        value={countryPlace}
-                        readOnly
-                        placeholder="Auto-filled from city selection"
-                        className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-gray-50"
-                        style={{
-                          borderBottomColor: "var(--color-light-gray)",
-                          color: "var(--color-charcoal)",
-                          backgroundColor: "var(--color-light-gray)",
+                      <Select
+                        value={form.watch("country") || ""}
+                        onValueChange={(value) => {
+                          form.setValue("country", value);
+                          form.setValue("city", "");
                         }}
-                      />
-                      {form.formState.errors.country && (
-                        <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
-                          {form.formState.errors.country.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <Label
-                        htmlFor="continent"
-                        className="text-sm font-medium uppercase tracking-wide"
-                        style={{ color: "var(--color-charcoal)" }}
+                        disabled={!form.watch("continent")}
                       >
-                        Continent *
-                      </Label>
-                      <Input
-                        id="continent"
-                        value={form.watch("continent") || ""}
-                        readOnly
-                        placeholder="Auto-filled from city selection"
-                        className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-gray-50"
-                        style={{
-                          borderBottomColor: "var(--color-light-gray)",
-                          color: "var(--color-charcoal)",
-                          backgroundColor: "var(--color-light-gray)",
-                        }}
-                      />
-                      {form.formState.errors.continent && (
-                        <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
-                          {form.formState.errors.continent.message}
-                        </p>
-                      )}
+                        <SelectTrigger
+                          className="py-4 border-0 border-b-2 rounded-none bg-transparent"
+                          style={{
+                            borderBottomColor: "var(--color-light-gray)",
+                          }}
+                        >
+                          <SelectValue placeholder="Select country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {form.watch("continent") &&
+                            Object.keys(
+                              cities[
+                                form.watch("continent") as keyof typeof cities
+                              ] || {},
+                            ).map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {country}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="space-y-3">
                       <Label
-                        htmlFor="locationName"
+                        htmlFor="city"
                         className="text-sm font-medium uppercase tracking-wide"
                         style={{ color: "var(--color-charcoal)" }}
                       >
-                        Specific Location/Venue
+                        City *
                       </Label>
-                      <Input
-                        id="locationName"
-                        {...form.register("locationName")}
-                        placeholder="e.g., Madison Square Garden, Central Park"
-                        className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
-                        style={{
-                          borderBottomColor: "var(--color-light-gray)",
-                          color: "var(--color-charcoal)",
-                        }}
+                      <CityAutocomplete
+                        continent={selectedContinent}
+                        country={form.watch("country") || ""}
+                        value={form.watch("city") || ""}
+                        onChange={(value) => form.setValue("city", value)}
+                        placeholder="Search for a city..."
+                        disabled={!form.watch("country")}
                       />
                     </div>
                   </div>
-
-                  {/* Coordinate Display (for testing) */}
-                  {coordinates && (
-                    <div className="text-sm text-gray-600 border rounded p-3" style={{ backgroundColor: "var(--color-light-gray)" }}>
-                      <strong>Coordinates:</strong> {coordinates.lat.toFixed(6)}, {coordinates.lng.toFixed(6)}
-                    </div>
-                  )}
                 </div>
 
                 {/* Descriptions */}
@@ -575,132 +645,22 @@ export default function Home() {
                 </div>
 
                 <div className="text-center pt-8">
-                  <Button
+                  <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={createEventMutation.isPending}
                     className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide"
                   >
-                    {isSubmitting && <Volume2 className="w-4 h-4 mr-2 animate-spin" />}
-                    {isSubmitting ? "Submitting..." : "Submit Discovery"}
-                  </Button>
-                  
-                  {submitStatus === 'success' && (
-                    <p className="text-green-600 text-sm mt-2">✓ Event submitted successfully!</p>
-                  )}
-                  
-                  {submitStatus === 'error' && (
-                    <p className="text-red-600 text-sm mt-2">✗ Failed to submit. Please try again.</p>
-                  )}
+                    {createEventMutation.isPending
+                      ? "Submitting..."
+                      : "Submit Discovery"}
+                  </button>
                 </div>
               </form>
             </div>
           </div>
         </section>
 
-        {/* Global Music Map Section */}
-        <section
-          className="section-padding"
-          style={{ backgroundColor: "var(--color-charcoal)" }}
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="scroll-animate text-center mb-12">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: "var(--color-warm-white)" }}
-                >
-                  <Map className="w-6 h-6" style={{ color: "var(--color-charcoal)" }} />
-                </div>
-              </div>
-              <h2
-                className="font-serif text-section-title mb-8"
-                style={{ color: "var(--color-warm-white)" }}
-              >
-                🗺️ Global Music Map
-              </h2>
-              <p
-                className="text-editorial max-w-2xl mx-auto"
-                style={{ color: "var(--color-light-gray)" }}
-              >
-                Explore {allEvents.length} musical experiences across the globe. Click on any marker to discover events and their details.
-              </p>
-            </div>
-
-            <div className="scroll-animate">
-              <EventMap 
-                events={allEvents} 
-                height="500px"
-                className="mx-auto"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Latest Discoveries Section */}
-        <section
-          className="section-padding"
-          style={{ backgroundColor: "var(--color-warm-white)" }}
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="scroll-animate text-center mb-20">
-              <h2
-                className="font-serif text-section-title mb-8"
-                style={{ color: "var(--color-charcoal)" }}
-              >
-                🕵️‍♀️ Latest Discoveries
-              </h2>
-              <p
-                className="text-editorial max-w-2xl mx-auto"
-                style={{ color: "var(--color-dark-gray)" }}
-              >
-                The most recent musical destinations added to our collection,
-                featuring the latest discoveries from explorers worldwide.
-              </p>
-            </div>
-
-            {isLoading ? (
-              <div className="grid-magazine">
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="scroll-animate card-minimal rounded-lg overflow-hidden"
-                    style={{ transitionDelay: `${i * 0.1}s` }}
-                  >
-                    <div
-                      className="h-80 animate-pulse"
-                      style={{ backgroundColor: "var(--color-light-gray)" }}
-                    ></div>
-                    <div className="p-8">
-                      <div
-                        className="h-6 animate-pulse rounded mb-3"
-                        style={{ backgroundColor: "var(--color-light-gray)" }}
-                      ></div>
-                      <div
-                        className="h-4 animate-pulse rounded mb-2"
-                        style={{ backgroundColor: "var(--color-light-gray)" }}
-                      ></div>
-                      <div
-                        className="h-4 animate-pulse rounded w-2/3"
-                        style={{ backgroundColor: "var(--color-light-gray)" }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid-magazine">
-                {latestEvents.map((event, index) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Hidden Gems Section */}
+        {/* 💎 Hidden Gems Section - Oldest Events */}
         <section
           className="section-padding"
           style={{ backgroundColor: "var(--color-soft-beige)" }}
@@ -739,12 +699,42 @@ export default function Home() {
                         className="h-6 animate-pulse rounded mb-3"
                         style={{ backgroundColor: "var(--color-light-gray)" }}
                       ></div>
+                      <div className="flex gap-4 mb-4">
+                        <div
+                          className="h-4 animate-pulse rounded w-24"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-32"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div className="flex gap-2 mb-4">
+                        <div
+                          className="h-6 animate-pulse rounded-full w-16"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-6 animate-pulse rounded-full w-20"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div className="space-y-2 mb-6">
+                        <div
+                          className="h-4 animate-pulse rounded"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-4/5"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-3/5"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
                       <div
-                        className="h-4 animate-pulse rounded mb-2"
-                        style={{ backgroundColor: "var(--color-light-gray)" }}
-                      ></div>
-                      <div
-                        className="h-4 animate-pulse rounded w-2/3"
+                        className="h-10 animate-pulse rounded"
                         style={{ backgroundColor: "var(--color-light-gray)" }}
                       ></div>
                     </div>
@@ -754,17 +744,14 @@ export default function Home() {
             ) : (
               <div className="grid-magazine">
                 {hiddenGems.map((event, index) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                  />
+                  <EventCard key={event.id} event={event} index={index} />
                 ))}
               </div>
             )}
           </div>
         </section>
 
-        {/* Footer */}
+        {/* Footer - Kinfolk Minimal */}
         <footer
           className="section-padding"
           style={{
@@ -778,7 +765,7 @@ export default function Home() {
                 className="font-serif text-3xl mb-8"
                 style={{ color: "var(--color-warm-white)" }}
               >
-                {APP_CONFIG.name}
+                Soundpath
               </h3>
               <p
                 className="text-editorial max-w-lg mx-auto mb-12"
@@ -789,9 +776,166 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="scroll-animate text-center pt-12" style={{ borderTop: "1px solid var(--color-dark-gray)" }}>
+            <div className="scroll-animate scroll-animate-delay-1 grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
+              <div>
+                <h4
+                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                  style={{ color: "var(--color-warm-white)" }}
+                >
+                  Explore
+                </h4>
+                <ul className="space-y-3">
+                  <li>
+                    <Link
+                      href="/events"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      All Destinations
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Categories
+                    </Link>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Featured
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4
+                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                  style={{ color: "var(--color-warm-white)" }}
+                >
+                  Community
+                </h4>
+                <ul className="space-y-3">
+                  <li>
+                    <a
+                      href="#submit"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Submit Discovery
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Guidelines
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      About
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4
+                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                  style={{ color: "var(--color-warm-white)" }}
+                >
+                  Connect
+                </h4>
+                <ul className="space-y-3">
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Newsletter
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Contact
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Support
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4
+                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                  style={{ color: "var(--color-warm-white)" }}
+                >
+                  Legal
+                </h4>
+                <ul className="space-y-3">
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Privacy
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Terms
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Cookies
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div
+              className="scroll-animate scroll-animate-delay-2 text-center pt-12"
+              style={{ borderTop: "1px solid var(--color-dark-gray)" }}
+            >
               <p className="text-sm" style={{ color: "var(--color-mid-gray)" }}>
-                © 2025 {APP_CONFIG.name}. All rights reserved.
+                © 2025 Soundpath. All rights reserved.
               </p>
             </div>
           </div>
