@@ -20,6 +20,8 @@ declare global {
 
 export function EventMap({ events, className = "", height = "400px" }: EventMapProps) {
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapInitialized, setMapInitialized] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -33,25 +35,49 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
 
   // Load Google Maps API
   useEffect(() => {
-    if (mapLoaded || eventsWithCoordinates.length === 0) return;
+    console.log('🗺️ EventMap useEffect triggered:', {
+      mapLoaded,
+      eventsWithCoordinatesLength: eventsWithCoordinates.length,
+      events: eventsWithCoordinates.map(e => ({ id: e.id, title: e.title, lat: e.latitude, lng: e.longitude }))
+    });
+    
+    if (eventsWithCoordinates.length === 0) {
+      console.log('🚫 No events with coordinates to display');
+      return;
+    }
+
+    if (mapLoaded && mapInitialized) {
+      console.log('🚫 Map already loaded and initialized');
+      return;
+    }
 
     const loadGoogleMaps = () => {
+      console.log('🔄 Loading Google Maps API...');
+      
       if (window.google && window.google.maps) {
+        console.log('✅ Google Maps already loaded, initializing...');
         setMapLoaded(true);
-        initializeMap();
+        setTimeout(() => {
+          initializeMap();
+        }, 100);
         return;
       }
 
+      console.log('📦 Creating Google Maps script tag...');
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
       script.defer = true;
       script.onload = () => {
+        console.log('✅ Google Maps API loaded successfully');
         setMapLoaded(true);
-        initializeMap();
+        setTimeout(() => {
+          initializeMap();
+        }, 100);
       };
       script.onerror = () => {
-        console.error('Failed to load Google Maps API');
+        console.error('❌ Failed to load Google Maps API');
+        setMapError('Failed to load Google Maps API');
         setMapLoaded(false);
       };
       document.head.appendChild(script);
@@ -61,7 +87,20 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
   }, [eventsWithCoordinates.length]);
 
   const initializeMap = () => {
-    if (!mapRef.current || !window.google || eventsWithCoordinates.length === 0) return;
+    console.log('🚀 Initializing map...', {
+      mapRef: mapRef.current,
+      googleMaps: !!window.google?.maps,
+      eventsCount: eventsWithCoordinates.length
+    });
+    
+    if (!mapRef.current || !window.google || eventsWithCoordinates.length === 0) {
+      console.log('❌ Cannot initialize map:', {
+        noMapRef: !mapRef.current,
+        noGoogle: !window.google,
+        noEvents: eventsWithCoordinates.length === 0
+      });
+      return;
+    }
 
     // Calculate center and bounds
     const bounds = new window.google.maps.LatLngBounds();
@@ -70,36 +109,39 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
     });
 
     // Create map
-    const map = new window.google.maps.Map(mapRef.current, {
-      center: bounds.getCenter(),
-      zoom: 2,
-      styles: [
-        {
-          "featureType": "all",
-          "elementType": "geometry.fill",
-          "stylers": [{"color": "#f5f5f5"}]
-        },
-        {
-          "featureType": "water",
-          "elementType": "geometry",
-          "stylers": [{"color": "#e9e9e9"}, {"lightness": 17}]
-        },
-        {
-          "featureType": "administrative",
-          "elementType": "labels.text.stroke",
-          "stylers": [{"color": "#ffffff"}, {"weight": 6}]
-        },
-        {
-          "featureType": "administrative",
-          "elementType": "labels.text.fill",
-          "stylers": [{"color": "#e85d04"}]
-        }
-      ]
-    });
+    try {
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: bounds.getCenter(),
+        zoom: 2,
+        styles: [
+          {
+            "featureType": "all",
+            "elementType": "geometry.fill",
+            "stylers": [{"color": "#f5f5f5"}]
+          },
+          {
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": [{"color": "#e9e9e9"}, {"lightness": 17}]
+          },
+          {
+            "featureType": "administrative",
+            "elementType": "labels.text.stroke",
+            "stylers": [{"color": "#ffffff"}, {"weight": 6}]
+          },
+          {
+            "featureType": "administrative",
+            "elementType": "labels.text.fill",
+            "stylers": [{"color": "#e85d04"}]
+          }
+        ]
+      });
 
     // Fit bounds
     map.fitBounds(bounds);
     mapInstanceRef.current = map;
+    setMapInitialized(true);
+    console.log('✅ Map initialized successfully with', eventsWithCoordinates.length, 'events');
 
     // Create info window
     infoWindowRef.current = new window.google.maps.InfoWindow();
@@ -182,6 +224,16 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
 
       markersRef.current.push(marker);
     });
+    
+    } catch (error) {
+      console.error('❌ Error creating Google Map:', error);
+      if (error.toString().includes('BillingNotEnabledMapError')) {
+        setMapError('billing');
+      } else {
+        setMapError('unknown');
+      }
+      return;
+    }
   };
 
   if (eventsWithCoordinates.length === 0) {
@@ -197,10 +249,65 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
 
 
 
+  // Show error message if Google Maps billing is not enabled
+  if (mapError === 'billing') {
+    return (
+      <div className={`${className} bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border-2 border-orange-200 p-8`} style={{ height }}>
+        <div className="h-full flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <div className="mb-6">
+              <MapPin className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+              <div className="absolute -mt-8 ml-12 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                {eventsWithCoordinates.length}
+              </div>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Interactive Map Requires Billing
+            </h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              To display the interactive Google Map with {eventsWithCoordinates.length} event locations, 
+              billing needs to be enabled for the Google Maps API key in the Google Cloud Console.
+            </p>
+            <div className="bg-white rounded-lg p-4 border border-orange-200">
+              <h4 className="font-medium text-gray-800 mb-3">Event Locations Available:</h4>
+              <div className="space-y-2 text-sm">
+                {eventsWithCoordinates.slice(0, 3).map((event) => (
+                  <div key={event.id} className="flex items-center gap-2 text-gray-600">
+                    <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                    <span className="truncate">
+                      {event.title} - {event.city}, {event.country}
+                    </span>
+                  </div>
+                ))}
+                {eventsWithCoordinates.length > 3 && (
+                  <p className="text-gray-500 italic">
+                    +{eventsWithCoordinates.length - 3} more events...
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show other errors
+  if (mapError && mapError !== 'billing') {
+    return (
+      <div className={`${className} bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center`} style={{ height }}>
+        <div className="text-center">
+          <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+          <p className="text-gray-500">Unable to load map</p>
+        </div>
+      </div>
+    );
+  }
+
   // Google Maps component
   return (
     <div className={`${className} bg-white rounded-lg border border-gray-200 overflow-hidden`} style={{ height }}>
-      {mapLoaded ? (
+      {mapLoaded && mapInitialized ? (
         <div ref={mapRef} className="w-full h-full" />
       ) : (
         <div className="h-full flex items-center justify-center bg-gray-50">
