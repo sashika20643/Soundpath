@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { categoryApi } from "@/lib/api";
+import { categoryApi, type CategoriesFilters } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-// Types will be imported from types/index.ts when needed
+import type { Category, InsertCategory, UpdateCategory } from "@shared/schema";
 
-export function useCategories(filters?: any) {
+export function useCategories(filters?: CategoriesFilters) {
   return useQuery({
     queryKey: ['/api/categories', filters],
     queryFn: () => categoryApi.getCategories(filters),
@@ -23,7 +23,7 @@ export function useCreateCategory() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (category: any) => categoryApi.createCategory(category),
+    mutationFn: (category: InsertCategory) => categoryApi.createCategory(category),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
       toast({
@@ -46,7 +46,7 @@ export function useUpdateCategory() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ id, ...category }: { id: string } & any) =>
+    mutationFn: ({ id, ...category }: { id: string } & Partial<UpdateCategory>) =>
       categoryApi.updateCategory(id, category),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
