@@ -132,6 +132,12 @@ Preferred communication style: Simple, everyday language.
 - July 21, 2025: Added latitude/longitude fields to events schema for location mapping
 - July 21, 2025: Optimized map component to reduce API calls with load-on-demand functionality
 - July 21, 2025: Created fallback location grid view when map is not loaded
+- July 23, 2025: Enhanced event creation forms with three-field location system (continent → country → city)
+- July 23, 2025: Added coordinate mapping utilities to automatically assign lat/lng based on location selections
+- July 23, 2025: Implemented comprehensive form validation with loading states and error feedback
+- July 23, 2025: Added console logging for form submissions to improve debugging capabilities
+- July 23, 2025: Removed Google Places API integration due to legacy API limitations
+- July 23, 2025: Added Instagram link field to both dashboard and public event creation forms
 
 ## Key Features
 

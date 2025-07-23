@@ -634,6 +634,41 @@ export default function Home() {
                   )}
                 </div>
 
+                {/* Instagram Link */}
+                <div className="space-y-8">
+                  <h3
+                    className="font-serif text-xl"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
+                    Social Media
+                  </h3>
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="instagramLink"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
+                      Instagram Link
+                    </Label>
+                    <Input
+                      id="instagramLink"
+                      {...form.register("instagramLink")}
+                      placeholder="https://instagram.com/..."
+                      className="py-4 px-4 text-base border-2 rounded-lg"
+                      style={{
+                        borderColor: "var(--color-light-gray)",
+                        backgroundColor: "var(--color-warm-white)",
+                        color: "var(--color-charcoal)",
+                      }}
+                    />
+                    {form.formState.errors.instagramLink && (
+                      <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                        {form.formState.errors.instagramLink.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 {/* Descriptions */}
                 <div className="space-y-8">
                   <h3
