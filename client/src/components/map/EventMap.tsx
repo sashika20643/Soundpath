@@ -19,7 +19,6 @@ declare global {
 }
 
 export function EventMap({ events, className = "", height = "400px" }: EventMapProps) {
-  const [showMap, setShowMap] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
@@ -34,7 +33,7 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
 
   // Load Google Maps API
   useEffect(() => {
-    if (!showMap || mapLoaded) return;
+    if (mapLoaded || eventsWithCoordinates.length === 0) return;
 
     const loadGoogleMaps = () => {
       if (window.google && window.google.maps) {
@@ -59,7 +58,7 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
     };
 
     loadGoogleMaps();
-  }, [showMap]);
+  }, [eventsWithCoordinates.length]);
 
   const initializeMap = () => {
     if (!mapRef.current || !window.google || eventsWithCoordinates.length === 0) return;
@@ -196,33 +195,7 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
     );
   }
 
-  if (!showMap) {
-    return (
-      <div className={`${className} bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700`} style={{ height }}>
-        <div className="text-center space-y-4">
-          <div className="relative">
-            <MapPin className="w-16 h-16 text-orange-500 mx-auto mb-4" />
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-              {eventsWithCoordinates.length}
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-            Interactive Event Map
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-            Discover {eventsWithCoordinates.length} musical experiences across the globe with clickable markers and event details.
-          </p>
-          <Button 
-            onClick={() => setShowMap(true)}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg flex items-center gap-2 mx-auto"
-          >
-            <Play className="w-4 h-4" />
-            Load Interactive Map
-          </Button>
-        </div>
-      </div>
-    );
-  }
+
 
   // Google Maps component
   return (
@@ -233,7 +206,7 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
         <div className="h-full flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading interactive map...</p>
+            <p className="text-gray-600">Loading interactive map with {eventsWithCoordinates.length} events...</p>
           </div>
         </div>
       )}
