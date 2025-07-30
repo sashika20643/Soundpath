@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { MapPin, Play, ExternalLink, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,9 +24,10 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
   
-  // Filter events that have coordinates
-  const eventsWithCoordinates = events.filter(event => 
-    event.latitude && event.longitude
+  // Filter events that have coordinates - memoized to prevent infinite re-renders
+  const eventsWithCoordinates = useMemo(() => 
+    events.filter(event => event.latitude && event.longitude),
+    [events]
   );
 
   console.log('🗺️ EventMap loaded with', eventsWithCoordinates.length, 'events:', eventsWithCoordinates.map(e => ({ title: e.title, city: e.city, country: e.country })));
