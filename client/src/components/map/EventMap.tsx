@@ -20,6 +20,9 @@ declare global {
 
 export function EventMap({ events, className = "", height = "400px" }: EventMapProps) {
   const [mapError, setMapError] = useState<string | null>('billing'); // Default to billing error
+  const [mapInstance, setMapInstance] = useState<any>(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null);
   
   // Filter events that have coordinates
   const eventsWithCoordinates = events.filter(event => 
@@ -28,7 +31,139 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
 
   console.log('🗺️ EventMap loaded with', eventsWithCoordinates.length, 'events:', eventsWithCoordinates.map(e => ({ title: e.title, city: e.city, country: e.country })));
 
+  // Load Google Maps API
+  useEffect(() => {
+    const loadGoogleMapsAPI = () => {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      console.log('🔑 Google Maps API Key status:', apiKey ? 'Present' : 'Missing');
+      
+      if (window.google && window.google.maps) {
+        console.log('✅ Google Maps API already loaded');
+        setIsGoogleLoaded(true);
+        setMapError(null);
+        return;
+      }
+
+      if (document.querySelector('script[src*="maps.googleapis.com"]')) {
+        console.log('⏳ Google Maps script tag found, waiting for load...');
+        const checkGoogleReady = () => {
+          if (window.google && window.google.maps) {
+            console.log('✅ Google Maps API loaded successfully');
+            setIsGoogleLoaded(true);
+            setMapError(null);
+          } else {
+            setTimeout(checkGoogleReady, 100);
+          }
+        };
+        checkGoogleReady();
+        return;
+      }
+
+      if (!apiKey) {
+        console.error('❌ Google Maps API key not found in environment variables');
+        setMapError('api_key_missing');
+        return;
+      }
+
+      console.log('📡 Loading Google Maps API script...');
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initGoogleMaps`;
+      script.async = true;
+      script.defer = true;
+
+      window.initGoogleMaps = () => {
+        console.log('✅ Google Maps API callback executed successfully');
+        setIsGoogleLoaded(true);
+        setMapError(null);
+      };
+
+      script.onerror = (error) => {
+        console.error('❌ Failed to load Google Maps API script:', error);
+        setMapError('script_load_failed');
+      };
+
+      script.onload = () => {
+        console.log('📡 Google Maps script loaded, waiting for initialization...');
+      };
+
+      document.head.appendChild(script);
+    };
+
+    loadGoogleMapsAPI();
+  }, []);
+
+  // Initialize map when Google is loaded
+  useEffect(() => {
+    if (!isGoogleLoaded || !mapRef.current || eventsWithCoordinates.length === 0) {
+      console.log('🔄 Map initialization skipped:', {
+        googleLoaded: isGoogleLoaded,
+        mapRefExists: !!mapRef.current,
+        eventsCount: eventsWithCoordinates.length
+      });
+      return;
+    }
+
+    try {
+      console.log('🗺️ Initializing Google Map with', eventsWithCoordinates.length, 'events');
+      
+      // Calculate center point from all events
+      const avgLat = eventsWithCoordinates.reduce((sum, event) => sum + event.latitude!, 0) / eventsWithCoordinates.length;
+      const avgLng = eventsWithCoordinates.reduce((sum, event) => sum + event.longitude!, 0) / eventsWithCoordinates.length;
+      
+      console.log('📍 Map center calculated:', { lat: avgLat, lng: avgLng });
+
+      const map = new window.google.maps.Map(mapRef.current, {
+        zoom: eventsWithCoordinates.length === 1 ? 12 : 6,
+        center: { lat: avgLat, lng: avgLng },
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+      });
+
+      console.log('✅ Map instance created successfully');
+      setMapInstance(map);
+
+      // Add markers for each event
+      eventsWithCoordinates.forEach((event, index) => {
+        console.log(`📌 Creating marker ${index + 1}/${eventsWithCoordinates.length} for event:`, {
+          title: event.title,
+          location: `${event.city}, ${event.country}`,
+          coordinates: { lat: event.latitude, lng: event.longitude }
+        });
+
+        const marker = new window.google.maps.Marker({
+          position: { lat: event.latitude!, lng: event.longitude! },
+          map: map,
+          title: event.title,
+        });
+
+        const infoWindow = new window.google.maps.InfoWindow({
+          content: `
+            <div style="padding: 8px; max-width: 200px;">
+              <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">${event.title}</h3>
+              <p style="margin: 0 0 4px 0; font-size: 12px; color: #666;">${event.city}, ${event.country}</p>
+              ${event.shortDescription ? `<p style="margin: 0 0 8px 0; font-size: 12px;">${event.shortDescription}</p>` : ''}
+              <a href="/event/${event.id}" style="font-size: 12px; color: #007cba; text-decoration: none;">View Details →</a>
+            </div>
+          `
+        });
+
+        marker.addListener('click', () => {
+          console.log('🖱️ Map marker clicked for event:', event.title);
+          infoWindow.open(map, marker);
+        });
+
+        console.log(`✅ Marker created successfully for: ${event.title}`);
+      });
+
+      console.log('🎯 All markers created successfully');
+
+    } catch (error) {
+      console.error('❌ Error initializing Google Map:', error);
+      setMapError('map_initialization_failed');
+    }
+  }, [isGoogleLoaded, eventsWithCoordinates]);
+
   if (eventsWithCoordinates.length === 0) {
+    console.log('📍 No events with coordinates found, showing empty state');
     return (
       <div className={`${className} bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center`} style={{ height }}>
         <div className="text-center">
@@ -39,10 +174,59 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
     );
   }
 
+  // Show interactive map if Google Maps is loaded
+  if (isGoogleLoaded && !mapError) {
+    console.log('🗺️ Rendering interactive Google Map');
+    return (
+      <div className={`${className} relative`} style={{ height }}>
+        <div ref={mapRef} className="w-full h-full rounded-lg" />
+      </div>
+    );
+  }
 
+  // Show error message for API key missing
+  if (mapError === 'api_key_missing') {
+    console.log('❌ Showing API key missing error');
+    return (
+      <div className={`${className} bg-red-50 rounded-lg border-2 border-red-200 p-8`} style={{ height }}>
+        <div className="h-full flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <MapPin className="w-16 h-16 text-red-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Google Maps API Key Missing
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Please add VITE_GOOGLE_MAPS_API_KEY to your environment variables.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error message for script load failure
+  if (mapError === 'script_load_failed') {
+    console.log('❌ Showing script load failure error');
+    return (
+      <div className={`${className} bg-red-50 rounded-lg border-2 border-red-200 p-8`} style={{ height }}>
+        <div className="h-full flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <MapPin className="w-16 h-16 text-red-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Failed to Load Google Maps
+            </h3>
+            <p className="text-gray-600 mb-4">
+              There was an error loading the Google Maps API. Please check your API key and network connection.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Show error message if Google Maps billing is not enabled
   if (mapError === 'billing') {
+    console.log('💳 Showing billing requirement message');
     return (
       <div className={`${className} bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border-2 border-orange-200 p-8`} style={{ height }}>
         <div className="h-full flex items-center justify-center">
