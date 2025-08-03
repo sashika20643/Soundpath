@@ -32,6 +32,11 @@ export const APP_CONFIG = {
       description: "Manage your musical events and categories with our comprehensive dashboard for event organizers and curators.",
       keywords: "event management, music dashboard, organize events"
     },
+    map: {
+      title: "Map View - Sonic Paths",
+      description: "Explore musical events around the world on an interactive map. Discover concerts, festivals, and performances by location.",
+      keywords: "music map, events map, concerts worldwide, music discovery map"
+    },
     notFound: {
       title: "Page Not Found - Sonic Paths",
       description: "The page you're looking for doesn't exist. Explore our collection of extraordinary musical experiences instead.",
@@ -54,15 +59,18 @@ export const APP_CONFIG = {
 
 // Helper function to generate page title
 export const generatePageTitle = (pageKey: keyof typeof APP_CONFIG.pages): string => {
-  return APP_CONFIG.pages[pageKey].title;
+  const page = APP_CONFIG.pages[pageKey];
+  return page?.title || APP_CONFIG.name;
 };
 
 // Helper function to generate meta description
 export const generateMetaDescription = (pageKey: keyof typeof APP_CONFIG.pages): string => {
-  return APP_CONFIG.pages[pageKey].description;
+  const page = APP_CONFIG.pages[pageKey];
+  return page?.description || APP_CONFIG.description;
 };
 
 // Helper function to generate meta keywords
 export const generateMetaKeywords = (pageKey: keyof typeof APP_CONFIG.pages): string => {
-  return APP_CONFIG.pages[pageKey].keywords;
+  const page = APP_CONFIG.pages[pageKey];
+  return page?.keywords || "";
 };
