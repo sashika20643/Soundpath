@@ -55,7 +55,7 @@ export default function MapPage() {
 
   // Filter events that have coordinates for the map
   const eventsWithCoordinates = useMemo(() => 
-    allEvents.filter(event => event.latitude && event.longitude),
+    allEvents?.filter(event => event?.latitude && event?.longitude) || [],
     [allEvents]
   );
 
@@ -333,7 +333,7 @@ export default function MapPage() {
                           className="ml-2"
                           style={{ color: "var(--color-dark-gray)" }}
                         >
-                          {new Set(eventsWithCoordinates.map(e => e.country)).size}
+                          {new Set(eventsWithCoordinates.map(e => e?.country).filter(Boolean)).size}
                         </span>
                       </div>
                       <div>
@@ -347,7 +347,7 @@ export default function MapPage() {
                           className="ml-2"
                           style={{ color: "var(--color-dark-gray)" }}
                         >
-                          {new Set(eventsWithCoordinates.map(e => e.city)).size}
+                          {new Set(eventsWithCoordinates.map(e => e?.city).filter(Boolean)).size}
                         </span>
                       </div>
                     </div>
