@@ -22,7 +22,7 @@ export function Layout({ children }: LayoutProps) {
                 {APP_CONFIG.name}
               </h2>
             </Link>
-            
+
             {/* Navigation Links */}
             <div className="flex items-center gap-8">
               <div className="hidden md:flex items-center gap-8 text-sm">
@@ -38,6 +38,12 @@ export function Layout({ children }: LayoutProps) {
                     Events
                   </span>
                 </Link>
+                <Link href="/map">
+                  <span className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === '/map' ? 'font-medium' : ''}`} 
+                        style={{ color: location === '/map' ? 'var(--color-charcoal)' : 'var(--color-dark-gray)' }}>
+                    Map
+                  </span>
+                </Link>
                 <Link href="/dashboards/events">
                   <span className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === '/dashboards/events' ? 'font-medium' : ''}`} 
                         style={{ color: location === '/dashboards/events' ? 'var(--color-charcoal)' : 'var(--color-dark-gray)' }}>
@@ -48,7 +54,7 @@ export function Layout({ children }: LayoutProps) {
                   Contact
                 </a>
               </div>
-              
+
               {/* User Section */}
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 hover:shadow-sm cursor-pointer"
                    style={{ 

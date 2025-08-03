@@ -3,6 +3,25 @@ import { APP_CONFIG, generatePageTitle, generateMetaDescription, generateMetaKey
 
 type PageKey = keyof typeof APP_CONFIG.pages;
 
+const PAGE_METADATA = {
+  home: {
+    title: 'Musical Events Discovery Platform',
+    description: 'Discover extraordinary musical experiences worldwide'
+  },
+  eventsPublic: {
+    title: 'Events - Musical Events Discovery',
+    description: 'Browse all public musical events and experiences'
+  },
+  map: {
+    title: 'World Map - Musical Events Discovery',
+    description: 'Explore musical events worldwide on an interactive map'
+  },
+  dashboard: {
+    title: 'Dashboard - Musical Events Discovery',
+    description: 'Manage your musical events and experiences'
+  }
+};
+
 export function usePageMetadata(pageKey: PageKey, customTitle?: string, customDescription?: string) {
   useEffect(() => {
     // Set page title
