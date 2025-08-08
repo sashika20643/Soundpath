@@ -49,9 +49,12 @@ export function useUpdateEvent() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ id, ...event }: { id: string } & Partial<UpdateEvent>) =>
-      eventApi.updateEvent(id, event),
+    mutationFn: ({ id, ...event }: { id: string } & Partial<UpdateEvent>) => {
+      console.log('🔄 Mutation function called with:', { id, event });
+      return eventApi.updateEvent(id, event);
+    },
     onSuccess: (data) => {
+      console.log('✅ Update mutation successful:', data);
       queryClient.invalidateQueries({ queryKey: ['/api/events'] });
       queryClient.invalidateQueries({ queryKey: ['/api/events', data.id] });
       toast({
@@ -60,6 +63,7 @@ export function useUpdateEvent() {
       });
     },
     onError: (error) => {
+      console.error('❌ Update mutation failed:', error);
       toast({
         variant: "destructive",
         title: "Error",

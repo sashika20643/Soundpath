@@ -77,7 +77,7 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
   // Update form when event changes
   useEffect(() => {
     if (event) {
-      form.reset({
+      const formData = {
         title: event.title,
         shortDescription: event.shortDescription,
         longDescription: event.longDescription,
@@ -86,7 +86,11 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
         country: event.country || "",
         city: event.city || "",
         instagramLink: event.instagramLink || "",
-      });
+      };
+      
+      console.log('🔄 Resetting form with event data:', formData);
+      
+      form.reset(formData);
       setSelectedGenres(event.genreIds || []);
       setSelectedSettings(event.settingIds || []);
       setSelectedEventTypes(event.eventTypeIds || []);
@@ -100,16 +104,22 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
 
     const eventData = {
       ...data,
-      id: event.id,
       genreIds: selectedGenres,
       settingIds: selectedSettings,
       eventTypeIds: selectedEventTypes,
       tags: selectedTags,
     };
 
-    updateEventMutation.mutate(eventData, {
+    // Console log for debugging
+    console.log('🔄 Updating event:', event.id, eventData);
+
+    updateEventMutation.mutate({ id: event.id, ...eventData }, {
       onSuccess: () => {
+        console.log('✅ Event updated successfully');
         handleClose();
+      },
+      onError: (error) => {
+        console.error('❌ Failed to update event:', error);
       },
     });
   };
@@ -372,7 +382,8 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
             </Button>
             <Button 
               type="submit" 
-              disabled={updateEventMutation.isPending}
+              disabled={updateEventMutation.isPending || !form.formState.isValid}
+              className="min-w-[120px]"
             >
               {updateEventMutation.isPending ? "Updating..." : "Update Event"}
             </Button>
