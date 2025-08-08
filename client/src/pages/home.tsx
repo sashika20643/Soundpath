@@ -53,7 +53,11 @@ import {
   type InsertEvent,
 } from "@shared/schema";
 import { cities } from "@/lib/cities";
-import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
+import {
+  getContinentCoordinates,
+  getCountryCoordinates,
+  getCityCoordinates,
+} from "@/lib/coordinates";
 
 export default function Home() {
   usePageMetadata("home");
@@ -64,7 +68,11 @@ export default function Home() {
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
 
-  const { data: allEvents = [], isLoading, error } = useEvents({ approved: true });
+  const {
+    data: allEvents = [],
+    isLoading,
+    error,
+  } = useEvents({ approved: true });
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
@@ -130,26 +138,27 @@ export default function Home() {
   const onSubmit = async (data: InsertEvent) => {
     try {
       // Console log the request payload for testing
-      console.log('🧪 HOME FORM SUBMISSION PAYLOAD:', {
+      console.log("🧪 HOME FORM SUBMISSION PAYLOAD:", {
         ...data,
         fromDashboard: false,
         timestamp: new Date().toISOString(),
-        formType: 'home_page_public_form'
+        formType: "home_page_public_form",
       });
 
       // Events from home page require approval (approved: false)
       await createEventMutation.mutateAsync({ ...data, fromDashboard: false });
-      
+
       toast({
         title: "Event submitted successfully!",
-        description: "Your musical discovery has been submitted for review. It will appear publicly once approved.",
+        description:
+          "Your musical discovery has been submitted for review. It will appear publicly once approved.",
       });
       form.reset();
       setSelectedContinent("");
-      
-      console.log('✅ HOME FORM SUBMISSION SUCCESS');
+
+      console.log("✅ HOME FORM SUBMISSION SUCCESS");
     } catch (error) {
-      console.error('❌ HOME FORM SUBMISSION ERROR:', error);
+      console.error("❌ HOME FORM SUBMISSION ERROR:", error);
       toast({
         title: "Failed to submit event",
         description: "Please check your information and try again.",
@@ -261,8 +270,8 @@ export default function Home() {
 
             {/* Interactive Google Maps */}
             <div className="scroll-animate scroll-animate-delay-1">
-              <EventMap 
-                events={allEvents} 
+              <EventMap
+                events={allEvents}
                 height="500px"
                 className="mx-auto rounded-lg"
               />
@@ -281,7 +290,7 @@ export default function Home() {
                 className="font-serif text-section-title mb-8"
                 style={{ color: "var(--color-charcoal)" }}
               >
-                🕵️‍♀️ Last Discoveries
+                Last Discoveries
               </h2>
               <p
                 className="text-editorial max-w-2xl mx-auto"
@@ -523,7 +532,8 @@ export default function Home() {
                           form.setValue("city", "");
                           setSelectedContinent(value);
                           // Auto-generate coordinates for continent center
-                          const continentCoords = getContinentCoordinates(value);
+                          const continentCoords =
+                            getContinentCoordinates(value);
                           if (continentCoords) {
                             form.setValue("latitude", continentCoords.lat);
                             form.setValue("longitude", continentCoords.lng);
@@ -608,11 +618,18 @@ export default function Home() {
                         onChange={(value) => {
                           form.setValue("city", value);
                           // Auto-generate coordinates for city
-                          const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", value);
+                          const cityCoords = getCityCoordinates(
+                            selectedContinent,
+                            form.watch("country") || "",
+                            value,
+                          );
                           if (cityCoords) {
                             form.setValue("latitude", cityCoords.lat);
                             form.setValue("longitude", cityCoords.lng);
-                            form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                            form.setValue(
+                              "locationName",
+                              `${value}, ${form.watch("country")}, ${selectedContinent}`,
+                            );
                           }
                         }}
                         placeholder="Search for a city..."
@@ -620,15 +637,26 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                  
+
                   {/* Display selected location coordinates */}
                   {form.watch("latitude") && form.watch("longitude") && (
-                    <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: "var(--color-soft-beige)" }}>
-                      <p className="text-sm" style={{ color: "var(--color-dark-gray)" }}>
-                        <strong>Location:</strong> {form.watch("city")}, {form.watch("country")}, {form.watch("continent")}
+                    <div
+                      className="mt-4 p-4 rounded-lg"
+                      style={{ backgroundColor: "var(--color-soft-beige)" }}
+                    >
+                      <p
+                        className="text-sm"
+                        style={{ color: "var(--color-dark-gray)" }}
+                      >
+                        <strong>Location:</strong> {form.watch("city")},{" "}
+                        {form.watch("country")}, {form.watch("continent")}
                       </p>
-                      <p className="text-xs mt-1" style={{ color: "var(--color-mid-gray)" }}>
-                        Coordinates: {form.watch("latitude")?.toFixed(6)}, {form.watch("longitude")?.toFixed(6)}
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--color-mid-gray)" }}
+                      >
+                        Coordinates: {form.watch("latitude")?.toFixed(6)},{" "}
+                        {form.watch("longitude")?.toFixed(6)}
                       </p>
                     </div>
                   )}
@@ -747,19 +775,31 @@ export default function Home() {
                       </>
                     )}
                   </button>
-                  
+
                   {/* Form validation errors */}
                   {Object.keys(form.formState.errors).length > 0 && (
-                    <div className="mt-6 p-4 rounded-lg" style={{ backgroundColor: "#fee2e2", border: "1px solid #fecaca" }}>
-                      <p className="text-sm font-medium" style={{ color: "#dc2626" }}>
+                    <div
+                      className="mt-6 p-4 rounded-lg"
+                      style={{
+                        backgroundColor: "#fee2e2",
+                        border: "1px solid #fecaca",
+                      }}
+                    >
+                      <p
+                        className="text-sm font-medium"
+                        style={{ color: "#dc2626" }}
+                      >
                         Please fix the following errors:
                       </p>
                       <ul className="mt-2 text-sm" style={{ color: "#991b1b" }}>
-                        {Object.entries(form.formState.errors).map(([field, error]) => (
-                          <li key={field} className="list-disc ml-5">
-                            {field}: {error?.message || "This field is required"}
-                          </li>
-                        ))}
+                        {Object.entries(form.formState.errors).map(
+                          ([field, error]) => (
+                            <li key={field} className="list-disc ml-5">
+                              {field}:{" "}
+                              {error?.message || "This field is required"}
+                            </li>
+                          ),
+                        )}
                       </ul>
                     </div>
                   )}
@@ -859,196 +899,6 @@ export default function Home() {
             )}
           </div>
         </section>
-
-        {/* Footer - Kinfolk Minimal */}
-        <footer
-          className="section-padding"
-          style={{
-            backgroundColor: "var(--color-charcoal)",
-            color: "var(--color-warm-white)",
-          }}
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="scroll-animate text-center mb-16">
-              <h3
-                className="font-serif text-3xl mb-8"
-                style={{ color: "var(--color-warm-white)" }}
-              >
-                Soundpath
-              </h3>
-              <p
-                className="text-editorial max-w-lg mx-auto mb-12"
-                style={{ color: "var(--color-mid-gray)" }}
-              >
-                Discovering breathtaking musical destinations worldwide. Where
-                music and place create something extraordinary.
-              </p>
-            </div>
-
-            <div className="scroll-animate scroll-animate-delay-1 grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
-              <div>
-                <h4
-                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                  style={{ color: "var(--color-warm-white)" }}
-                >
-                  Explore
-                </h4>
-                <ul className="space-y-3">
-                  <li>
-                    <Link
-                      href="/events"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      All Destinations
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/dashboard"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Categories
-                    </Link>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Featured
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h4
-                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                  style={{ color: "var(--color-warm-white)" }}
-                >
-                  Community
-                </h4>
-                <ul className="space-y-3">
-                  <li>
-                    <a
-                      href="#submit"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Submit Discovery
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Guidelines
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      About
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h4
-                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                  style={{ color: "var(--color-warm-white)" }}
-                >
-                  Connect
-                </h4>
-                <ul className="space-y-3">
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Newsletter
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Contact
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Support
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h4
-                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                  style={{ color: "var(--color-warm-white)" }}
-                >
-                  Legal
-                </h4>
-                <ul className="space-y-3">
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Privacy
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Terms
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Cookies
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div
-              className="scroll-animate scroll-animate-delay-2 text-center pt-12"
-              style={{ borderTop: "1px solid var(--color-dark-gray)" }}
-            >
-              <p className="text-sm" style={{ color: "var(--color-mid-gray)" }}>
-                © 2025 Soundpath. All rights reserved.
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
     </Layout>
   );
