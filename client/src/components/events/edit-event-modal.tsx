@@ -78,9 +78,9 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
   useEffect(() => {
     if (event) {
       const formData = {
-        title: event.title,
-        shortDescription: event.shortDescription,
-        longDescription: event.longDescription,
+        title: event.title || "",
+        shortDescription: event.shortDescription || "",
+        longDescription: event.longDescription || "",
         heroImage: event.heroImage || "",
         continent: event.continent || "",
         country: event.country || "",
@@ -90,7 +90,7 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
       
       console.log('🔄 Resetting form with event data:', formData);
       
-      form.reset(formData);
+      form.reset(formData, { keepDirty: false, keepTouched: false });
       setSelectedGenres(event.genreIds || []);
       setSelectedSettings(event.settingIds || []);
       setSelectedEventTypes(event.eventTypeIds || []);
@@ -101,6 +101,14 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
 
   const onSubmit = async (data: UpdateEvent) => {
     if (!event) return;
+
+    // Debug form state
+    console.log('📋 Form validation state:', {
+      isValid: form.formState.isValid,
+      errors: form.formState.errors,
+      isDirty: form.formState.isDirty,
+      isSubmitting: form.formState.isSubmitting,
+    });
 
     const eventData = {
       ...data,
@@ -382,7 +390,7 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
             </Button>
             <Button 
               type="submit" 
-              disabled={updateEventMutation.isPending || !form.formState.isValid}
+              disabled={updateEventMutation.isPending}
               className="min-w-[120px]"
             >
               {updateEventMutation.isPending ? "Updating..." : "Update Event"}
