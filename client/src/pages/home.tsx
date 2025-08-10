@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { CityAutocomplete } from "@/components/ui/city-autocomplete";
 import { GooglePlacesAutocomplete } from "@/components/ui/google-places-autocomplete";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
+import { ChatBot } from "@/components/ui/chatbot";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
 import { useEvents, useCreateEvent } from "@/hooks/use-events";
@@ -900,6 +901,9 @@ export default function Home() {
           </div>
         </section>
       </div>
+      
+      {/* Floating ChatBot */}
+      <ChatBot />
     </Layout>
   );
 }
