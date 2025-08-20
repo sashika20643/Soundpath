@@ -35,16 +35,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     authController.login.bind(authController)
   );
 
-  app.post(
-    "/api/auth/register",
-    validateRequest(registerValidator),
-    authController.register.bind(authController)
-  );
-
   app.get(
-    "/api/auth/me",
-    authenticateToken,
-    authController.me.bind(authController)
+    "/api/auth/verify",
+    authController.verifyToken.bind(authController)
   );
 
   // Category routes

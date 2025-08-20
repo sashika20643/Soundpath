@@ -7,37 +7,31 @@ import {
   index,
   boolean,
   real,
+  varchar,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// User schemas
-export const insertUserSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters").max(50),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  email: z.string().email().optional(),
-  role: z.enum(["admin", "user"]).default("user"),
+// Database tables
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  username: varchar("username", { length: 50 }).notNull().unique(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+  role: varchar("role", { length: 20 }).notNull().default("admin"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const selectUserSchema = z.object({
-  id: z.string().uuid(),
-  username: z.string(),
-  email: z.string().nullable(),
-  role: z.enum(["admin", "user"]),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+export const categories = pgTable("categories", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  type: text("type").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type SelectUser = z.infer<typeof selectUserSchema>;
-export type LoginRequest = z.infer<typeof loginSchema>;
-
-// Category schemas
 export const insertCategorySchema = createInsertSchema(categories, {
   name: z
     .string()
@@ -72,24 +66,31 @@ export const updateCategorySchema = createInsertSchema(categories, {
 
 export const selectCategorySchema = createSelectSchema(categories);
 
-export type InsertCategory = z.infer<typeof insertCategorySchema>;
-export type UpdateCategory = z.infer<typeof updateCategorySchema>;
-export type Category = typeof categories.$inferSelect;
-
-// Keep existing users table
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
-});
-
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
+// Type definitions
 export type User = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+export type UpdateUser = Partial<InsertUser> & { id: string };
+
+export type Category = typeof categories.$inferSelect;
+export type InsertCategory = typeof categories.$inferInsert;
+export type UpdateCategory = Partial<InsertCategory> & { id: string };
+
+export type Event = typeof events.$inferSelect;
+export type InsertEvent = typeof events.$inferInsert;
+export type UpdateEvent = Partial<InsertEvent> & { id: string };
+
+export type EventCategory = typeof eventCategories.$inferSelect;
+
+// Validation schemas
+export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, updatedAt: true });
+export const updateUserSchema = createSelectSchema(users).partial().required({ id: true });
+export const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export const insertCategorySchema = createInsertSchema(categories);
+export const updateCategorySchema = createSelectSchema(categories).partial().required({ id: true });
 
 // Events table
 export const events = pgTable(
