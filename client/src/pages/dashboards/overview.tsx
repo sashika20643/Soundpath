@@ -8,11 +8,11 @@ import { FaCalendarAlt, FaTags, FaCheckCircle, FaExclamationTriangle } from "rea
 export default function DashboardOverview() {
   usePageMetadata('dashboard');
   
-  const { data: allEvents = [] } = useEvents({});
+  const { data: approvedEvents = [] } = useEvents({ approved: true });
   const { data: pendingEvents = [] } = useEvents({ approved: false });
   const { data: categories = [] } = useCategories({});
 
-  const approvedEvents = allEvents.filter(event => event.approved);
+  const totalEvents = approvedEvents.length + pendingEvents.length;
 
   return (
     <div className="space-y-6">
@@ -30,7 +30,7 @@ export default function DashboardOverview() {
             <FaCalendarAlt className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{allEvents.length}</div>
+            <div className="text-2xl font-bold">{totalEvents}</div>
             <p className="text-xs text-muted-foreground">
               All events in the system
             </p>
