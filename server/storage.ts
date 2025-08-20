@@ -199,8 +199,15 @@ export class DatabaseStorage implements IStorage {
     }
 
     if (filters?.tags && filters.tags.length > 0) {
-      const tags = filters.tags.map(tag => `'${tag.replace(/'/g, "''")}'`).join(',');
-      conditions.push(sql`${events.tags} @> ARRAY[${sql.raw(tags)}]::text[]`);
+      // Use overlap operator (&&) to check if any of the filter tags exist in the event tags
+      // This handles case-insensitive matching by converting both sides to lowercase
+      const tagConditions = filters.tags.map(tag => 
+        sql`EXISTS (
+          SELECT 1 FROM unnest(${events.tags}) AS event_tag 
+          WHERE LOWER(event_tag) = LOWER(${tag})
+        )`
+      );
+      conditions.push(sql`(${sql.join(tagConditions, sql` OR `)})`);
     }
 
     if (conditions.length > 0) {
