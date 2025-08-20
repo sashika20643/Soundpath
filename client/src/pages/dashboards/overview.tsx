@@ -3,12 +3,12 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, CheckCircle, Clock, BarChart3 } from "lucide-react";
-import { api } from "@/lib/api";
+import { eventApi } from "@/lib/api";
 
 export default function DashboardOverview() {
   const { data: events = [] } = useQuery({
     queryKey: ["events"],
-    queryFn: () => api.getEvents(),
+    queryFn: () => eventApi.getEvents(),
   });
 
   // Calculate statistics
