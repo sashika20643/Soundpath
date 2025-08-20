@@ -307,8 +307,11 @@ export default function Home() {
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={i}
-                    className="scroll-animate card-minimal rounded-lg overflow-hidden"
-                    style={{ transitionDelay: `${i * 0.1}s` }}
+                    className="card-minimal rounded-lg overflow-hidden opacity-100"
+                    style={{ 
+                      transitionDelay: `${i * 0.1}s`,
+                      animation: 'none'
+                    }}
                   >
                     <div
                       className="h-80 animate-pulse"
@@ -361,18 +364,27 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-            ) : (
+            ) : latestEvents.length > 0 ? (
               <div className="grid-magazine">
                 {latestEvents.map((event, index) => (
-                  <EventCard
+                  <div
                     key={event.id}
-                    event={event}
-                    index={index}
-                    showNewBadge={true}
-                  />
+                    className="opacity-100 visible"
+                    style={{
+                      animation: 'none',
+                      transform: 'none',
+                      transition: 'none'
+                    }}
+                  >
+                    <EventCard
+                      event={event}
+                      index={index}
+                      showNewBadge={true}
+                    />
+                  </div>
                 ))}
               </div>
-            )}
+            ) : null}
 
             {latestEvents.length === 0 && !isLoading && (
               <div className="scroll-animate text-center py-20">
@@ -837,8 +849,11 @@ export default function Home() {
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={i}
-                    className="scroll-animate card-minimal rounded-lg overflow-hidden"
-                    style={{ transitionDelay: `${i * 0.15}s` }}
+                    className="card-minimal rounded-lg overflow-hidden opacity-100"
+                    style={{ 
+                      transitionDelay: `${i * 0.15}s`,
+                      animation: 'none'
+                    }}
                   >
                     <div
                       className="h-80 animate-pulse"
@@ -891,13 +906,23 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-            ) : (
+            ) : hiddenGems.length > 0 ? (
               <div className="grid-magazine">
                 {hiddenGems.map((event, index) => (
-                  <EventCard key={event.id} event={event} index={index} />
+                  <div
+                    key={event.id}
+                    className="opacity-100 visible"
+                    style={{
+                      animation: 'none',
+                      transform: 'none',
+                      transition: 'none'
+                    }}
+                  >
+                    <EventCard event={event} index={index} />
+                  </div>
                 ))}
               </div>
-            )}
+            ) : null}
           </div>
         </section>
       </div>
