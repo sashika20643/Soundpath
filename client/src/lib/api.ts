@@ -31,25 +31,25 @@ export const categoryApi = {
     const params = new URLSearchParams();
     if (filters?.type) params.append('type', filters.type);
     if (filters?.search) params.append('search', filters.search);
-    
+
     const url = `/api/categories${params.toString() ? `?${params.toString()}` : ''}`;
     const response = await fetch(url, { credentials: 'include' });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch categories: ${response.statusText}`);
     }
-    
+
     const result: ApiResponse<Category[]> = await response.json();
     return result.data || [];
   },
 
   getCategory: async (id: string): Promise<Category> => {
     const response = await fetch(`/api/categories/${id}`, { credentials: 'include' });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch category: ${response.statusText}`);
     }
-    
+
     const result: ApiResponse<Category> = await response.json();
     return result.data!;
   },
@@ -83,30 +83,32 @@ export const eventApi = {
     if (filters?.tags?.length) params.append('tags', filters.tags.join(','));
     if (filters?.search) params.append('search', filters.search);
     if (filters?.approved !== undefined) params.append('approved', filters.approved.toString());
-    
+
     const url = `/api/events${params.toString() ? `?${params.toString()}` : ''}`;
     const response = await fetch(url, { credentials: 'include' });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch events: ${response.statusText}`);
     }
-    
+
     const result: ApiResponse<Event[]> = await response.json();
     return result.data || [];
   },
 
   getEvent: async (id: string): Promise<Event> => {
     const response = await fetch(`/api/events/${id}`, { credentials: 'include' });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch event: ${response.statusText}`);
     }
-    
+
     const result: ApiResponse<Event> = await response.json();
     return result.data!;
   },
 
   createEvent: async (event: InsertEvent & { fromDashboard?: boolean }): Promise<Event> => {
+    console.log('📤 API: Sending event creation request:', event);
+
     const response = await apiRequest('POST', '/api/events', event);
     const result: ApiResponse<Event> = await response.json();
     return result.data!;

@@ -103,38 +103,24 @@ export const events = pgTable(
   }),
 );
 
-export const insertEventSchema = createInsertSchema(events, {
-  title: z
-    .string()
-    .min(2, "Title must be at least 2 characters")
-    .max(200, "Title must be less than 200 characters"),
-  shortDescription: z
-    .string()
-    .min(10, "Short description must be at least 10 characters")
-    .max(500, "Short description must be less than 500 characters"),
-  longDescription: z
-    .string()
-    .min(20, "Long description must be at least 20 characters"),
-  date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
-  heroImage: z.string().url("Must be a valid URL").optional(),
-  instagramLink: z.string().url("Must be a valid Instagram URL").optional(),
-  tags: z.array(z.string()).optional(),
-  continent: z.string().optional(),
-  country: z.string().optional(),
-  city: z.string().optional(),
+export const insertEventSchema = z.object({
+  title: z.string().min(1, "Title is required").max(200),
+  shortDescription: z.string().min(1, "Short description is required").max(500),
+  longDescription: z.string().min(1, "Long description is required"),
+  heroImage: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  continent: z.string().min(1, "Continent is required"),
+  country: z.string().min(1, "Country is required"),
+  city: z.string().min(1, "City is required"),
+  locationName: z.string().optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-  locationName: z.string().optional(),
-  genreIds: z.array(z.string()).optional(),
-  settingIds: z.array(z.string()).optional(),
-  eventTypeIds: z.array(z.string()).optional(),
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  approved: true,
+  date: z.string().min(1, "Date is required"),
+  instagramLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  genreIds: z.array(z.string()).default([]),
+  settingIds: z.array(z.string()).default([]),
+  eventTypeIds: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
+  fromDashboard: z.boolean().optional(),
 });
 
 export const updateEventSchema = createInsertSchema(events, {

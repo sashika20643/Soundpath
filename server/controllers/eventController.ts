@@ -76,9 +76,16 @@ export class EventController {
     try {
       // Check if this is from dashboard (approved=true) or home page (approved=false)
       console.log("Request body:", req.body);
+      console.log("fromDashboard property:", req.body.fromDashboard);
+      console.log("fromDashboard type:", typeof req.body.fromDashboard);
+      
       const isFromDashboard = req.body.fromDashboard === true;
+      console.log("isFromDashboard computed value:", isFromDashboard);
+      
       // Events from dashboard should be automatically approved
       const approved = isFromDashboard;
+      console.log("Final approved status:", approved);
+      
       const event = await eventService.createEvent(req.body, approved);
 
       res
