@@ -53,12 +53,17 @@ import {
   type Event,
   type InsertEvent,
 } from "@shared/schema";
-import { cities } from "@/lib/cities";
+import { cities, getCitiesForCountry } from "@/lib/cities";
 import {
   getContinentCoordinates,
   getCountryCoordinates,
   getCityCoordinates,
 } from "@/lib/coordinates";
+
+// Define continents and countries for the form
+const continents = Object.keys(cities);
+const availableCountries = (continent: string) =>
+  continent ? Object.keys(cities[continent as keyof typeof cities] || {}) : [];
 
 export default function Home() {
   usePageMetadata("home");
@@ -521,69 +526,91 @@ export default function Home() {
                 </div>
 
                 {/* Location */}
-                <div className="space-y-8">
-                  <h3
-                    className="font-serif text-xl"
-                    style={{ color: "var(--color-charcoal)" }}
-                  >
-                    Location
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="space-y-3">
-                      <Label
-                        htmlFor="continent"
-                        className="text-sm font-medium uppercase tracking-wide"
-                        style={{ color: "var(--color-charcoal)" }}
-                      >
-                        Continent *
-                      </Label>
-                      <Select
-                        value={form.watch("continent") || ""}
-                        onValueChange={(value) => {
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="continent"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
+                      Continent *
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="continent"
+                        {...form.register("continent")}
+                        placeholder="e.g. North America, Europe, Asia..."
+                        className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
+                        style={{
+                          borderBottomColor: "var(--color-light-gray)",
+                          color: "var(--color-charcoal)",
+                        }}
+                        onChange={(e) => {
+                          const value = e.target.value;
                           form.setValue("continent", value);
-                          form.setValue("country", "");
-                          form.setValue("city", "");
                           setSelectedContinent(value);
                           // Auto-generate coordinates for continent center
-                          const continentCoords =
-                            getContinentCoordinates(value);
+                          const continentCoords = getContinentCoordinates(value);
                           if (continentCoords) {
                             form.setValue("latitude", continentCoords.lat);
                             form.setValue("longitude", continentCoords.lng);
                           }
                         }}
-                      >
-                        <SelectTrigger
-                          className="py-4 border-0 border-b-2 rounded-none bg-transparent"
-                          style={{
-                            borderBottomColor: "var(--color-light-gray)",
-                          }}
-                        >
-                          <SelectValue placeholder="Select continent" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.keys(cities).map((continent) => (
-                            <SelectItem key={continent} value={continent}>
+                      />
+                      <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                        {form.watch("continent") && continents
+                          .filter(continent => 
+                            continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
+                          )
+                          .slice(0, 5)
+                          .map(continent => (
+                            <button
+                              key={continent}
+                              type="button"
+                              className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                              onClick={() => {
+                                form.setValue("continent", continent);
+                                setSelectedContinent(continent);
+                                const continentCoords = getContinentCoordinates(continent);
+                                if (continentCoords) {
+                                  form.setValue("latitude", continentCoords.lat);
+                                  form.setValue("longitude", continentCoords.lng);
+                                }
+                              }}
+                            >
                               {continent}
-                            </SelectItem>
+                            </button>
                           ))}
-                        </SelectContent>
-                      </Select>
+                      </div>
                     </div>
+                    {form.formState.errors.continent && (
+                      <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                        {form.formState.errors.continent.message}
+                      </p>
+                    )}
+                  </div>
 
-                    <div className="space-y-3">
-                      <Label
-                        htmlFor="country"
-                        className="text-sm font-medium uppercase tracking-wide"
-                        style={{ color: "var(--color-charcoal)" }}
-                      >
-                        Country *
-                      </Label>
-                      <Select
-                        value={form.watch("country") || ""}
-                        onValueChange={(value) => {
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="country"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
+                      Country *
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="country"
+                        {...form.register("country")}
+                        placeholder="e.g. United States, France, Japan..."
+                        className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
+                        style={{
+                          borderBottomColor: "var(--color-light-gray)",
+                          color: "var(--color-charcoal)",
+                        }}
+                        onChange={(e) => {
+                          const value = e.target.value;
                           form.setValue("country", value);
-                          form.setValue("city", "");
                           // Auto-generate coordinates for country center
                           const countryCoords = getCountryCoordinates(value);
                           if (countryCoords) {
@@ -591,44 +618,64 @@ export default function Home() {
                             form.setValue("longitude", countryCoords.lng);
                           }
                         }}
-                        disabled={!form.watch("continent")}
-                      >
-                        <SelectTrigger
-                          className="py-4 border-0 border-b-2 rounded-none bg-transparent"
-                          style={{
-                            borderBottomColor: "var(--color-light-gray)",
-                          }}
-                        >
-                          <SelectValue placeholder="Select country" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {form.watch("continent") &&
-                            Object.keys(
-                              cities[
-                                form.watch("continent") as keyof typeof cities
-                              ] || {},
-                            ).map((country) => (
-                              <SelectItem key={country} value={country}>
-                                {country}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
+                      />
+                      <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                        {form.watch("country") && availableCountries(selectedContinent)
+                          .filter(country => 
+                            country.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
+                          )
+                          .slice(0, 5)
+                          .map(country => (
+                            <button
+                              key={country}
+                              type="button"
+                              className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                              onClick={() => {
+                                form.setValue("country", country);
+                                const countryCoords = getCountryCoordinates(country);
+                                if (countryCoords) {
+                                  form.setValue("latitude", countryCoords.lat);
+                                  form.setValue("longitude", countryCoords.lng);
+                                }
+                              }}
+                            >
+                              {country}
+                            </button>
+                          ))}
+                        {form.watch("country") && !selectedContinent && (
+                          <div className="px-4 py-2 text-xs text-gray-500">
+                            Popular countries: United States, United Kingdom, Canada, France, Germany, Japan, Australia...
+                          </div>
+                        )}
+                      </div>
                     </div>
+                    {form.formState.errors.country && (
+                      <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                        {form.formState.errors.country.message}
+                      </p>
+                    )}
+                  </div>
 
-                    <div className="space-y-3">
-                      <Label
-                        htmlFor="city"
-                        className="text-sm font-medium uppercase tracking-wide"
-                        style={{ color: "var(--color-charcoal)" }}
-                      >
-                        City *
-                      </Label>
-                      <CityAutocomplete
-                        continent={selectedContinent}
-                        country={form.watch("country") || ""}
-                        value={form.watch("city") || ""}
-                        onChange={(value) => {
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="city"
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: "var(--color-charcoal)" }}
+                    >
+                      City *
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="city"
+                        {...form.register("city")}
+                        placeholder="e.g. New York, London, Tokyo..."
+                        className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
+                        style={{
+                          borderBottomColor: "var(--color-light-gray)",
+                          color: "var(--color-charcoal)",
+                        }}
+                        onChange={(e) => {
+                          const value = e.target.value;
                           form.setValue("city", value);
                           // Auto-generate coordinates for city
                           const cityCoords = getCityCoordinates(
@@ -645,35 +692,72 @@ export default function Home() {
                             );
                           }
                         }}
-                        placeholder="Search for a city..."
-                        disabled={!form.watch("country")}
                       />
+                      {selectedContinent && form.watch("country") && (
+                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                          {form.watch("city") && getCitiesForCountry(selectedContinent, form.watch("country") || "")
+                            .filter(city => 
+                              city.toLowerCase().includes(form.watch("city")?.toLowerCase() || "")
+                            )
+                            .slice(0, 5)
+                            .map(city => (
+                              <button
+                                key={city}
+                                type="button"
+                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                onClick={() => {
+                                  form.setValue("city", city);
+                                  const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", city);
+                                  if (cityCoords) {
+                                    form.setValue("latitude", cityCoords.lat);
+                                    form.setValue("longitude", cityCoords.lng);
+                                    form.setValue("locationName", `${city}, ${form.watch("country")}, ${selectedContinent}`);
+                                  }
+                                }}
+                              >
+                                {city}
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                      {!selectedContinent && !form.watch("country") && (
+                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg">
+                          <div className="px-4 py-2 text-xs text-gray-500">
+                            Popular cities: New York, London, Paris, Tokyo, Sydney, Los Angeles, Berlin, Rome...
+                          </div>
+                        </div>
+                      )}
                     </div>
+                    {form.formState.errors.city && (
+                      <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
+                        {form.formState.errors.city.message}
+                      </p>
+                    )}
                   </div>
-
-                  {/* Display selected location coordinates */}
-                  {form.watch("latitude") && form.watch("longitude") && (
-                    <div
-                      className="mt-4 p-4 rounded-lg"
-                      style={{ backgroundColor: "var(--color-soft-beige)" }}
-                    >
-                      <p
-                        className="text-sm"
-                        style={{ color: "var(--color-dark-gray)" }}
-                      >
-                        <strong>Location:</strong> {form.watch("city")},{" "}
-                        {form.watch("country")}, {form.watch("continent")}
-                      </p>
-                      <p
-                        className="text-xs mt-1"
-                        style={{ color: "var(--color-mid-gray)" }}
-                      >
-                        Coordinates: {form.watch("latitude")?.toFixed(6)},{" "}
-                        {form.watch("longitude")?.toFixed(6)}
-                      </p>
-                    </div>
-                  )}
                 </div>
+
+                {/* Display selected location coordinates */}
+                {form.watch("latitude") && form.watch("longitude") && (
+                  <div
+                    className="mt-4 p-4 rounded-lg"
+                    style={{ backgroundColor: "var(--color-soft-beige)" }}
+                  >
+                    <p
+                      className="text-sm"
+                      style={{ color: "var(--color-dark-gray)" }}
+                    >
+                      <strong>Location:</strong> {form.watch("city")},{" "}
+                      {form.watch("country")}, {form.watch("continent")}
+                    </p>
+                    <p
+                      className="text-xs mt-1"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Coordinates: {form.watch("latitude")?.toFixed(6)},{" "}
+                      {form.watch("longitude")?.toFixed(6)}
+                    </p>
+                  </div>
+                )}
 
                 {/* Instagram Link */}
                 <div className="space-y-8">
@@ -926,7 +1010,7 @@ export default function Home() {
           </div>
         </section>
       </div>
-      
+
       {/* Floating ChatBot */}
       <ChatBot />
     </Layout>
