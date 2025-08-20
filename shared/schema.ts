@@ -96,6 +96,7 @@ export const events = pgTable(
     approved: boolean("approved").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    fromDashboard: boolean("from_dashboard").default(false),
   },
   (table) => ({
     // Index on date for efficient sorting
