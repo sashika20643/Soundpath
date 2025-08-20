@@ -47,39 +47,39 @@ export default function DashboardEvents() {
 
   const getEventCategories = (event: Event) => {
     const eventCategories: Category[] = [];
-    
+
     if (event.genreIds) {
-      event.genreIds.forEach(id => {
-        const category = categories.find(cat => cat.id === id);
+      event.genreIds.forEach((id) => {
+        const category = categories.find((cat) => cat.id === id);
         if (category) eventCategories.push(category);
       });
     }
-    
+
     if (event.settingIds) {
-      event.settingIds.forEach(id => {
-        const category = categories.find(cat => cat.id === id);
+      event.settingIds.forEach((id) => {
+        const category = categories.find((cat) => cat.id === id);
         if (category) eventCategories.push(category);
       });
     }
-    
+
     if (event.eventTypeIds) {
-      event.eventTypeIds.forEach(id => {
-        const category = categories.find(cat => cat.id === id);
+      event.eventTypeIds.forEach((id) => {
+        const category = categories.find((cat) => cat.id === id);
         if (category) eventCategories.push(category);
       });
     }
-    
+
     return eventCategories;
   };
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-      
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-gray-900">Events Management</h1>
+            <h1 className="text-2xl font-semibold text-gray-900">
+              Events Management
+            </h1>
             <Button onClick={() => setIsCreateModalOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Create Event
@@ -89,10 +89,7 @@ export default function DashboardEvents() {
 
         <div className="flex-1 overflow-auto p-6">
           <div className="space-y-6">
-            <EventFilters
-              onFiltersChange={setFilters}
-              filters={filters}
-            />
+            <EventFilters onFiltersChange={setFilters} filters={filters} />
 
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -116,7 +113,9 @@ export default function DashboardEvents() {
               <Card>
                 <CardContent className="text-center py-12">
                   <Music className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No events found</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No events found
+                  </h3>
                   <p className="text-gray-500 mb-4">
                     Get started by creating your first event.
                   </p>
@@ -130,9 +129,12 @@ export default function DashboardEvents() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {events.map((event) => {
                   const eventCategories = getEventCategories(event);
-                  
+
                   return (
-                    <Card key={event.id} className="group hover:shadow-md transition-shadow">
+                    <Card
+                      key={event.id}
+                      className="group hover:shadow-md transition-shadow"
+                    >
                       <CardHeader>
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
@@ -143,11 +145,14 @@ export default function DashboardEvents() {
                               <div className="flex items-center gap-1">
                                 <Calendar className="w-4 h-4" />
                                 <span>
-                                  {new Date(event.date).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                  })}
+                                  {new Date(event.date).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "short",
+                                      day: "numeric",
+                                    },
+                                  )}
                                 </span>
                               </div>
                               <div className="flex items-center gap-1">
@@ -158,13 +163,17 @@ export default function DashboardEvents() {
                           </div>
                         </div>
                       </CardHeader>
-                      
+
                       <CardContent>
                         <div className="space-y-4">
                           {eventCategories.length > 0 && (
                             <div className="flex flex-wrap gap-1">
                               {eventCategories.slice(0, 3).map((category) => (
-                                <Badge key={category.id} variant="secondary" className="text-xs">
+                                <Badge
+                                  key={category.id}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
                                   {category.name}
                                 </Badge>
                               ))}
@@ -175,11 +184,11 @@ export default function DashboardEvents() {
                               )}
                             </div>
                           )}
-                          
+
                           <p className="text-sm text-gray-600 line-clamp-3">
                             {event.shortDescription}
                           </p>
-                          
+
                           <div className="flex gap-2 pt-2">
                             <Button
                               variant="outline"

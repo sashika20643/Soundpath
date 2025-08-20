@@ -11,7 +11,7 @@ import EventsPublic from "@/pages/events-public";
 import MapPage from "@/pages/map";
 import DashboardEvents from "@/pages/dashboards/events";
 import EventDetails from "@/pages/event-details";
-import ApprovalDashboard from "@/pages/approval-dashboard";
+import ApprovalDashboard from "@/pages/dashboards/approval-dashboard";
 import AdminLoginPage from "@/pages/admin-login";
 import NotFound from "@/pages/not-found";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
@@ -46,7 +46,7 @@ function Router() {
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
-      <Route path="/admin/approvals">
+      <Route path="/dashboards/approvals">
         <ProtectedRoute>
           <DashboardLayout>
             <ApprovalDashboard />

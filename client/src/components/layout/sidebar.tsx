@@ -1,5 +1,13 @@
 import { Link, useLocation } from "wouter";
-import { FaCubes, FaTags, FaUsers, FaCalendarAlt, FaChartBar, FaCog, FaCheckCircle } from "react-icons/fa";
+import {
+  FaCubes,
+  FaTags,
+  FaUsers,
+  FaCalendarAlt,
+  FaChartBar,
+  FaCog,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 export function Sidebar() {
   const [location] = useLocation();
@@ -8,9 +16,24 @@ export function Sidebar() {
     {
       title: "Management",
       items: [
-        { icon: FaChartBar, label: "Overview", href: "/dashboards", active: location === "/dashboards" },
-        { icon: FaCalendarAlt, label: "Events", href: "/dashboards/events", active: location === "/dashboards/events" },
-        { icon: FaCheckCircle, label: "Event Approvals", href: "/admin/approvals", active: location === "/admin/approvals" },
+        {
+          icon: FaChartBar,
+          label: "Overview",
+          href: "/dashboards",
+          active: location === "/dashboards",
+        },
+        {
+          icon: FaCalendarAlt,
+          label: "Events",
+          href: "/dashboards/events",
+          active: location === "/dashboards/events",
+        },
+        {
+          icon: FaCheckCircle,
+          label: "Event Approvals",
+          href: "/dashboards/approvals",
+          active: location === "/admin/approvals",
+        },
       ],
     },
   ];
@@ -23,7 +46,7 @@ export function Sidebar() {
           Admin Dashboard
         </h1>
       </div>
-      
+
       <nav className="mt-6">
         {navigationItems.map((section) => (
           <div key={section.title} className="px-3 mb-6">

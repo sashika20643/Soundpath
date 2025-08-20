@@ -1,4 +1,13 @@
-import { pgTable, text, serial, timestamp, uuid, index, boolean, real } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  serial,
+  timestamp,
+  uuid,
+  index,
+  boolean,
+  real,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -11,7 +20,10 @@ export const categories = pgTable("categories", {
 });
 
 export const insertCategorySchema = createInsertSchema(categories, {
-  name: z.string().min(2, "Name must be at least 2 characters").max(50, "Name must be less than 50 characters"),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be less than 50 characters"),
   type: z.enum(["genre", "setting", "eventType"], {
     required_error: "Please select a category type",
   }),
@@ -22,16 +34,22 @@ export const insertCategorySchema = createInsertSchema(categories, {
 });
 
 export const updateCategorySchema = createInsertSchema(categories, {
-  name: z.string().min(2, "Name must be at least 2 characters").max(50, "Name must be less than 50 characters"),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be less than 50 characters"),
   type: z.enum(["genre", "setting", "eventType"], {
     required_error: "Please select a category type",
   }),
-}).omit({
-  createdAt: true,
-  updatedAt: true,
-}).partial().extend({
-  id: z.string().uuid(),
-});
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+  })
+  .partial()
+  .extend({
+    id: z.string().uuid(),
+  });
 
 export const selectCategorySchema = createSelectSchema(categories);
 
@@ -55,37 +73,51 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
 // Events table
-export const events = pgTable("events", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  title: text("title").notNull(),
-  heroImage: text("hero_image"),
-  shortDescription: text("short_description").notNull(),
-  longDescription: text("long_description").notNull(),
-  date: text("date").notNull(), // ISO date string (YYYY-MM-DD)
-  tags: text("tags").array(),
-  instagramLink: text("instagram_link"),
-  continent: text("continent"),
-  country: text("country"),
-  city: text("city"),
-  latitude: real("latitude"),
-  longitude: real("longitude"),
-  locationName: text("location_name"),
-  genreIds: text("genre_ids").array(),
-  settingIds: text("setting_ids").array(),
-  eventTypeIds: text("event_type_ids").array(),
-  approved: boolean("approved").default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-}, (table) => ({
-  // Index on date for efficient sorting
-  dateIdx: index("events_date_idx").on(table.date),
-}));
+export const events = pgTable(
+  "events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    title: text("title").notNull(),
+    heroImage: text("hero_image"),
+    shortDescription: text("short_description").notNull(),
+    longDescription: text("long_description").notNull(),
+    date: text("date").notNull(), // ISO date string (YYYY-MM-DD)
+    tags: text("tags").array(),
+    instagramLink: text("instagram_link"),
+    continent: text("continent"),
+    country: text("country"),
+    city: text("city"),
+    latitude: real("latitude"),
+    longitude: real("longitude"),
+    locationName: text("location_name"),
+    genreIds: text("genre_ids").array(),
+    settingIds: text("setting_ids").array(),
+    eventTypeIds: text("event_type_ids").array(),
+    approved: boolean("approved").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    // Index on date for efficient sorting
+    dateIdx: index("events_date_idx").on(table.date),
+  }),
+);
 
 export const insertEventSchema = createInsertSchema(events, {
-  title: z.string().min(2, "Title must be at least 2 characters").max(200, "Title must be less than 200 characters"),
-  shortDescription: z.string().min(10, "Short description must be at least 10 characters").max(500, "Short description must be less than 500 characters"),
-  longDescription: z.string().min(20, "Long description must be at least 20 characters"),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
+  title: z
+    .string()
+    .min(2, "Title must be at least 2 characters")
+    .max(200, "Title must be less than 200 characters"),
+  shortDescription: z
+    .string()
+    .min(10, "Short description must be at least 10 characters")
+    .max(500, "Short description must be less than 500 characters"),
+  longDescription: z
+    .string()
+    .min(20, "Long description must be at least 20 characters"),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
   heroImage: z.string().url("Must be a valid URL").optional(),
   instagramLink: z.string().url("Must be a valid Instagram URL").optional(),
   tags: z.array(z.string()).optional(),
@@ -106,9 +138,17 @@ export const insertEventSchema = createInsertSchema(events, {
 });
 
 export const updateEventSchema = createInsertSchema(events, {
-  title: z.string().min(2, "Title must be at least 2 characters").max(200, "Title must be less than 200 characters"),
-  shortDescription: z.string().min(10, "Short description must be at least 10 characters").max(500, "Short description must be less than 500 characters"),
-  longDescription: z.string().min(20, "Long description must be at least 20 characters"),
+  title: z
+    .string()
+    .min(2, "Title must be at least 2 characters")
+    .max(200, "Title must be less than 200 characters"),
+  shortDescription: z
+    .string()
+    .min(10, "Short description must be at least 10 characters")
+    .max(500, "Short description must be less than 500 characters"),
+  longDescription: z
+    .string()
+    .min(20, "Long description must be at least 20 characters"),
   heroImage: z.string().url("Must be a valid URL").optional(),
   instagramLink: z.string().url("Must be a valid Instagram URL").optional(),
   tags: z.array(z.string()).optional(),
@@ -119,12 +159,15 @@ export const updateEventSchema = createInsertSchema(events, {
   genreIds: z.array(z.string()).optional(),
   settingIds: z.array(z.string()).optional(),
   eventTypeIds: z.array(z.string()).optional(),
-}).omit({
-  createdAt: true,
-  updatedAt: true,
-}).partial().extend({
-  id: z.string().uuid(),
-});
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+  })
+  .partial()
+  .extend({
+    id: z.string().uuid(),
+  });
 
 export const selectEventSchema = createSelectSchema(events);
 
