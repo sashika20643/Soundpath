@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MessageCircle, X, Send, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,16 +33,16 @@ export function ChatBot() {
       };
       setMessages([...messages, newMessage]);
       setInputValue("");
-      
+
       // Simulate bot response (you can replace this with actual API call)
       setTimeout(() => {
         const botResponse: Message = {
           id: (Date.now() + 1).toString(),
-          text: "Thanks for your message! I'm currently a UI demo. How else can I help you explore our musical destinations?",
+          text: "great. there have a event in japan in 7th septhember called 'music fest eve'. do you want more details about it?",
           isUser: false,
           timestamp: new Date(),
         };
-        setMessages(prev => [...prev, botResponse]);
+        setMessages((prev) => [...prev, botResponse]);
       }, 1000);
     }
   };
@@ -82,7 +81,9 @@ export function ChatBot() {
                     <Bot className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm">Music Travel Assistant</h3>
+                    <h3 className="font-semibold text-sm">
+                      Music Travel Assistant
+                    </h3>
                     <p className="text-xs text-white/80">Online now</p>
                   </div>
                 </div>
