@@ -8,17 +8,9 @@ export function Sidebar() {
     {
       title: "Management",
       items: [
-        { icon: FaTags, label: "Categories", href: "/", active: location === "/" },
-        { icon: FaUsers, label: "Users", href: "/users", active: location === "/users" },
-        { icon: FaCalendarAlt, label: "Events", href: "/events", active: location === "/events" },
+        { icon: FaChartBar, label: "Overview", href: "/dashboards", active: location === "/dashboards" },
+        { icon: FaCalendarAlt, label: "Events", href: "/dashboards/events", active: location === "/dashboards/events" },
         { icon: FaCheckCircle, label: "Event Approvals", href: "/admin/approvals", active: location === "/admin/approvals" },
-        { icon: FaChartBar, label: "Analytics", href: "/analytics", active: location === "/analytics" },
-      ],
-    },
-    {
-      title: "Settings",
-      items: [
-        { icon: FaCog, label: "Configuration", href: "/settings", active: location === "/settings" },
       ],
     },
   ];

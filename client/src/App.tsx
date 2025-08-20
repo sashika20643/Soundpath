@@ -14,6 +14,8 @@ import EventDetails from "@/pages/event-details";
 import ApprovalDashboard from "@/pages/approval-dashboard";
 import AdminLoginPage from "@/pages/admin-login";
 import NotFound from "@/pages/not-found";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import DashboardOverview from "@/pages/dashboards/overview";
 
 function Router() {
   return (
@@ -25,17 +27,30 @@ function Router() {
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/dashboard">
         <ProtectedRoute>
-          <Dashboard />
+          <DashboardLayout>
+            <Dashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/dashboards">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DashboardOverview />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route path="/dashboards/events">
         <ProtectedRoute>
-          <DashboardEvents />
+          <DashboardLayout>
+            <DashboardEvents />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route path="/admin/approvals">
         <ProtectedRoute>
-          <ApprovalDashboard />
+          <DashboardLayout>
+            <ApprovalDashboard />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route component={NotFound} />
