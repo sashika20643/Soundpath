@@ -71,6 +71,9 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [randomEvents, setRandomEvents] = useState<Event[]>([]);
   const [selectedContinent, setSelectedContinent] = useState("");
+  const [showContinentSuggestions, setShowContinentSuggestions] = useState(false);
+  const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
 
@@ -549,6 +552,7 @@ export default function Home() {
                           const value = e.target.value;
                           form.setValue("continent", value);
                           setSelectedContinent(value);
+                          setShowContinentSuggestions(true);
                           // Auto-generate coordinates for continent center
                           const continentCoords = getContinentCoordinates(value);
                           if (continentCoords) {
@@ -556,8 +560,10 @@ export default function Home() {
                             form.setValue("longitude", continentCoords.lng);
                           }
                         }}
+                        onFocus={() => setShowContinentSuggestions(true)}
+                        onBlur={() => setTimeout(() => setShowContinentSuggestions(false), 200)}
                       />
-                      {form.watch("continent") && continents
+                      {showContinentSuggestions && form.watch("continent") && continents
                           .filter(continent => 
                             continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
                           )
@@ -576,14 +582,12 @@ export default function Home() {
                                 onClick={() => {
                                   form.setValue("continent", continent);
                                   setSelectedContinent(continent);
+                                  setShowContinentSuggestions(false);
                                   const continentCoords = getContinentCoordinates(continent);
                                   if (continentCoords) {
                                     form.setValue("latitude", continentCoords.lat);
                                     form.setValue("longitude", continentCoords.lng);
                                   }
-                                  // Close dropdown by blurring the input
-                                  const continentInput = document.getElementById("continent") as HTMLInputElement;
-                                  if (continentInput) continentInput.blur();
                                 }}
                               >
                                 {continent}
@@ -620,6 +624,7 @@ export default function Home() {
                         onChange={(e) => {
                           const value = e.target.value;
                           form.setValue("country", value);
+                          setShowCountrySuggestions(true);
                           // Auto-generate coordinates for country center
                           const countryCoords = getCountryCoordinates(value);
                           if (countryCoords) {
@@ -627,8 +632,10 @@ export default function Home() {
                             form.setValue("longitude", countryCoords.lng);
                           }
                         }}
+                        onFocus={() => setShowCountrySuggestions(true)}
+                        onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 200)}
                       />
-                      {form.watch("country") && (availableCountries(selectedContinent).length > 0 || !selectedContinent) && (
+                      {showCountrySuggestions && form.watch("country") && (availableCountries(selectedContinent).length > 0 || !selectedContinent) && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
                           {selectedContinent && availableCountries(selectedContinent)
                             .filter(country => 
@@ -642,14 +649,12 @@ export default function Home() {
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
                                 onClick={() => {
                                   form.setValue("country", country);
+                                  setShowCountrySuggestions(false);
                                   const countryCoords = getCountryCoordinates(country);
                                   if (countryCoords) {
                                     form.setValue("latitude", countryCoords.lat);
                                     form.setValue("longitude", countryCoords.lng);
                                   }
-                                  // Close dropdown by blurring the input
-                                  const countryInput = document.getElementById("country") as HTMLInputElement;
-                                  if (countryInput) countryInput.blur();
                                 }}
                               >
                                 {country}
@@ -691,6 +696,7 @@ export default function Home() {
                         onChange={(e) => {
                           const value = e.target.value;
                           form.setValue("city", value);
+                          setShowCitySuggestions(true);
                           // Auto-generate coordinates for city
                           const cityCoords = getCityCoordinates(
                             selectedContinent,
@@ -706,8 +712,10 @@ export default function Home() {
                             );
                           }
                         }}
+                        onFocus={() => setShowCitySuggestions(true)}
+                        onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
                       />
-                      {selectedContinent && form.watch("country") && (
+                      {showCitySuggestions && selectedContinent && form.watch("country") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
                           {form.watch("city") && getCitiesForCountry(selectedContinent, form.watch("country") || "")
                             .filter(city => 
@@ -721,15 +729,13 @@ export default function Home() {
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
                                 onClick={() => {
                                   form.setValue("city", city);
+                                  setShowCitySuggestions(false);
                                   const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", city);
                                   if (cityCoords) {
                                     form.setValue("latitude", cityCoords.lat);
                                     form.setValue("longitude", cityCoords.lng);
                                     form.setValue("locationName", `${city}, ${form.watch("country")}, ${selectedContinent}`);
                                   }
-                                  // Close dropdown by blurring the input
-                                  const cityInput = document.getElementById("city") as HTMLInputElement;
-                                  if (cityInput) cityInput.blur();
                                 }}
                               >
                                 {city}
@@ -737,7 +743,7 @@ export default function Home() {
                             ))}
                         </div>
                       )}
-                      {!selectedContinent && !form.watch("country") && form.watch("city") && (
+                      {showCitySuggestions && !selectedContinent && !form.watch("country") && form.watch("city") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg">
                           <div className="px-4 py-2 text-xs text-gray-500">
                             Popular cities: New York, London, Paris, Tokyo, Sydney, Los Angeles, Berlin, Rome...
