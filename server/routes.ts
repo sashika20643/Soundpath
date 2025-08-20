@@ -3,9 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { categoryController } from "./controllers/categoryController";
 import { eventController } from "./controllers/eventController";
-import { authController } from "./controllers/authController";
 import { validateRequest } from "./middlewares/validateRequest";
-import { authenticateToken, requireAdmin } from "./middlewares/authMiddleware";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler";
 import {
   createCategoryValidator,
@@ -22,24 +20,8 @@ import {
   deleteEventValidator,
   approveEventValidator,
 } from "./validators/eventValidator";
-import {
-  loginValidator,
-  registerValidator,
-} from "./validators/authValidator";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Authentication routes
-  app.post(
-    "/api/auth/login",
-    validateRequest(loginValidator),
-    authController.login.bind(authController)
-  );
-
-  app.get(
-    "/api/auth/verify",
-    authController.verifyToken.bind(authController)
-  );
-
   // Category routes
   app.get(
     "/api/categories",
@@ -55,24 +37,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post(
     "/api/categories",
-    authenticateToken,
-    requireAdmin,
     validateRequest(createCategoryValidator),
     categoryController.createCategory.bind(categoryController)
   );
 
   app.put(
     "/api/categories/:id",
-    authenticateToken,
-    requireAdmin,
     validateRequest(updateCategoryValidator),
     categoryController.updateCategory.bind(categoryController)
   );
 
   app.delete(
     "/api/categories/:id",
-    authenticateToken,
-    requireAdmin,
     validateRequest(deleteCategoryValidator),
     categoryController.deleteCategory.bind(categoryController)
   );
@@ -98,24 +74,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put(
     "/api/events/:id",
-    authenticateToken,
-    requireAdmin,
     validateRequest(updateEventValidator),
     eventController.updateEvent.bind(eventController)
   );
 
   app.delete(
     "/api/events/:id",
-    authenticateToken,
-    requireAdmin,
     validateRequest(deleteEventValidator),
     eventController.deleteEvent.bind(eventController)
   );
 
   app.patch(
     "/api/events/:id/approve",
-    authenticateToken,
-    requireAdmin,
     validateRequest(approveEventValidator),
     eventController.approveEvent.bind(eventController)
   );

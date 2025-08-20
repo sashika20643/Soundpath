@@ -15,12 +15,12 @@ export function AdminLogin() {
   const { login } = useAuth();
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const success = await login(username, password);
+    setTimeout(() => {
+      const success = login(username, password);
       
       if (success) {
         toast({
@@ -34,16 +34,10 @@ export function AdminLogin() {
           description: "Invalid username or password",
         });
       }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Login failed",
-        description: "An error occurred during login",
-      });
-    }
-    
-    setIsLoading(false);
-    setPassword('');
+      
+      setIsLoading(false);
+      setPassword('');
+    }, 1000);
   };
 
   return (
@@ -103,7 +97,9 @@ export function AdminLogin() {
 
           <div className="mt-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-600 text-center">
-              Enter your admin credentials to access the dashboard.
+              <strong>Demo Credentials:</strong><br />
+              Username: admin<br />
+              Password: admin123
             </p>
           </div>
         </CardContent>

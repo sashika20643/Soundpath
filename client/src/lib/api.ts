@@ -1,5 +1,5 @@
 import { apiRequest } from "./queryClient";
-import type { Category, InsertCategory, UpdateCategory, Event, InsertEvent, UpdateEvent, User } from "@shared/schema";
+import type { Category, InsertCategory, UpdateCategory, Event, InsertEvent, UpdateEvent } from "@shared/schema";
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -25,21 +25,6 @@ export interface EventsFilters {
   search?: string;
   approved?: boolean;
 }
-
-const handleResponse = async (response: Response) => {
-  if (!response.ok) {
-    let errorData;
-    try {
-      errorData = await response.json();
-    } catch (e) {
-      // If response is not JSON, use statusText
-      return { success: false, error: response.statusText };
-    }
-    return { success: false, ...errorData };
-  }
-  const result: ApiResponse = await response.json();
-  return result;
-};
 
 export const categoryApi = {
   getCategories: async (filters?: CategoriesFilters): Promise<Category[]> => {
@@ -143,27 +128,5 @@ export const eventApi = {
     const response = await apiRequest('PATCH', `/api/events/${id}/approve`, { approved });
     const result: ApiResponse<Event> = await response.json();
     return result.data!;
-  },
-};
-
-// Auth API
-export const auth = {
-  login: async (username: string, password: string) => {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-    return handleResponse(response);
-  },
-
-  verify: async (token: string) => {
-    const response = await fetch("/api/auth/verify", {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-    });
-    return handleResponse(response);
   },
 };
