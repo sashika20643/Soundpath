@@ -557,31 +557,40 @@ export default function Home() {
                           }
                         }}
                       />
-                      <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                        {form.watch("continent") && continents
+                      {form.watch("continent") && continents
                           .filter(continent => 
                             continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
                           )
-                          .slice(0, 5)
-                          .map(continent => (
-                            <button
-                              key={continent}
-                              type="button"
-                              className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                              onClick={() => {
-                                form.setValue("continent", continent);
-                                setSelectedContinent(continent);
-                                const continentCoords = getContinentCoordinates(continent);
-                                if (continentCoords) {
-                                  form.setValue("latitude", continentCoords.lat);
-                                  form.setValue("longitude", continentCoords.lng);
-                                }
-                              }}
-                            >
-                              {continent}
-                            </button>
-                          ))}
-                      </div>
+                          .slice(0, 5).length > 0 && (
+                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                          {continents
+                            .filter(continent => 
+                              continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
+                            )
+                            .slice(0, 5)
+                            .map(continent => (
+                              <button
+                                key={continent}
+                                type="button"
+                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                onClick={() => {
+                                  form.setValue("continent", continent);
+                                  setSelectedContinent(continent);
+                                  const continentCoords = getContinentCoordinates(continent);
+                                  if (continentCoords) {
+                                    form.setValue("latitude", continentCoords.lat);
+                                    form.setValue("longitude", continentCoords.lng);
+                                  }
+                                  // Close dropdown by blurring the input
+                                  const continentInput = document.getElementById("continent") as HTMLInputElement;
+                                  if (continentInput) continentInput.blur();
+                                }}
+                              >
+                                {continent}
+                              </button>
+                            ))}
+                        </div>
+                      )}
                     </div>
                     {form.formState.errors.continent && (
                       <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
@@ -619,35 +628,40 @@ export default function Home() {
                           }
                         }}
                       />
-                      <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                        {form.watch("country") && availableCountries(selectedContinent)
-                          .filter(country => 
-                            country.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
-                          )
-                          .slice(0, 5)
-                          .map(country => (
-                            <button
-                              key={country}
-                              type="button"
-                              className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                              onClick={() => {
-                                form.setValue("country", country);
-                                const countryCoords = getCountryCoordinates(country);
-                                if (countryCoords) {
-                                  form.setValue("latitude", countryCoords.lat);
-                                  form.setValue("longitude", countryCoords.lng);
-                                }
-                              }}
-                            >
-                              {country}
-                            </button>
-                          ))}
-                        {form.watch("country") && !selectedContinent && (
-                          <div className="px-4 py-2 text-xs text-gray-500">
-                            Popular countries: United States, United Kingdom, Canada, France, Germany, Japan, Australia...
-                          </div>
-                        )}
-                      </div>
+                      {form.watch("country") && (availableCountries(selectedContinent).length > 0 || !selectedContinent) && (
+                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                          {selectedContinent && availableCountries(selectedContinent)
+                            .filter(country => 
+                              country.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
+                            )
+                            .slice(0, 5)
+                            .map(country => (
+                              <button
+                                key={country}
+                                type="button"
+                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                onClick={() => {
+                                  form.setValue("country", country);
+                                  const countryCoords = getCountryCoordinates(country);
+                                  if (countryCoords) {
+                                    form.setValue("latitude", countryCoords.lat);
+                                    form.setValue("longitude", countryCoords.lng);
+                                  }
+                                  // Close dropdown by blurring the input
+                                  const countryInput = document.getElementById("country") as HTMLInputElement;
+                                  if (countryInput) countryInput.blur();
+                                }}
+                              >
+                                {country}
+                              </button>
+                            ))}
+                          {!selectedContinent && (
+                            <div className="px-4 py-2 text-xs text-gray-500">
+                              Popular countries: United States, United Kingdom, Canada, France, Germany, Japan, Australia...
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                     {form.formState.errors.country && (
                       <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
@@ -713,6 +727,9 @@ export default function Home() {
                                     form.setValue("longitude", cityCoords.lng);
                                     form.setValue("locationName", `${city}, ${form.watch("country")}, ${selectedContinent}`);
                                   }
+                                  // Close dropdown by blurring the input
+                                  const cityInput = document.getElementById("city") as HTMLInputElement;
+                                  if (cityInput) cityInput.blur();
                                 }}
                               >
                                 {city}
@@ -720,7 +737,7 @@ export default function Home() {
                             ))}
                         </div>
                       )}
-                      {!selectedContinent && !form.watch("country") && (
+                      {!selectedContinent && !form.watch("country") && form.watch("city") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg">
                           <div className="px-4 py-2 text-xs text-gray-500">
                             Popular cities: New York, London, Paris, Tokyo, Sydney, Los Angeles, Berlin, Rome...
