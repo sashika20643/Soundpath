@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/auth-context";
 import { ProtectedRoute } from "@/components/auth/protected-route";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
 import EventsPublic from "@/pages/events-public";
@@ -26,22 +27,30 @@ function Router() {
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/dashboard">
         <ProtectedRoute>
-          <Dashboard />
+          <DashboardLayout>
+            <Dashboard />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route path="/dashboards">
         <ProtectedRoute>
-          <DashboardOverview />
+          <DashboardLayout>
+            <DashboardOverview />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route path="/dashboards/events">
         <ProtectedRoute>
-          <DashboardEvents />
+          <DashboardLayout>
+            <DashboardEvents />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route path="/admin/approvals">
         <ProtectedRoute>
-          <ApprovalDashboard />
+          <DashboardLayout>
+            <ApprovalDashboard />
+          </DashboardLayout>
         </ProtectedRoute>
       </Route>
       <Route component={NotFound} />
