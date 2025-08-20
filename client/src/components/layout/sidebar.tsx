@@ -73,6 +73,18 @@ export function Sidebar() {
           </div>
         ))}
       </nav>
+
+      {/* Visit Website Link */}
+      <div className="mt-auto p-6 border-t border-gray-200">
+        <Link href="/">
+          <div className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+            <svg className="mr-3 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            Visit Website
+          </div>
+        </Link>
+      </div>
     </aside>
   );
 }
