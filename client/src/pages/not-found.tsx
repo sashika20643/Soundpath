@@ -1,23 +1,55 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { Layout } from "@/components/layout/layout";
+import { Star, Home } from "lucide-react";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
 
 export default function NotFound() {
   usePageMetadata('notFound');
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
-          </div>
-
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
+    <Layout>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "var(--color-warm-white)" }}
+      >
+        <div className="text-center">
+          <Star
+            className="w-16 h-16 mx-auto mb-6"
+            style={{ color: "var(--color-mid-gray)" }}
+          />
+          <h1
+            className="font-serif text-3xl mb-4"
+            style={{ color: "var(--color-charcoal)" }}
+          >
+            Page Not Found
+          </h1>
+          <p
+            className="text-editorial mb-8 max-w-md mx-auto"
+            style={{ color: "var(--color-dark-gray)" }}
+          >
+            The musical destination you're looking for doesn't exist or has been
+            moved. Let's get you back to discovering extraordinary experiences.
           </p>
-        </CardContent>
-      </Card>
-    </div>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="inline-flex items-center gap-2 px-8 py-3 text-sm font-medium rounded-lg border transition-all duration-300"
+            style={{
+              borderColor: "var(--color-light-gray)",
+              color: "var(--color-charcoal)",
+              backgroundColor: "transparent",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+              e.currentTarget.style.borderColor = "var(--color-mid-gray)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.borderColor = "var(--color-light-gray)";
+            }}
+          >
+            <Home className="w-4 h-4" />
+            Return Home
+          </button>
+        </div>
+      </div>
+    </Layout>
   );
 }

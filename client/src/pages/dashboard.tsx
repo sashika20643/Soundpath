@@ -7,13 +7,14 @@ import { CreateCategoryModal } from "@/components/categories/create-category-mod
 import { EditCategoryModal } from "@/components/categories/edit-category-modal";
 import { DeleteCategoryModal } from "@/components/categories/delete-category-modal";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCategories } from "@/hooks/use-categories";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
 import type { Category } from "@shared/schema";
 
 export default function Dashboard() {
   usePageMetadata('dashboard');
-  
+
   const [filters, setFilters] = useState<{ type?: string; search?: string }>({});
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
-      
+
       <main className="flex-1 overflow-hidden">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
@@ -70,7 +71,7 @@ export default function Dashboard() {
             filters={filters}
             onFiltersChange={setFilters}
           />
-          
+
           <CategoryTable
             categories={categories}
             isLoading={isLoading}
@@ -85,13 +86,13 @@ export default function Dashboard() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />
-      
+
       <EditCategoryModal
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
         category={selectedCategory}
       />
-      
+
       <DeleteCategoryModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
