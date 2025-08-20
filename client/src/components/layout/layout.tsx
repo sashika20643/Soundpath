@@ -10,7 +10,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
-  const { isAdmin, logout } = useAuth();
+  const { isAdmin, logout, user } = useAuth();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--color-warm-white)', color: 'var(--color-charcoal)' }}>
@@ -69,7 +69,9 @@ export function Layout({ children }: LayoutProps) {
                            backgroundColor: 'transparent'
                          }}>
                       <User className="w-4 h-4" style={{ color: 'var(--color-mid-gray)' }} />
-                      <span className="text-sm" style={{ color: 'var(--color-dark-gray)' }}>Admin</span>
+                      <span className="text-sm" style={{ color: 'var(--color-dark-gray)' }}>
+                        {user?.username || 'Admin'}
+                      </span>
                     </div>
                     <button
                       onClick={logout}

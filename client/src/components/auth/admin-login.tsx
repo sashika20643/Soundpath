@@ -97,9 +97,7 @@ export function AdminLogin() {
 
           <div className="mt-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-600 text-center">
-              <strong>Demo Credentials:</strong><br />
-              Username: admin<br />
-              Password: admin123
+              Enter your admin credentials to access the dashboard.
             </p>
           </div>
         </CardContent>

@@ -1,54 +1,101 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { SelectUser } from '@shared/schema';
 
 interface AuthContextType {
   isAdmin: boolean;
-  login: (username: string, password: string) => boolean;
+  user: SelectUser | null;
+  token: string | null;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Simple admin credentials (in production, this should be in environment variables)
-const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123'
-};
-
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState<SelectUser | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     // Check if user is already logged in
-    const adminToken = localStorage.getItem('admin_token');
-    if (adminToken === 'authenticated') {
-      setIsAdmin(true);
+    const storedToken = localStorage.getItem('auth_token');
+    if (storedToken) {
+      setToken(storedToken);
+      // Verify token and get user info
+      fetchUserInfo(storedToken);
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
-  const login = (username: string, password: string): boolean => {
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-      setIsAdmin(true);
-      localStorage.setItem('admin_token', 'authenticated');
-      return true;
+  const fetchUserInfo = async (authToken: string) => {
+    try {
+      const response = await fetch('/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        setUser(result.data);
+      } else {
+        // Token is invalid, clear it
+        localStorage.removeItem('auth_token');
+        setToken(null);
+      }
+    } catch (error) {
+      console.error('Failed to fetch user info:', error);
+      localStorage.removeItem('auth_token');
+      setToken(null);
+    } finally {
+      setIsLoading(false);
     }
-    return false;
+  };
+
+  const login = async (username: string, password: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        const { user: userData, token: authToken } = result.data;
+        
+        setUser(userData);
+        setToken(authToken);
+        localStorage.setItem('auth_token', authToken);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      return false;
+    }
   };
 
   const logout = () => {
-    setIsAdmin(false);
-    localStorage.removeItem('admin_token');
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('auth_token');
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ isAdmin, user, token, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

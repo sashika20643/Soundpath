@@ -11,14 +11,33 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const categories = pgTable("categories", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name").notNull(),
-  type: text("type").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+// User schemas
+export const insertUserSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters").max(50),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email().optional(),
+  role: z.enum(["admin", "user"]).default("user"),
 });
 
+export const selectUserSchema = z.object({
+  id: z.string().uuid(),
+  username: z.string(),
+  email: z.string().nullable(),
+  role: z.enum(["admin", "user"]),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type SelectUser = z.infer<typeof selectUserSchema>;
+export type LoginRequest = z.infer<typeof loginSchema>;
+
+// Category schemas
 export const insertCategorySchema = createInsertSchema(categories, {
   name: z
     .string()
