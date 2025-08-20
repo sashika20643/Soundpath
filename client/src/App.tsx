@@ -10,6 +10,7 @@ import Dashboard from "@/pages/dashboard";
 import EventsPublic from "@/pages/events-public";
 import MapPage from "@/pages/map";
 import DashboardEvents from "@/pages/dashboards/events";
+import DashboardOverview from "@/pages/dashboards/overview";
 import EventDetails from "@/pages/event-details";
 import ApprovalDashboard from "@/pages/approval-dashboard";
 import AdminLoginPage from "@/pages/admin-login";
@@ -26,6 +27,11 @@ function Router() {
       <Route path="/dashboard">
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/dashboards">
+        <ProtectedRoute>
+          <DashboardOverview />
         </ProtectedRoute>
       </Route>
       <Route path="/dashboards/events">
