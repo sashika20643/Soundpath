@@ -286,7 +286,7 @@ export default function Home() {
           style={{ backgroundColor: "var(--color-warm-white)" }}
         >
           <div className="max-w-7xl mx-auto">
-            <div className="scroll-animate text-center mb-20">
+            <div className="text-center mb-20">
               <h2
                 className="font-serif text-section-title mb-8"
                 style={{ color: "var(--color-charcoal)" }}
@@ -387,7 +387,7 @@ export default function Home() {
             ) : null}
 
             {latestEvents.length === 0 && !isLoading && (
-              <div className="scroll-animate text-center py-20">
+              <div className="text-center py-20">
                 <div
                   className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
                   style={{
@@ -828,7 +828,7 @@ export default function Home() {
           style={{ backgroundColor: "var(--color-soft-beige)" }}
         >
           <div className="max-w-7xl mx-auto">
-            <div className="scroll-animate text-center mb-20">
+            <div className="text-center mb-20">
               <h2
                 className="font-serif text-section-title mb-8"
                 style={{ color: "var(--color-charcoal)" }}

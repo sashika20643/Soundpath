@@ -16,10 +16,10 @@
   --color-charcoal: #2d2b26;
   --color-black: #1a1916;
   --color-accent: #d4b896;
-  
+
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
-  
+
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 2rem;
@@ -37,7 +37,7 @@
     line-height: 1.6;
     font-weight: 400;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     font-weight: 500;
@@ -54,36 +54,35 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
-  
+
   .font-serif {
     font-family: var(--font-serif);
   }
-  
+
   .font-sans {
     font-family: var(--font-sans);
   }
-  
+
   .text-editorial {
     font-size: clamp(1.125rem, 2.5vw, 1.25rem);
     line-height: 1.7;
     font-weight: 400;
   }
-  
+
   .section-padding {
     padding: var(--spacing-xl) var(--spacing-md);
   }
-  
+
   .section-padding-large {
     padding: var(--spacing-2xl) var(--spacing-md);
   }
 }
 
-/* Smooth scroll-in animations */
+/* Scroll animations - Fixed to prevent flickering */
 .scroll-animate {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease;
-  will-change: opacity, transform;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s ease-out;
 }
 
 .scroll-animate.in-view {
@@ -92,15 +91,11 @@
 }
 
 .scroll-animate-delay-1 {
-  transition-delay: 0.1s;
+  transition-delay: 0s;
 }
 
 .scroll-animate-delay-2 {
-  transition-delay: 0.2s;
-}
-
-.scroll-animate-delay-3 {
-  transition-delay: 0.3s;
+  transition-delay: 0s;
 }
 
 /* Kinfolk-style button */
