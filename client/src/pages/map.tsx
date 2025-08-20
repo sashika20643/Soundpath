@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout/layout";
 import { EventMap } from "@/components/map/EventMap";
@@ -36,11 +35,11 @@ const cities = {
 
 export default function MapPage() {
   usePageMetadata('map');
-  
+
   const [selectedContinent, setSelectedContinent] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
-  
+
   const scrollRef = useScrollAnimation();
 
   // Build filters for API call

@@ -13,7 +13,7 @@ const ITEMS_PER_PAGE = 9;
 
 export default function EventsPublic() {
   usePageMetadata('eventsPublic');
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<EventsFilters>({});
   const scrollRef = useScrollAnimation();
