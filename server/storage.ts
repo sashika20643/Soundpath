@@ -13,7 +13,7 @@ import {
   type ApproveEvent,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, like, and, desc } from "drizzle-orm";
+import { eq, like, and, desc, sql } from "drizzle-orm";
 
 export interface IStorage {
   // User methods
@@ -183,9 +183,31 @@ export class DatabaseStorage implements IStorage {
       conditions.push(like(events.title, `%${filters.search}%`));
     }
 
-    // Note: For array filtering (genreIds, settingIds, eventTypeIds, tags),
-    // we'd need to use PostgreSQL array functions for proper filtering
-    // For now, we'll implement basic filtering and enhance later
+    if (filters?.genreIds && filters.genreIds.length > 0) {
+      conditions.push(sql`${events.genreIds} @> ARRAY[${filters.genreIds.join(
+        ",",
+      )}]::text[]`);
+    }
+
+    if (filters?.settingIds && filters.settingIds.length > 0) {
+      conditions.push(sql`${events.settingIds} @> ARRAY[${filters.settingIds.join(
+        ",",
+      )}]::text[]`);
+    }
+
+    if (filters?.eventTypeIds && filters.eventTypeIds.length > 0) {
+      conditions.push(
+        sql`${events.eventTypeIds} @> ARRAY[${filters.eventTypeIds.join(
+          ",",
+        )}]::text[]`,
+      );
+    }
+
+    if (filters?.tags && filters.tags.length > 0) {
+      conditions.push(sql`${events.tags} @> ARRAY[${filters.tags.join(
+        ",",
+      )}]::text[]`);
+    }
 
     if (conditions.length > 0) {
       query = query.where(and(...conditions)) as any;
