@@ -24,25 +24,19 @@ import { insertEventSchema, type InsertEvent } from "@shared/schema";
 import { useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
+import { 
+  getContinents, 
+  getCountriesForContinent, 
+  getCitiesForCountry, 
+  searchCities 
+} from "@/lib/locations";
 
 interface CreateEventModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const continents = [
-  "Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America"
-];
-
-const countries = {
-  "North America": ["United States", "Canada", "Mexico"],
-  "Europe": ["United Kingdom", "France", "Germany", "Spain", "Italy", "Netherlands"],
-  "Asia": ["Japan", "China", "India", "South Korea", "Thailand", "Singapore"],
-  "Africa": ["South Africa", "Nigeria", "Egypt", "Kenya", "Morocco"],
-  "South America": ["Brazil", "Argentina", "Chile", "Colombia", "Peru"],
-  "Oceania": ["Australia", "New Zealand", "Fiji"],
-  "Antarctica": []
-};
+const continents = getContinents();
 
 export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -51,15 +45,15 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [selectedContinent, setSelectedContinent] = useState<string>("");
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
+  const [availableCountries, setAvailableCountries] = useState<Array<{isoCode: string, name: string}>>([]);
+  const [availableCities, setAvailableCities] = useState<Array<{name: string, latitude?: string, longitude?: string}>>([]);
 
   const { data: genres = [] } = useCategories({ type: "genre" });
   const { data: settings = [] } = useCategories({ type: "setting" });
   const { data: eventTypes = [] } = useCategories({ type: "eventType" });
 
-  // Computed values for dropdowns
-  const availableCountries = selectedContinent 
-    ? countries[selectedContinent as keyof typeof countries] || []
-    : [];
+  
 
   const createEventMutation = useCreateEvent();
 
@@ -230,6 +224,13 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                   form.setValue("continent", value);
                   form.setValue("country", "");
                   form.setValue("city", "");
+                  setSelectedCountryCode("");
+                  
+                  // Load countries for this continent
+                  const countries = getCountriesForContinent(value);
+                  setAvailableCountries(countries);
+                  setAvailableCities([]);
+                  
                   // Auto-generate coordinates for continent center
                   const continentCoords = getContinentCoordinates(value);
                   if (continentCoords) {
@@ -256,6 +257,15 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                 onValueChange={(value) => {
                   form.setValue("country", value);
                   form.setValue("city", "");
+                  
+                  // Find country code and load cities
+                  const country = availableCountries.find(c => c.name === value);
+                  if (country) {
+                    setSelectedCountryCode(country.isoCode);
+                    const cities = getCitiesForCountry(country.isoCode);
+                    setAvailableCities(cities);
+                  }
+                  
                   // Auto-generate coordinates for country center
                   const countryCoords = getCountryCoordinates(value);
                   if (countryCoords) {
@@ -270,7 +280,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                 </SelectTrigger>
                 <SelectContent>
                   {availableCountries.map(country => (
-                    <SelectItem key={country} value={country}>{country}</SelectItem>
+                    <SelectItem key={country.isoCode} value={country.name}>{country.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

@@ -53,24 +53,24 @@ import {
   type Event,
   type InsertEvent,
 } from "@shared/schema";
-import { cities, getCitiesForCountry } from "@/lib/cities";
-import {
-  getContinentCoordinates,
-  getCountryCoordinates,
-  getCityCoordinates,
-} from "@/lib/coordinates";
-
-// Define continents and countries for the form
-const continents = Object.keys(cities);
-const availableCountries = (continent: string) =>
-  continent ? Object.keys(cities[continent as keyof typeof cities] || {}) : [];
+import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
+import { 
+  getContinents, 
+  getCountriesForContinent, 
+  getCitiesForCountry, 
+  searchCities,
+  getCountryByName
+} from "@/lib/locations";
 
 export default function Home() {
   usePageMetadata("home");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [randomEvents, setRandomEvents] = useState<Event[]>([]);
-  const [selectedContinent, setSelectedContinent] = useState("");
+  const [selectedContinent, setSelectedContinent] = useState<string>("");
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
+  const [availableCountries, setAvailableCountries] = useState<Array<{isoCode: string, name: string}>>([]);
+  const [availableCities, setAvailableCities] = useState<Array<{name: string, latitude?: string, longitude?: string}>>([]);
   const [showContinentSuggestions, setShowContinentSuggestions] = useState(false);
   const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
@@ -164,6 +164,9 @@ export default function Home() {
       });
       form.reset();
       setSelectedContinent("");
+      setAvailableCountries([]);
+      setAvailableCities([]);
+      setSelectedCountryCode("");
 
       console.log("✅ HOME FORM SUBMISSION SUCCESS");
     } catch (error) {
@@ -175,6 +178,14 @@ export default function Home() {
       });
     }
   };
+
+  // Fetch continents on component mount
+  useEffect(() => {
+    const continents = getContinents();
+    // You might want to store or process these continents further if needed
+    // For now, we'll just log them to verify
+    // console.log("Available continents:", continents);
+  }, []);
 
   return (
     <Layout>
@@ -559,17 +570,19 @@ export default function Home() {
                             form.setValue("latitude", continentCoords.lat);
                             form.setValue("longitude", continentCoords.lng);
                           }
+                          // Reset country and city when continent changes
+                          form.setValue("country", "");
+                          setAvailableCountries([]);
+                          form.setValue("city", "");
+                          setAvailableCities([]);
+                          setSelectedCountryCode("");
                         }}
                         onFocus={() => setShowContinentSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowContinentSuggestions(false), 200)}
                       />
-                      {showContinentSuggestions && form.watch("continent") && continents
-                          .filter(continent => 
-                            continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
-                          )
-                          .slice(0, 5).length > 0 && (
+                      {showContinentSuggestions && getContinents().length > 0 && form.watch("continent") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                          {continents
+                          {getContinents()
                             .filter(continent => 
                               continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
                             )
@@ -588,6 +601,15 @@ export default function Home() {
                                     form.setValue("latitude", continentCoords.lat);
                                     form.setValue("longitude", continentCoords.lng);
                                   }
+                                  // Load countries for the selected continent
+                                  const countries = getCountriesForContinent(continent);
+                                  setAvailableCountries(countries);
+
+                                  // Reset country and city when continent changes
+                                  form.setValue("country", "");
+                                  setAvailableCities([]);
+                                  form.setValue("city", "");
+                                  setSelectedCountryCode("");
                                 }}
                               >
                                 {continent}
@@ -625,6 +647,18 @@ export default function Home() {
                           const value = e.target.value;
                           form.setValue("country", value);
                           setShowCountrySuggestions(true);
+
+                          // Find matching country and load cities
+                          const matchingCountry = availableCountries.find(country => 
+                            country.name.toLowerCase() === value.toLowerCase()
+                          );
+                          if (matchingCountry) {
+                            setSelectedCountryCode(matchingCountry.isoCode);
+                            const cities = getCitiesForCountry(matchingCountry.isoCode);
+                            setAvailableCities(cities);
+                            form.setValue("city", ""); // Reset city when country changes
+                          }
+
                           // Auto-generate coordinates for country center
                           const countryCoords = getCountryCoordinates(value);
                           if (countryCoords) {
@@ -634,37 +668,40 @@ export default function Home() {
                         }}
                         onFocus={() => setShowCountrySuggestions(true)}
                         onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 200)}
+                        disabled={!selectedContinent}
                       />
-                      {showCountrySuggestions && form.watch("country") && (availableCountries(selectedContinent).length > 0 || !selectedContinent) && (
+                      {showCountrySuggestions && availableCountries.length > 0 && form.watch("country") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                          {selectedContinent && availableCountries(selectedContinent)
+                          {availableCountries
                             .filter(country => 
-                              country.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
+                              country.name.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
                             )
-                            .slice(0, 5)
+                            .slice(0, 10)
                             .map(country => (
                               <button
-                                key={country}
+                                key={country.isoCode}
                                 type="button"
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
                                 onClick={() => {
-                                  form.setValue("country", country);
+                                  form.setValue("country", country.name);
+                                  setSelectedCountryCode(country.isoCode);
                                   setShowCountrySuggestions(false);
-                                  const countryCoords = getCountryCoordinates(country);
+
+                                  // Load cities for this country
+                                  const cities = getCitiesForCountry(country.isoCode);
+                                  setAvailableCities(cities);
+                                  form.setValue("city", ""); // Reset city
+
+                                  const countryCoords = getCountryCoordinates(country.name);
                                   if (countryCoords) {
                                     form.setValue("latitude", countryCoords.lat);
                                     form.setValue("longitude", countryCoords.lng);
                                   }
                                 }}
                               >
-                                {country}
+                                {country.name}
                               </button>
                             ))}
-                          {!selectedContinent && (
-                            <div className="px-4 py-2 text-xs text-gray-500">
-                              Popular countries: United States, United Kingdom, Canada, France, Germany, Japan, Australia...
-                            </div>
-                          )}
                         </div>
                       )}
                     </div>
@@ -687,7 +724,7 @@ export default function Home() {
                       <Input
                         id="city"
                         {...form.register("city")}
-                        placeholder="e.g. New York, London, Tokyo..."
+                        placeholder="e.g. New York, Paris, Tokyo..."
                         className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
                         style={{
                           borderBottomColor: "var(--color-light-gray)",
@@ -697,57 +734,57 @@ export default function Home() {
                           const value = e.target.value;
                           form.setValue("city", value);
                           setShowCitySuggestions(true);
-                          // Auto-generate coordinates for city
-                          const cityCoords = getCityCoordinates(
-                            selectedContinent,
-                            form.watch("country") || "",
-                            value,
+
+                          // Find matching city and use its coordinates
+                          const matchingCity = availableCities.find(city => 
+                            city.name.toLowerCase() === value.toLowerCase()
                           );
-                          if (cityCoords) {
-                            form.setValue("latitude", cityCoords.lat);
-                            form.setValue("longitude", cityCoords.lng);
-                            form.setValue(
-                              "locationName",
-                              `${value}, ${form.watch("country")}, ${selectedContinent}`,
-                            );
+                          if (matchingCity && matchingCity.latitude && matchingCity.longitude) {
+                            form.setValue("latitude", parseFloat(matchingCity.latitude));
+                            form.setValue("longitude", parseFloat(matchingCity.longitude));
+                            form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                          } else {
+                            // Fallback to approximate coordinates
+                            const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", value);
+                            if (cityCoords) {
+                              form.setValue("latitude", cityCoords.lat);
+                              form.setValue("longitude", cityCoords.lng);
+                              form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                            }
                           }
                         }}
                         onFocus={() => setShowCitySuggestions(true)}
                         onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
+                        disabled={!selectedCountryCode}
                       />
-                      {showCitySuggestions && selectedContinent && form.watch("country") && (
+                      {showCitySuggestions && selectedCountryCode && form.watch("city") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                          {form.watch("city") && getCitiesForCountry(selectedContinent, form.watch("country") || "")
-                            .filter(city => 
-                              city.toLowerCase().includes(form.watch("city")?.toLowerCase() || "")
-                            )
-                            .slice(0, 5)
+                          {searchCities(selectedCountryCode, form.watch("city") || "", undefined, 10)
                             .map(city => (
                               <button
-                                key={city}
+                                key={city.name}
                                 type="button"
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
                                 onClick={() => {
-                                  form.setValue("city", city);
+                                  form.setValue("city", city.name);
                                   setShowCitySuggestions(false);
-                                  const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", city);
-                                  if (cityCoords) {
-                                    form.setValue("latitude", cityCoords.lat);
-                                    form.setValue("longitude", cityCoords.lng);
-                                    form.setValue("locationName", `${city}, ${form.watch("country")}, ${selectedContinent}`);
+
+                                  if (city.latitude && city.longitude) {
+                                    form.setValue("latitude", parseFloat(city.latitude));
+                                    form.setValue("longitude", parseFloat(city.longitude));
+                                  } else {
+                                    const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", city.name);
+                                    if (cityCoords) {
+                                      form.setValue("latitude", cityCoords.lat);
+                                      form.setValue("longitude", cityCoords.lng);
+                                    }
                                   }
+                                  form.setValue("locationName", `${city.name}, ${form.watch("country")}, ${selectedContinent}`);
                                 }}
                               >
-                                {city}
+                                {city.name}
                               </button>
                             ))}
-                        </div>
-                      )}
-                      {showCitySuggestions && !selectedContinent && !form.watch("country") && form.watch("city") && (
-                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg">
-                          <div className="px-4 py-2 text-xs text-gray-500">
-                            Popular cities: New York, London, Paris, Tokyo, Sydney, Los Angeles, Berlin, Rome...
-                          </div>
                         </div>
                       )}
                     </div>
@@ -760,7 +797,7 @@ export default function Home() {
                 </div>
 
                 {/* Display selected location coordinates */}
-                {form.watch("latitude") && form.watch("longitude") && (
+                {form.watch("latitude") !== undefined && form.watch("longitude") !== undefined && (
                   <div
                     className="mt-4 p-4 rounded-lg"
                     style={{ backgroundColor: "var(--color-soft-beige)" }}
