@@ -16,7 +16,6 @@ interface EventSearchFormProps {
 export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSearchFormProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [titleSearch, setTitleSearch] = useState(filters.search || "");
-  const [descriptionSearch, setDescriptionSearch] = useState("");
   
   const { data: categories = [] } = useCategories();
 
@@ -31,18 +30,7 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
     return () => clearTimeout(timer);
   }, [titleSearch, filters, onFiltersChange]);
 
-  // Debounce description search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // For now, we'll combine description search with title search
-      if (descriptionSearch) {
-        const combinedSearch = titleSearch ? `${titleSearch} ${descriptionSearch}` : descriptionSearch;
-        onFiltersChange({ ...filters, search: combinedSearch });
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [descriptionSearch, titleSearch, filters, onFiltersChange]);
+  
 
   const genreOptions = categories
     .filter(cat => cat.type === "genre")
@@ -82,7 +70,6 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
 
   const handleClearFilters = () => {
     setTitleSearch("");
-    setDescriptionSearch("");
     onFiltersChange({
       search: "",
       continent: "",
@@ -126,16 +113,7 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
             />
           </div>
 
-          {/* Description Search */}
-          <div className="relative">
-            <textarea
-              placeholder="Search event descriptions..."
-              value={descriptionSearch}
-              onChange={(e) => setDescriptionSearch(e.target.value)}
-              rows={2}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 placeholder-gray-500 resize-none"
-            />
-          </div>
+          
         </div>
 
         {/* Advanced Filters Toggle */}
