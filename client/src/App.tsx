@@ -3,6 +3,8 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/contexts/auth-context";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
 import EventsPublic from "@/pages/events-public";
@@ -10,18 +12,32 @@ import MapPage from "@/pages/map";
 import DashboardEvents from "@/pages/dashboards/events";
 import EventDetails from "@/pages/event-details";
 import ApprovalDashboard from "@/pages/approval-dashboard";
+import AdminLoginPage from "@/pages/admin-login";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/dashboard" component={Dashboard} />
       <Route path="/events" component={EventsPublic} />
       <Route path="/map" component={MapPage} />
-      <Route path="/dashboards/events" component={DashboardEvents} />
-      <Route path="/admin/approvals" component={ApprovalDashboard} />
       <Route path="/event/:id" component={EventDetails} />
+      <Route path="/admin-login" component={AdminLoginPage} />
+      <Route path="/dashboard">
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/dashboards/events">
+        <ProtectedRoute>
+          <DashboardEvents />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/admin/approvals">
+        <ProtectedRoute>
+          <ApprovalDashboard />
+        </ProtectedRoute>
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
@@ -30,10 +46,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

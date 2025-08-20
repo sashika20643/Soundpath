@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, Music, User, LogIn } from "lucide-react";
+import { Home, Music, User, LogIn, LogOut } from "lucide-react";
 import { APP_CONFIG } from "@shared/config";
+import { useAuth } from "@/contexts/auth-context";
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,6 +10,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
+  const { isAdmin, logout } = useAuth();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--color-warm-white)', color: 'var(--color-charcoal)' }}>
@@ -44,33 +46,72 @@ export function Layout({ children }: LayoutProps) {
                     Map
                   </span>
                 </Link>
-                <Link href="/dashboards/events">
-                  <span className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === '/dashboards/events' ? 'font-medium' : ''}`} 
-                        style={{ color: location === '/dashboards/events' ? 'var(--color-charcoal)' : 'var(--color-dark-gray)' }}>
-                    Dashboard
-                  </span>
-                </Link>
+                {isAdmin && (
+                  <Link href="/dashboards/events">
+                    <span className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === '/dashboards/events' ? 'font-medium' : ''}`} 
+                          style={{ color: location === '/dashboards/events' ? 'var(--color-charcoal)' : 'var(--color-dark-gray)' }}>
+                      Dashboard
+                    </span>
+                  </Link>
+                )}
                 <a href="#contact" className="hover:opacity-70 transition-opacity duration-300" style={{ color: 'var(--color-dark-gray)' }}>
                   Contact
                 </a>
               </div>
 
               {/* User Section */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 hover:shadow-sm cursor-pointer"
-                   style={{ 
-                     borderColor: 'var(--color-light-gray)',
-                     backgroundColor: 'transparent'
-                   }}
-                   onMouseEnter={(e) => {
-                     e.currentTarget.style.backgroundColor = 'var(--color-soft-beige)';
-                     e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
-                   }}
-                   onMouseLeave={(e) => {
-                     e.currentTarget.style.backgroundColor = 'transparent';
-                     e.currentTarget.style.borderColor = 'var(--color-light-gray)';
-                   }}>
-                <User className="w-4 h-4" style={{ color: 'var(--color-mid-gray)' }} />
-                <span className="text-sm" style={{ color: 'var(--color-dark-gray)' }}>Guest</span>
+              <div className="flex items-center gap-2">
+                {isAdmin ? (
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border"
+                         style={{ 
+                           borderColor: 'var(--color-light-gray)',
+                           backgroundColor: 'transparent'
+                         }}>
+                      <User className="w-4 h-4" style={{ color: 'var(--color-mid-gray)' }} />
+                      <span className="text-sm" style={{ color: 'var(--color-dark-gray)' }}>Admin</span>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 hover:shadow-sm"
+                      style={{
+                        borderColor: 'var(--color-light-gray)',
+                        color: 'var(--color-charcoal)',
+                        backgroundColor: 'transparent',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'var(--color-soft-beige)';
+                        e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.borderColor = 'var(--color-light-gray)';
+                      }}
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span className="text-sm">Logout</span>
+                    </button>
+                  </div>
+                ) : (
+                  <Link href="/admin-login">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 hover:shadow-sm cursor-pointer"
+                         style={{ 
+                           borderColor: 'var(--color-light-gray)',
+                           backgroundColor: 'transparent'
+                         }}
+                         onMouseEnter={(e) => {
+                           e.currentTarget.style.backgroundColor = 'var(--color-soft-beige)';
+                           e.currentTarget.style.borderColor = 'var(--color-mid-gray)';
+                         }}
+                         onMouseLeave={(e) => {
+                           e.currentTarget.style.backgroundColor = 'transparent';
+                           e.currentTarget.style.borderColor = 'var(--color-light-gray)';
+                         }}>
+                      <LogIn className="w-4 h-4" style={{ color: 'var(--color-mid-gray)' }} />
+                      <span className="text-sm" style={{ color: 'var(--color-dark-gray)' }}>Admin Login</span>
+                    </div>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
