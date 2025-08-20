@@ -37,6 +37,8 @@ export class EventService {
 
   async createEvent(eventData: InsertEvent, approved: boolean = false): Promise<Event> {
     try {
+      console.log(`Creating event "${eventData.title}" with approved status: ${approved}`);
+      
       // Check if event with same title already exists
       const existingEvents = await storage.getEvents({
         search: eventData.title,
@@ -53,7 +55,9 @@ export class EventService {
         );
       }
 
-      return await storage.createEvent(eventData, approved);
+      const createdEvent = await storage.createEvent(eventData, approved);
+      console.log(`Event created with final approved status: ${createdEvent.approved}`);
+      return createdEvent;
     } catch (error) {
       if (error instanceof CustomError) throw error;
       throw new CustomError("Failed to create event", 500);
