@@ -184,29 +184,23 @@ export class DatabaseStorage implements IStorage {
     }
 
     if (filters?.genreIds && filters.genreIds.length > 0) {
-      conditions.push(sql`${events.genreIds} @> ARRAY[${filters.genreIds.join(
-        ",",
-      )}]::text[]`);
+      const genreIds = filters.genreIds.map(id => `'${id}'`).join(',');
+      conditions.push(sql`${events.genreIds} @> ARRAY[${sql.raw(genreIds)}]::text[]`);
     }
 
     if (filters?.settingIds && filters.settingIds.length > 0) {
-      conditions.push(sql`${events.settingIds} @> ARRAY[${filters.settingIds.join(
-        ",",
-      )}]::text[]`);
+      const settingIds = filters.settingIds.map(id => `'${id}'`).join(',');
+      conditions.push(sql`${events.settingIds} @> ARRAY[${sql.raw(settingIds)}]::text[]`);
     }
 
     if (filters?.eventTypeIds && filters.eventTypeIds.length > 0) {
-      conditions.push(
-        sql`${events.eventTypeIds} @> ARRAY[${filters.eventTypeIds.join(
-          ",",
-        )}]::text[]`,
-      );
+      const eventTypeIds = filters.eventTypeIds.map(id => `'${id}'`).join(',');
+      conditions.push(sql`${events.eventTypeIds} @> ARRAY[${sql.raw(eventTypeIds)}]::text[]`);
     }
 
     if (filters?.tags && filters.tags.length > 0) {
-      conditions.push(sql`${events.tags} @> ARRAY[${filters.tags.join(
-        ",",
-      )}]::text[]`);
+      const tags = filters.tags.map(tag => `'${tag.replace(/'/g, "''")}'`).join(',');
+      conditions.push(sql`${events.tags} @> ARRAY[${sql.raw(tags)}]::text[]`);
     }
 
     if (conditions.length > 0) {
