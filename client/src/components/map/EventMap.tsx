@@ -107,15 +107,33 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
     try {
       console.log('🗺️ Initializing Google Map with', eventsWithCoordinates.length, 'events');
       
-      // Calculate center point from all events
-      const avgLat = eventsWithCoordinates.reduce((sum, event) => sum + event.latitude!, 0) / eventsWithCoordinates.length;
-      const avgLng = eventsWithCoordinates.reduce((sum, event) => sum + event.longitude!, 0) / eventsWithCoordinates.length;
+      // Focus on first event for initial load, or calculate center for multiple events
+      let centerLat, centerLng, zoomLevel;
       
-      console.log('📍 Map center calculated:', { lat: avgLat, lng: avgLng });
+      if (eventsWithCoordinates.length === 1) {
+        // Single event - center on it with high zoom
+        centerLat = eventsWithCoordinates[0].latitude!;
+        centerLng = eventsWithCoordinates[0].longitude!;
+        zoomLevel = 12;
+        console.log('📍 Map centered on single event:', eventsWithCoordinates[0].title);
+      } else if (eventsWithCoordinates.length > 1) {
+        // Multiple events - focus on first event but with medium zoom to show area
+        centerLat = eventsWithCoordinates[0].latitude!;
+        centerLng = eventsWithCoordinates[0].longitude!;
+        zoomLevel = 8;
+        console.log('📍 Map focused on first event:', eventsWithCoordinates[0].title);
+      } else {
+        // Fallback (shouldn't reach here due to earlier check)
+        centerLat = 0;
+        centerLng = 0;
+        zoomLevel = 2;
+      }
+      
+      console.log('📍 Map center set to:', { lat: centerLat, lng: centerLng, zoom: zoomLevel });
 
       const map = new window.google.maps.Map(mapRef.current, {
-        zoom: eventsWithCoordinates.length === 1 ? 12 : 6,
-        center: { lat: avgLat, lng: avgLng },
+        zoom: zoomLevel,
+        center: { lat: centerLat, lng: centerLng },
         mapTypeId: window.google.maps.MapTypeId.ROADMAP,
       });
 
