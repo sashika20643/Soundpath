@@ -85,11 +85,17 @@ export default function Home() {
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
-  // Sort events for latest discoveries (most recent by date) and hidden gems (oldest by date)
-  const sortedByDateDesc = allEvents
+  // Filter events to only include past events (date is older than current date)
+  const currentDate = new Date();
+  currentDate.setHours(23, 59, 59, 999); // End of today
+  
+  const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
+
+  // Sort past events for latest discoveries (most recent by date) and hidden gems (oldest by date)
+  const sortedByDateDesc = pastEvents
     .slice()
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const sortedByDateAsc = allEvents
+  const sortedByDateAsc = pastEvents
     .slice()
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -126,10 +132,15 @@ export default function Home() {
     (cat) => cat.type === "eventType",
   );
 
-  // Shuffle events for random section - keeping for now but will replace
+  // Shuffle past events for random section - keeping for now but will replace
   useEffect(() => {
-    if (allEvents.length > 0) {
-      const shuffled = [...allEvents].sort(() => Math.random() - 0.5);
+    const currentDate = new Date();
+    currentDate.setHours(23, 59, 59, 999); // End of today
+    
+    const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
+    
+    if (pastEvents.length > 0) {
+      const shuffled = [...pastEvents].sort(() => Math.random() - 0.5);
       setRandomEvents(shuffled.slice(0, 6));
     }
   }, [allEvents]);
