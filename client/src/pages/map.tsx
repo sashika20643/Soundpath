@@ -204,7 +204,7 @@ export default function MapPage() {
         </section>
 
         {/* Filters Section - Enhanced */}
-        <section className="section-padding py-12">
+        <section className="section-padding py-6">
           <div className="max-w-7xl mx-auto">
             <Card className="shadow-lg border-0" style={{ backgroundColor: "white" }}>
               <CardHeader className="pb-4">
@@ -358,15 +358,15 @@ export default function MapPage() {
         </section>
 
         {/* Main Content Grid */}
-        <section className="section-padding py-12">
+        <section className="section-padding py-6">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[calc(100vh-320px)]">
               
               {/* Map Column - Takes 2/3 on large screens */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 space-y-4 flex flex-col">
                 {/* Map Header */}
                 <div className="scroll-animate">
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-between">
                     <h2
                       className="font-serif text-3xl"
                       style={{ color: "var(--color-charcoal)" }}
@@ -384,22 +384,21 @@ export default function MapPage() {
                   </div>
                 </div>
 
-                {/* Map */}
-                <div className="scroll-animate scroll-animate-delay-1">
+                {/* Map - Now takes full remaining space */}
+                <div className="scroll-animate scroll-animate-delay-1 flex-1">
                   {isLoading ? (
                     <div 
-                      className="rounded-xl animate-pulse shadow-lg"
+                      className="rounded-xl animate-pulse shadow-lg h-full min-h-[500px]"
                       style={{ 
-                        height: "600px",
                         backgroundColor: "var(--color-light-gray)"
                       }}
                     ></div>
                   ) : (
-                    <div className="relative">
+                    <div className="relative h-full min-h-[500px]">
                       <EventMap 
                         events={eventsWithCoordinates} 
-                        height="600px"
-                        className="rounded-xl shadow-lg overflow-hidden"
+                        height="100%"
+                        className="rounded-xl shadow-lg overflow-hidden h-full"
                       />
                       {eventsWithCoordinates.length > 0 && (
                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md">
@@ -410,6 +409,38 @@ export default function MapPage() {
                       )}
                     </div>
                   )}
+                </div>
+                
+                {/* Map Statistics - Fill bottom space */}
+                <div className="scroll-animate scroll-animate-delay-2">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[
+                      { label: "Events", value: stats.totalEvents, icon: Music, color: "text-blue-600" },
+                      { label: "Countries", value: stats.countries, icon: Globe, color: "text-green-600" },
+                      { label: "Cities", value: stats.cities, icon: MapPin, color: "text-purple-600" },
+                      { label: "Continents", value: stats.continents, icon: Compass, color: "text-orange-600" }
+                    ].map((stat, index) => (
+                      <div key={index} className="bg-white rounded-lg p-4 shadow-md border border-gray-100">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div 
+                              className="text-2xl font-bold mb-1"
+                              style={{ color: "var(--color-charcoal)" }}
+                            >
+                              {stat.value}
+                            </div>
+                            <div 
+                              className="text-xs font-medium"
+                              style={{ color: "var(--color-mid-gray)" }}
+                            >
+                              {stat.label}
+                            </div>
+                          </div>
+                          <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
