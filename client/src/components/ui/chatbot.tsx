@@ -1,15 +1,16 @@
-// /components/chatbot/chat-bot.tsx
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useChat } from "@/hooks/use-chat";
+import ReactMarkdown from "react-markdown";
 
 export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const { messages, sendMessage, isLoading } = useChat();
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
@@ -23,6 +24,13 @@ export function ChatBot() {
       handleSendMessage();
     }
   };
+
+  // Auto-scroll when messages update
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <>
@@ -42,7 +50,7 @@ export function ChatBot() {
 
       {/* Chat Popup */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 md:w-96">
+        <div className="fixed bottom-24 right-6 z-50 w-100 md:w-96">
           <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-lg">
             {/* Header */}
             <CardHeader className="pb-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-t-lg">
@@ -88,7 +96,46 @@ export function ChatBot() {
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      <p className="text-sm">{message.text}</p>
+                      {/* Render Markdown safely */}
+                      <div
+                        className={`prose prose-sm max-w-none break-words ${
+                          message.isUser ? "prose-invert" : ""
+                        }`}
+                      >
+                        <ReactMarkdown
+                          components={{
+                            p: ({ node, ...props }) => (
+                              <p {...props} className="mb-2" />
+                            ),
+                            ul: ({ node, ...props }) => (
+                              <ul {...props} className="list-disc pl-5 mb-2" />
+                            ),
+                            ol: ({ node, ...props }) => (
+                              <ol
+                                {...props}
+                                className="list-decimal pl-5 mb-2"
+                              />
+                            ),
+                            li: ({ node, ...props }) => (
+                              <li {...props} className="mb-1" />
+                            ),
+                            code: ({ node, inline, ...props }) =>
+                              inline ? (
+                                <code
+                                  {...props}
+                                  className="bg-gray-200 px-1 rounded"
+                                />
+                              ) : (
+                                <pre className="bg-gray-900 text-gray-100 p-2 rounded-lg overflow-x-auto">
+                                  <code {...props} />
+                                </pre>
+                              ),
+                          }}
+                        >
+                          {message.text}
+                        </ReactMarkdown>
+                      </div>
+
                       <p
                         className={`text-xs mt-1 ${
                           message.isUser ? "text-white/70" : "text-gray-500"
@@ -102,6 +149,8 @@ export function ChatBot() {
                     </div>
                   </div>
                 ))}
+                {/* Scroll anchor */}
+                <div ref={messagesEndRef} />
               </div>
 
               {/* Input */}

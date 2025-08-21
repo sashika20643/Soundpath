@@ -8,22 +8,22 @@ const openai = new OpenAI({
 class ChatService {
   async getChatResponse(userQuery: string, limit: number = 5) {
     // Fetch events from DB
-    const events = await eventService.getAllEvents(); 
+    const events = await eventService.getAllEvents();
 
     const messages = [
       {
         role: "system",
-        content: `You are a friendly Event Selection Assistant. 
-Given a list of events, choose the ones that best match the user’s request. 
-Respond in a helpful, creative way. 
-If no events match, suggest the closest alternatives.`,
+        content: `You are a friendly Event Selection Assistant for sonic path website.help user to give most matching events from sonic path  events list. 
+Respond in a helpful, creative,short way if its even not related to events. Use response in markdown format to make it more stylish and detailed.
+If no events match, suggest the closest alternatives.
+Here are the events: 
+${JSON.stringify(events, null, 2)}
+
+Important : response should be in markdown. event link path is replit.dev/event/eventid`,
       },
       {
         role: "user",
-        content: `Here are the events: 
-${JSON.stringify(events, null, 2)}
-
-User query: ${userQuery}`,
+        content: ` ${userQuery}`,
       },
     ];
 

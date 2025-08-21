@@ -28,14 +28,13 @@ export function useChat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history: messages }),
+        body: JSON.stringify({ userQuery: text, limit: 5 }),
       });
-
       const data = await res.json();
-
+      console.log("Chat response:", data);
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: data.reply,
+        text: data.data,
         isUser: false,
         timestamp: new Date(),
       };
