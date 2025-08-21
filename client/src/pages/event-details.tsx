@@ -79,10 +79,20 @@ export default function EventDetails() {
   const relatedEvents = event ? getRelatedEvents(event) : [];
 
   useEffect(() => {
+    // Reset scroll position to top when component mounts
+    window.scrollTo(0, 0);
+    
     // Trigger fade-in animation after component mounts
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Ensure we stay at top when event data loads
+    if (event && !eventLoading) {
+      window.scrollTo(0, 0);
+    }
+  }, [event, eventLoading]);
 
   if (eventLoading) {
     return (
