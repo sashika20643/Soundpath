@@ -472,7 +472,7 @@ export default function EventDetails() {
         {/* Related Events Section */}
         {relatedEvents.length > 0 && (
           <section
-            className="max-w-7xl mx-auto px-6 py-16"
+            className="max-w-7xl mx-auto px-6 py-12"
             style={{ backgroundColor: "var(--color-cream)" }}
           >
             <div
@@ -480,46 +480,127 @@ export default function EventDetails() {
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center justify-between mb-8">
                 <div>
                   <h2
-                    className="font-serif text-3xl md:text-4xl mb-4"
+                    className="font-serif text-2xl md:text-3xl mb-2"
                     style={{ color: "var(--color-charcoal)" }}
                   >
-                    Related Musical Experiences
+                    Related Events
                   </h2>
                   <p
-                    className="text-lg"
+                    className="text-sm"
                     style={{ color: "var(--color-dark-gray)" }}
                   >
-                    Discover similar events that share the same musical spirit
+                    Similar musical experiences you might enjoy
                   </p>
                 </div>
-                <ChevronRight
-                  className="w-8 h-8 animate-pulse"
-                  style={{ color: "var(--color-mid-gray)" }}
-                />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                 {relatedEvents.map((relatedEvent, index) => (
                   <div
                     key={relatedEvent.id}
-                    className="transition-all duration-700 hover:scale-105"
+                    className="group cursor-pointer transition-all duration-500 hover:scale-105"
                     style={{
-                      animationDelay: `${index * 150}ms`,
+                      animationDelay: `${index * 100}ms`,
                     }}
+                    onClick={() => (window.location.href = `/event/${relatedEvent.id}`)}
                   >
-                    <EventCard event={relatedEvent} />
+                    <article
+                      className="bg-white border rounded-xl overflow-hidden shadow-sm transition-all duration-500 hover:shadow-lg"
+                      style={{
+                        borderColor: "var(--color-light-gray)",
+                      }}
+                    >
+                      {/* Compact Image */}
+                      <div className="relative h-32 overflow-hidden">
+                        {relatedEvent.heroImage ? (
+                          <img
+                            src={relatedEvent.heroImage}
+                            alt={relatedEvent.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                        ) : (
+                          <div
+                            className="w-full h-full flex items-center justify-center"
+                            style={{ backgroundColor: "var(--color-soft-beige)" }}
+                          >
+                            <Star
+                              className="w-8 h-8"
+                              style={{ color: "var(--color-mid-gray)" }}
+                            />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </div>
+
+                      {/* Compact Content */}
+                      <div className="p-4">
+                        <h3
+                          className="font-serif text-sm font-medium mb-2 line-clamp-2 group-hover:opacity-70 transition-opacity duration-300"
+                          style={{ color: "var(--color-charcoal)" }}
+                        >
+                          {relatedEvent.title}
+                        </h3>
+                        
+                        <div className="flex flex-col gap-1 mb-3 text-xs" style={{ color: "var(--color-mid-gray)" }}>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            <span>
+                              {new Date(relatedEvent.date).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                              })}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            <span className="truncate">{relatedEvent.city}, {relatedEvent.country}</span>
+                          </div>
+                        </div>
+
+                        {/* Tags - max 2 */}
+                        {relatedEvent.tags && relatedEvent.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1">
+                            {relatedEvent.tags.slice(0, 2).map((tag, tagIndex) => (
+                              <span
+                                key={tagIndex}
+                                className="px-2 py-1 text-xs rounded-full truncate"
+                                style={{
+                                  backgroundColor: "var(--color-cream)",
+                                  color: "var(--color-dark-gray)",
+                                  fontSize: "10px",
+                                }}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                            {relatedEvent.tags.length > 2 && (
+                              <span
+                                className="px-2 py-1 text-xs rounded-full"
+                                style={{
+                                  backgroundColor: "var(--color-light-gray)",
+                                  color: "var(--color-mid-gray)",
+                                  fontSize: "10px",
+                                }}
+                              >
+                                +{relatedEvent.tags.length - 2}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </article>
                   </div>
                 ))}
               </div>
 
               {relatedEvents.length === 6 && (
-                <div className="text-center mt-12">
+                <div className="text-center mt-8">
                   <button
                     onClick={() => (window.location.href = "/events")}
-                    className="group px-8 py-4 text-sm font-medium rounded-xl border transition-all duration-500 hover:shadow-xl hover:scale-105"
+                    className="group px-6 py-3 text-xs font-medium rounded-lg border transition-all duration-500 hover:shadow-lg hover:scale-105"
                     style={{
                       borderColor: "var(--color-light-gray)",
                       color: "var(--color-charcoal)",
@@ -535,9 +616,9 @@ export default function EventDetails() {
                       e.currentTarget.style.borderColor = "var(--color-light-gray)";
                     }}
                   >
-                    <span className="flex items-center gap-3">
-                      Explore All Events
-                      <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <span className="flex items-center gap-2">
+                      View More Events
+                      <ChevronRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
                     </span>
                   </button>
                 </div>
