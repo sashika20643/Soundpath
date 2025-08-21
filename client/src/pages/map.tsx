@@ -360,10 +360,10 @@ export default function MapPage() {
         {/* Main Content Grid */}
         <section className="section-padding py-6">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[calc(100vh-320px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8"></div>
               
               {/* Map Column - Takes 2/3 on large screens */}
-              <div className="lg:col-span-2 space-y-4 flex flex-col">
+              <div className="lg:col-span-2 space-y-4"></div>
                 {/* Map Header */}
                 <div className="scroll-animate">
                   <div className="flex items-center justify-between">
@@ -384,21 +384,22 @@ export default function MapPage() {
                   </div>
                 </div>
 
-                {/* Map - Now takes full remaining space */}
-                <div className="scroll-animate scroll-animate-delay-1 flex-1">
+                {/* Map - Fixed height */}
+                <div className="scroll-animate scroll-animate-delay-1">
                   {isLoading ? (
                     <div 
-                      className="rounded-xl animate-pulse shadow-lg h-full min-h-[500px]"
+                      className="rounded-xl animate-pulse shadow-lg"
                       style={{ 
+                        height: "400px",
                         backgroundColor: "var(--color-light-gray)"
                       }}
                     ></div>
                   ) : (
-                    <div className="relative h-full min-h-[500px]">
+                    <div className="relative">
                       <EventMap 
                         events={eventsWithCoordinates} 
-                        height="100%"
-                        className="rounded-xl shadow-lg overflow-hidden h-full"
+                        height="400px"
+                        className="rounded-xl shadow-lg overflow-hidden"
                       />
                       {eventsWithCoordinates.length > 0 && (
                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md">
@@ -488,42 +489,157 @@ export default function MapPage() {
                   </div>
                 )}
 
-                {/* Statistics Card */}
+                {/* Location Search Card */}
                 <div className="scroll-animate scroll-animate-delay-3">
                   <Card className="shadow-lg border-0">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Users className="w-5 h-5" style={{ color: "var(--color-accent)" }} />
-                        <span style={{ color: "var(--color-charcoal)" }}>Global Reach</span>
+                        <Filter className="w-5 h-5" style={{ color: "var(--color-accent)" }} />
+                        <span style={{ color: "var(--color-charcoal)" }}>Search Locations</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {[
-                        { label: "Total Events", value: stats.totalEvents, icon: Music },
-                        { label: "Countries", value: stats.countries, icon: Globe },
-                        { label: "Cities", value: stats.cities, icon: MapPin },
-                        { label: "Continents", value: stats.continents, icon: Compass }
-                      ].map((stat, index) => (
-                        <div key={index} className="flex items-center justify-between py-2">
-                          <div className="flex items-center gap-3">
-                            <div 
-                              className="p-1.5 rounded-md"
-                              style={{ backgroundColor: "var(--color-cream)" }}
-                            >
-                              <stat.icon className="w-4 h-4" style={{ color: "var(--color-accent)" }} />
-                            </div>
-                            <span className="text-sm" style={{ color: "var(--color-dark-gray)" }}>
-                              {stat.label}
-                            </span>
-                          </div>
-                          <span 
-                            className="text-lg font-bold"
+                      {/* Continent Input */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium" style={{ color: "var(--color-charcoal)" }}>
+                          Continent
+                        </Label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="e.g. North America, Europe, Asia..."
+                            value={selectedContinent}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setSelectedContinent(value);
+                              setSelectedCountry("");
+                              setSelectedCity("");
+                            }}
+                            className="w-full py-2 px-3 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                             style={{ color: "var(--color-charcoal)" }}
-                          >
-                            {stat.value}
-                          </span>
+                          />
+                          {selectedContinent && continents.some(c => c.toLowerCase().includes(selectedContinent.toLowerCase())) && (
+                            <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-32 overflow-y-auto">
+                              {continents
+                                .filter(continent => 
+                                  continent.toLowerCase().includes(selectedContinent.toLowerCase())
+                                )
+                                .slice(0, 5)
+                                .map(continent => (
+                                  <button
+                                    key={continent}
+                                    type="button"
+                                    className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm"
+                                    onClick={() => {
+                                      setSelectedContinent(continent);
+                                      setSelectedCountry("");
+                                      setSelectedCity("");
+                                    }}
+                                  >
+                                    {continent}
+                                  </button>
+                                ))}
+                            </div>
+                          )}
                         </div>
-                      ))}
+                      </div>
+
+                      {/* Country Input */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium" style={{ color: "var(--color-charcoal)" }}>
+                          Country
+                        </Label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="e.g. United States, France, Japan..."
+                            value={selectedCountry}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setSelectedCountry(value);
+                              setSelectedCity("");
+                            }}
+                            disabled={!selectedContinent}
+                            className="w-full py-2 px-3 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-400"
+                            style={{ color: selectedContinent ? "var(--color-charcoal)" : "var(--color-mid-gray)" }}
+                          />
+                          {selectedCountry && availableCountries.some(c => c.toLowerCase().includes(selectedCountry.toLowerCase())) && (
+                            <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-32 overflow-y-auto">
+                              {availableCountries
+                                .filter(country => 
+                                  country.toLowerCase().includes(selectedCountry.toLowerCase())
+                                )
+                                .slice(0, 5)
+                                .map(country => (
+                                  <button
+                                    key={country}
+                                    type="button"
+                                    className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm"
+                                    onClick={() => {
+                                      setSelectedCountry(country);
+                                      setSelectedCity("");
+                                    }}
+                                  >
+                                    {country}
+                                  </button>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* City Input */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium" style={{ color: "var(--color-charcoal)" }}>
+                          City
+                        </Label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="e.g. New York, Paris, Tokyo..."
+                            value={selectedCity}
+                            onChange={(e) => setSelectedCity(e.target.value)}
+                            disabled={!selectedCountry}
+                            className="w-full py-2 px-3 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-400"
+                            style={{ color: selectedCountry ? "var(--color-charcoal)" : "var(--color-mid-gray)" }}
+                          />
+                          {selectedCity && availableCities.some(c => c.toLowerCase().includes(selectedCity.toLowerCase())) && (
+                            <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-32 overflow-y-auto">
+                              {availableCities
+                                .filter(city => 
+                                  city.toLowerCase().includes(selectedCity.toLowerCase())
+                                )
+                                .slice(0, 5)
+                                .map(city => (
+                                  <button
+                                    key={city}
+                                    type="button"
+                                    className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm"
+                                    onClick={() => setSelectedCity(city)}
+                                  >
+                                    {city}
+                                  </button>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Clear button */}
+                      {(selectedContinent || selectedCountry || selectedCity) && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedContinent("");
+                            setSelectedCountry("");
+                            setSelectedCity("");
+                          }}
+                          className="w-full mt-3"
+                        >
+                          Clear All Filters
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 </div>
