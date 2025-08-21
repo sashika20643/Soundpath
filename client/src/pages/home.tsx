@@ -158,7 +158,7 @@ export default function Home() {
       await createEventMutation.mutateAsync({ ...data, fromDashboard: false });
 
       toast({
-        title: "Event submitted successfully!",
+        title: "Evenåt submitted successfully!",
         description:
           "Your musical discovery has been submitted for review. It will appear publicly once approved.",
       });

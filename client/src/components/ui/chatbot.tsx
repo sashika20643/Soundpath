@@ -1,49 +1,20 @@
+// /components/chatbot/chat-bot.tsx
 import { useState } from "react";
 import { MessageCircle, X, Send, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
-interface Message {
-  id: string;
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
+import { useChat } from "@/hooks/use-chat";
 
 export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Hi! How can I assist you today?",
-      isUser: false,
-      timestamp: new Date(),
-    },
-  ]);
   const [inputValue, setInputValue] = useState("");
+  const { messages, sendMessage, isLoading } = useChat();
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
-      const newMessage: Message = {
-        id: Date.now().toString(),
-        text: inputValue,
-        isUser: true,
-        timestamp: new Date(),
-      };
-      setMessages([...messages, newMessage]);
+      sendMessage(inputValue);
       setInputValue("");
-
-      // Simulate bot response (you can replace this with actual API call)
-      setTimeout(() => {
-        const botResponse: Message = {
-          id: (Date.now() + 1).toString(),
-          text: "great. there have a event in japan in 7th septhember called 'music fest eve'. do you want more details about it?",
-          isUser: false,
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, botResponse]);
-      }, 1000);
     }
   };
 
@@ -84,7 +55,9 @@ export function ChatBot() {
                     <h3 className="font-semibold text-sm">
                       Music Travel Assistant
                     </h3>
-                    <p className="text-xs text-white/80">Online now</p>
+                    <p className="text-xs text-white/80">
+                      {isLoading ? "Typing..." : "Online now"}
+                    </p>
                   </div>
                 </div>
                 <Button
@@ -104,7 +77,9 @@ export function ChatBot() {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex ${message.isUser ? "justify-end" : "justify-start"}`}
+                    className={`flex ${
+                      message.isUser ? "justify-end" : "justify-start"
+                    }`}
                   >
                     <div
                       className={`max-w-[80%] rounded-2xl px-4 py-2 ${
@@ -141,7 +116,7 @@ export function ChatBot() {
                   />
                   <Button
                     onClick={handleSendMessage}
-                    disabled={!inputValue.trim()}
+                    disabled={!inputValue.trim() || isLoading}
                     className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 disabled:opacity-50 px-3"
                   >
                     <Send className="w-4 h-4" />

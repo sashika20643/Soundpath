@@ -20,76 +20,82 @@ import {
   deleteEventValidator,
   approveEventValidator,
 } from "./validators/eventValidator";
+import { chatEventValidator } from "./validators/chatEventValidator";
+import { chatController } from "./controllers/chatController";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Category routes
   app.get(
     "/api/categories",
     validateRequest(getCategoriesValidator),
-    categoryController.getCategories.bind(categoryController)
+    categoryController.getCategories.bind(categoryController),
   );
 
   app.get(
     "/api/categories/:id",
     validateRequest(getCategoryValidator),
-    categoryController.getCategory.bind(categoryController)
+    categoryController.getCategory.bind(categoryController),
   );
 
   app.post(
     "/api/categories",
     validateRequest(createCategoryValidator),
-    categoryController.createCategory.bind(categoryController)
+    categoryController.createCategory.bind(categoryController),
   );
 
   app.put(
     "/api/categories/:id",
     validateRequest(updateCategoryValidator),
-    categoryController.updateCategory.bind(categoryController)
+    categoryController.updateCategory.bind(categoryController),
   );
 
   app.delete(
     "/api/categories/:id",
     validateRequest(deleteCategoryValidator),
-    categoryController.deleteCategory.bind(categoryController)
+    categoryController.deleteCategory.bind(categoryController),
   );
 
   // Event routes
   app.get(
     "/api/events",
     validateRequest(getEventsValidator),
-    eventController.getEvents.bind(eventController)
+    eventController.getEvents.bind(eventController),
   );
 
   app.get(
     "/api/events/:id",
     validateRequest(getEventValidator),
-    eventController.getEvent.bind(eventController)
+    eventController.getEvent.bind(eventController),
   );
 
   app.post(
     "/api/events",
     validateRequest(createEventValidator),
-    eventController.createEvent.bind(eventController)
+    eventController.createEvent.bind(eventController),
   );
 
   app.put(
     "/api/events/:id",
     validateRequest(updateEventValidator),
-    eventController.updateEvent.bind(eventController)
+    eventController.updateEvent.bind(eventController),
   );
 
   app.delete(
     "/api/events/:id",
     validateRequest(deleteEventValidator),
-    eventController.deleteEvent.bind(eventController)
+    eventController.deleteEvent.bind(eventController),
   );
 
   app.patch(
     "/api/events/:id/approve",
     validateRequest(approveEventValidator),
-    eventController.approveEvent.bind(eventController)
+    eventController.approveEvent.bind(eventController),
   );
-
+  app.post(
+    "/api/chat",
+    validateRequest(chatEventValidator),
+    chatController.chatWithEvents.bind(chatController),
+  );
   // Note: Error handling middleware will be added after Vite setup
 
   const httpServer = createServer(app);
