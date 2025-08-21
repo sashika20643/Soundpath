@@ -190,8 +190,10 @@ export default function MapPage() {
                       City
                     </Label>
                     <CityAutocomplete 
-                      countryCode={selectedCountryCode}
-                      onCitySelect={handleCityChange}
+                      continent={selectedContinent}
+                      country={selectedCountry}
+                      value={selectedCity}
+                      onChange={handleCityChange}
                       placeholder={selectedCountry ? "Enter city name" : "Select country first"}
                       disabled={!selectedCountry}
                     />
