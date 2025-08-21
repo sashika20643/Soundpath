@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout/layout";
 import { EventMap } from "@/components/map/EventMap";
@@ -9,38 +8,24 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Globe } from "lucide-react";
+import { CityAutocomplete } from "@/components/ui/city-autocomplete";
+import { 
+  getContinents, 
+  getCountriesForContinent, 
+  getCitiesForCountry 
+} from "@/lib/locations";
 
-const continents = [
-  "North America", "South America", "Europe", "Asia", "Africa", "Oceania"
-];
-
-const countries = {
-  "North America": ["United States", "Canada", "Mexico"],
-  "South America": ["Brazil", "Argentina", "Chile", "Colombia", "Peru"],
-  "Europe": ["United Kingdom", "France", "Germany", "Italy", "Spain", "Netherlands", "Switzerland"],
-  "Asia": ["Japan", "China", "India", "South Korea", "Thailand", "Singapore"],
-  "Africa": ["South Africa", "Egypt", "Nigeria", "Kenya", "Morocco"],
-  "Oceania": ["Australia", "New Zealand", "Fiji"]
-};
-
-const cities = {
-  "United States": ["New York", "Los Angeles", "Chicago", "San Francisco", "Miami"],
-  "United Kingdom": ["London", "Manchester", "Edinburgh", "Birmingham"],
-  "France": ["Paris", "Lyon", "Marseille", "Nice"],
-  "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt"],
-  "Japan": ["Tokyo", "Osaka", "Kyoto", "Yokohama"],
-  "Brazil": ["São Paulo", "Rio de Janeiro", "Salvador", "Brasília"],
-  "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth"],
-  // Add more cities as needed
-};
+const continents = getContinents();
 
 export default function MapPage() {
   usePageMetadata('map');
-  
+
   const [selectedContinent, setSelectedContinent] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
-  
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
+  const [availableCountries, setAvailableCountries] = useState<Array<{isoCode: string, name: string}>>([]);
+
   const scrollRef = useScrollAnimation();
 
   // Build filters for API call
@@ -59,31 +44,43 @@ export default function MapPage() {
     [allEvents]
   );
 
-  // Get available countries based on selected continent
-  const availableCountries = selectedContinent 
-    ? countries[selectedContinent as keyof typeof countries] || []
-    : [];
+  const handleContinentChange = (continent: string) => {
+    if (continent === "all") {
+      setSelectedContinent("");
+      setSelectedCountry("");
+      setSelectedCity("");
+      setSelectedCountryCode("");
+      setAvailableCountries([]);
+    } else {
+      setSelectedContinent(continent);
+      setSelectedCountry("");
+      setSelectedCity("");
+      setSelectedCountryCode("");
 
-  // Get available cities based on selected country
-  const availableCities = selectedCountry 
-    ? cities[selectedCountry as keyof typeof cities] || []
-    : [];
-
-  const handleContinentChange = (value: string) => {
-    const continent = value === "all" ? "" : value;
-    setSelectedContinent(continent);
-    setSelectedCountry("");
-    setSelectedCity("");
+      // Load countries for this continent
+      const countries = getCountriesForContinent(continent);
+      setAvailableCountries(countries);
+    }
   };
 
-  const handleCountryChange = (value: string) => {
-    const country = value === "all" ? "" : value;
-    setSelectedCountry(country);
-    setSelectedCity("");
+  const handleCountryChange = (country: string) => {
+    if (country === "all") {
+      setSelectedCountry("");
+      setSelectedCity("");
+      setSelectedCountryCode("");
+    } else {
+      setSelectedCountry(country);
+      setSelectedCity("");
+
+      // Find country code for city autocomplete
+      const countryData = availableCountries.find(c => c.name === country);
+      if (countryData) {
+        setSelectedCountryCode(countryData.isoCode);
+      }
+    }
   };
 
-  const handleCityChange = (value: string) => {
-    const city = value === "all" ? "" : value;
+  const handleCityChange = (city: string) => {
     setSelectedCity(city);
   };
 
@@ -178,8 +175,8 @@ export default function MapPage() {
                       <SelectContent>
                         <SelectItem value="all">All Countries</SelectItem>
                         {availableCountries.map(country => (
-                          <SelectItem key={country} value={country}>
-                            {country}
+                          <SelectItem key={country.isoCode} value={country.name}>
+                            {country.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -192,23 +189,12 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       City
                     </Label>
-                    <Select 
-                      value={selectedCity || "all"} 
-                      onValueChange={handleCityChange}
+                    <CityAutocomplete 
+                      countryCode={selectedCountryCode}
+                      onCitySelect={handleCityChange}
+                      placeholder={selectedCountry ? "Enter city name" : "Select country first"}
                       disabled={!selectedCountry}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder={selectedCountry ? "All Cities" : "Select country first"} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Cities</SelectItem>
-                        {availableCities.map(city => (
-                          <SelectItem key={city} value={city}>
-                            {city}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
                 </div>
 

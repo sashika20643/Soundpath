@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MapPin, ChevronDown } from "lucide-react";
-import { searchCities } from "@/lib/cities";
+
 
 interface CityAutocompleteProps {
   continent: string;
@@ -35,8 +35,18 @@ export function CityAutocomplete({
       return;
     }
 
-    const cities = searchCities(continent, country, value);
-    setSuggestions(cities);
+    // Get country code from country name using locations lib
+    const { getCountryByName } = require("@/lib/locations");
+    const countryData = getCountryByName(country);
+    
+    if (!countryData) {
+      setSuggestions([]);
+      return;
+    }
+
+    const { searchCities } = require("@/lib/locations");
+    const cities = searchCities(countryData.isoCode, value, undefined, 20);
+    setSuggestions(cities.map((city: any) => city.name));
   }, [continent, country, value]);
 
   useEffect(() => {
