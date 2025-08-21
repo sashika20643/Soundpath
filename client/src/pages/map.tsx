@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout/layout";
 import { EventMap } from "@/components/map/EventMap";
@@ -39,12 +38,12 @@ const cities = {
 
 export default function MapPage() {
   usePageMetadata('map');
-  
+
   const [selectedContinent, setSelectedContinent] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [showFilters, setShowFilters] = useState(false);
-  
+
   const scrollRef = useScrollAnimation();
 
   // Build filters for API call
@@ -68,7 +67,7 @@ export default function MapPage() {
     const uniqueCountries = new Set(eventsWithCoordinates.map(e => e?.country).filter(Boolean));
     const uniqueCities = new Set(eventsWithCoordinates.map(e => e?.city).filter(Boolean));
     const uniqueContinents = new Set(eventsWithCoordinates.map(e => e?.continent).filter(Boolean));
-    
+
     return {
       totalEvents: eventsWithCoordinates.length,
       countries: uniqueCountries.size,
@@ -146,7 +145,7 @@ export default function MapPage() {
                   Global Music Discovery
                 </span>
               </div>
-              
+
               <h1
                 className="font-serif text-6xl md:text-7xl leading-tight mb-8"
                 style={{ color: "var(--color-charcoal)" }}
@@ -161,7 +160,7 @@ export default function MapPage() {
                   />
                 </span>
               </h1>
-              
+
               <p
                 className="text-editorial text-xl max-w-3xl mx-auto leading-relaxed mb-12"
                 style={{ color: "var(--color-dark-gray)" }}
@@ -231,7 +230,7 @@ export default function MapPage() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
@@ -241,7 +240,7 @@ export default function MapPage() {
                     >
                       {showFilters ? 'Hide' : 'Show'} Filters
                     </Button>
-                    
+
                     {(selectedContinent || selectedCountry || selectedCity) && (
                       <Button
                         variant="outline"
@@ -255,7 +254,7 @@ export default function MapPage() {
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent className={`${showFilters ? 'block' : 'hidden'} md:block`}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Continent Filter */}
@@ -360,10 +359,10 @@ export default function MapPage() {
         {/* Main Content Grid */}
         <section className="section-padding py-6">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8"></div>
-              
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[calc(100vh-320px)]">
+
               {/* Map Column - Takes 2/3 on large screens */}
-              <div className="lg:col-span-2 space-y-4"></div>
+              <div className="lg:col-span-2 space-y-4 flex flex-col">
                 {/* Map Header */}
                 <div className="scroll-animate">
                   <div className="flex items-center justify-between">
@@ -411,7 +410,7 @@ export default function MapPage() {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Map Statistics - Fill bottom space */}
                 <div className="scroll-animate scroll-animate-delay-2">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -447,7 +446,7 @@ export default function MapPage() {
 
               {/* Sidebar - Takes 1/3 on large screens */}
               <div className="space-y-6">
-                
+
                 {/* Featured Events */}
                 {featuredEvents.length > 0 && (
                   <div className="scroll-animate scroll-animate-delay-2">
@@ -478,7 +477,7 @@ export default function MapPage() {
                             </div>
                           </Link>
                         ))}
-                        
+
                         <Link href="/events">
                           <Button variant="outline" className="w-full mt-4" size="sm">
                             View All Events
@@ -719,15 +718,15 @@ export default function MapPage() {
                           </Badge>
                           <MapPin className="w-4 h-4 text-gray-400 group-hover:text-orange-500 transition-colors" />
                         </div>
-                        
+
                         <h3 className="font-medium mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
                           {event.title}
                         </h3>
-                        
+
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                           {event.shortDescription}
                         </p>
-                        
+
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <span>{event.city}, {event.country}</span>
                           {event.date && (
