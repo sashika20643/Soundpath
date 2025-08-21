@@ -19,7 +19,6 @@ import type { Event, Category } from "@shared/schema";
 
 export default function EventDetails() {
   const [, params] = useRoute("/event/:id");
-  const scrollRef = useScrollAnimation();
   const [isLoaded, setIsLoaded] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -234,7 +233,6 @@ export default function EventDetails() {
           backgroundColor: "var(--color-warm-white)",
           color: "var(--color-charcoal)",
         }}
-        ref={scrollRef}
       >
         {/* Back Button Section */}
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -356,7 +354,7 @@ export default function EventDetails() {
           {/* Short Description */}
           {event.shortDescription && (
             <div
-              className={`scroll-animate mb-12 transition-all duration-1000 delay-200 ${
+              className={`mb-12 transition-all duration-1000 delay-200 ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -373,7 +371,7 @@ export default function EventDetails() {
           {(eventCategories.length > 0 ||
             (event.tags && event.tags.length > 0)) && (
             <div
-              className={`scroll-animate mb-16 transition-all duration-1000 delay-300 ${
+              className={`mb-16 transition-all duration-1000 delay-300 ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -418,7 +416,7 @@ export default function EventDetails() {
 
           {/* Long Description */}
           <div
-            className={`scroll-animate mb-16 transition-all duration-1000 delay-400 ${
+            className={`mb-16 transition-all duration-1000 delay-400 ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
@@ -438,7 +436,7 @@ export default function EventDetails() {
           {/* Instagram Link */}
           {event.instagramLink && (
             <div
-              className={`scroll-animate mb-16 transition-all duration-1000 delay-500 ${
+              className={`mb-16 transition-all duration-1000 delay-500 ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -476,7 +474,7 @@ export default function EventDetails() {
             style={{ backgroundColor: "var(--color-cream)" }}
           >
             <div
-              className={`scroll-animate transition-all duration-1000 delay-600 ${
+              className={`transition-all duration-1000 delay-600 ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
