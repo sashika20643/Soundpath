@@ -38,7 +38,7 @@ export function ChatBot() {
       <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-16 h-16 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 bg-gradient-to-br from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 border-0"
+          className="w-14 h-14 rounded-full shadow-xl transition-all duration-300 hover:scale-110 bg-primary text-primary-foreground hover:bg-primary/90 border-0"
         >
           {isOpen ? (
             <X className="w-6 h-6 text-white" />
@@ -51,28 +51,28 @@ export function ChatBot() {
       {/* Chat Popup */}
       {isOpen && (
         <div className="fixed bottom-24 right-6 z-50 w-100 md:w-96">
-          <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-lg">
+          <Card className="shadow-xl border border-border/10 bg-background/95 backdrop-blur-lg">
             {/* Header */}
-            <CardHeader className="pb-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-t-lg">
+            <CardHeader className="pb-3 bg-primary text-primary-foreground rounded-t-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-background/20 rounded-full flex items-center justify-center">
                     <Bot className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-sm">
                       Music Travel Assistant
                     </h3>
-                    <p className="text-xs text-white/80">
+                    <p className="text-xs opacity-80">
                       {isLoading ? "Typing..." : "Online now"}
                     </p>
                   </div>
                 </div>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={() => setIsOpen(false)}
-                  className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                  className="text-primary-foreground hover:bg-background/20 h-8 w-8"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -92,8 +92,8 @@ export function ChatBot() {
                     <div
                       className={`max-w-[80%] rounded-2xl px-4 py-2 ${
                         message.isUser
-                          ? "bg-gradient-to-br from-orange-500 to-pink-500 text-white"
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
                       }`}
                     >
                       {/* Render Markdown safely */}
@@ -138,7 +138,7 @@ export function ChatBot() {
 
                       <p
                         className={`text-xs mt-1 ${
-                          message.isUser ? "text-white/70" : "text-gray-500"
+                          message.isUser ? "text-primary-foreground/70" : "text-muted-foreground/70"
                         }`}
                       >
                         {message.timestamp.toLocaleTimeString([], {
@@ -154,19 +154,19 @@ export function ChatBot() {
               </div>
 
               {/* Input */}
-              <div className="p-4 border-t bg-gray-50/50">
+              <div className="p-4 border-t bg-muted/30">
                 <div className="flex space-x-2">
                   <Input
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Type your message..."
-                    className="flex-1 border-gray-200 focus:border-orange-300 focus:ring-orange-200"
+                    className="flex-1"
                   />
                   <Button
                     onClick={handleSendMessage}
                     disabled={!inputValue.trim() || isLoading}
-                    className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 disabled:opacity-50 px-3"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                   >
                     <Send className="w-4 h-4" />
                   </Button>
