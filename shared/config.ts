@@ -41,6 +41,11 @@ export const APP_CONFIG = {
       title: "Page Not Found - Sonic Paths",
       description: "The page you're looking for doesn't exist. Explore our collection of extraordinary musical experiences instead.",
       keywords: "404, page not found, music events"
+    },
+    contact: {
+      title: "Contact Us - Sonic Paths",
+      description: "Get in touch with the Sonic Paths team. Share your music discoveries, ask questions, or connect with our community.",
+      keywords: "contact, get in touch, music community, questions, support"
     }
   },
   

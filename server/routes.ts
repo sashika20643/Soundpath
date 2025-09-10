@@ -22,6 +22,12 @@ import {
 } from "./validators/eventValidator";
 import { chatEventValidator } from "./validators/chatEventValidator";
 import { chatController } from "./controllers/chatController";
+import {
+  createContactMessageValidator,
+  getContactMessagesValidator,
+} from "./validators/contactMessageValidator";
+import { contactMessageController } from "./controllers/contactMessageController";
+import { requireAdminAuth } from "./middlewares/authMiddleware";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Category routes
@@ -91,6 +97,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     validateRequest(approveEventValidator),
     eventController.approveEvent.bind(eventController),
   );
+
+  // Contact message routes
+  app.get(
+    "/api/contact-messages",
+    requireAdminAuth,
+    validateRequest(getContactMessagesValidator),
+    contactMessageController.getContactMessages.bind(contactMessageController),
+  );
+
+  app.post(
+    "/api/contact-messages",
+    validateRequest(createContactMessageValidator),
+    contactMessageController.createContactMessage.bind(contactMessageController),
+  );
+
   app.post(
     "/api/chat",
     validateRequest(chatEventValidator),

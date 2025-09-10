@@ -96,13 +96,19 @@ export function Layout({ children }: LayoutProps) {
                     </span>
                   </Link>
                 )}
-                <a
-                  href="#contact"
-                  className="hover:opacity-70 transition-opacity duration-300"
-                  style={{ color: "var(--color-dark-gray)" }}
-                >
-                  Contact
-                </a>
+                <Link href="/contact">
+                  <span
+                    className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === "/contact" ? "font-medium" : ""}`}
+                    style={{
+                      color:
+                        location === "/contact"
+                          ? "var(--color-charcoal)"
+                          : "var(--color-dark-gray)",
+                    }}
+                  >
+                    Contact
+                  </span>
+                </Link>
               </div>
 
               {/* User Section */}

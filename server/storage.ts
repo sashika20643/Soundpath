@@ -2,6 +2,7 @@ import {
   users,
   categories,
   events,
+  contactMessages,
   type User,
   type InsertUser,
   type Category,
@@ -11,6 +12,8 @@ import {
   type InsertEvent,
   type UpdateEvent,
   type ApproveEvent,
+  type ContactMessage,
+  type InsertContactMessage,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, like, and, desc, sql } from "drizzle-orm";
@@ -54,6 +57,10 @@ export interface IStorage {
   ): Promise<Event | undefined>;
   deleteEvent(id: string): Promise<boolean>;
   approveEvent(id: string, approved: boolean): Promise<Event | undefined>;
+
+  // Contact message methods
+  getContactMessages(): Promise<ContactMessage[]>;
+  createContactMessage(contactMessage: InsertContactMessage): Promise<ContactMessage>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -272,6 +279,29 @@ export class DatabaseStorage implements IStorage {
       .where(eq(events.id, id))
       .returning();
     return updatedEvent || undefined;
+  }
+
+  // Contact message methods
+  async getContactMessages(): Promise<ContactMessage[]> {
+    const result = await db
+      .select()
+      .from(contactMessages)
+      .orderBy(desc(contactMessages.createdAt));
+    return result;
+  }
+
+  async createContactMessage(
+    contactMessage: InsertContactMessage,
+  ): Promise<ContactMessage> {
+    const [newContactMessage] = await db
+      .insert(contactMessages)
+      .values({
+        ...contactMessage,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+    return newContactMessage;
   }
 }
 

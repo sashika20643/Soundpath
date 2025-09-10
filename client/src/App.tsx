@@ -9,9 +9,11 @@ import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
 import EventsPublic from "@/pages/events-public";
 import MapPage from "@/pages/map";
+import Contact from "@/pages/contact";
 import DashboardEvents from "@/pages/dashboards/events";
 import EventDetails from "@/pages/event-details";
 import ApprovalDashboard from "@/pages/dashboards/approval-dashboard";
+import ContactMessagesDashboard from "@/pages/dashboards/contact-messages";
 import AdminLoginPage from "@/pages/admin-login";
 import NotFound from "@/pages/not-found";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
@@ -23,6 +25,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/events" component={EventsPublic} />
       <Route path="/map" component={MapPage} />
+      <Route path="/contact" component={Contact} />
       <Route path="/event/:id" component={EventDetails} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/dashboard">
@@ -50,6 +53,13 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <ApprovalDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/dashboards/contact-messages">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ContactMessagesDashboard />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
