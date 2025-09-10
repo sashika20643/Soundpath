@@ -1,0 +1,1425 @@
+
+  // AFRICA REGION
+  {
+    name: "Nyege Nyege Festival",
+    location: "Jinja, Uganda",
+    type: "festival",
+    description: "Set along the banks of the Nile River, Nyege Nyege has emerged as one of Africa's most vital music festivals, showcasing experimental electronic music from across the continent. The four-day immersive experience combines forward-thinking musical curation with the natural beauty of Uganda, creating a cultural melting pot where traditional African sounds collide with cutting-edge electronic production.",
+    image: "https://images.unsplash.com/photo-1603224853517-991fa317d42c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "0.43861",
+    lng: "33.19750",
+    rating: "4.8",
+    tags: ["electronic", "experimental", "african", "underground"],
+    website: "https://nyegenyege.com/",
+    ticketUrl: "https://nyegenyege.com/tickets",
+    history: "Founded in 2015, Nyege Nyege (meaning 'the feeling of a sudden uncontrollable urge to move, shake or dance' in Luganda) has grown from a small gathering to an internationally acclaimed festival. Despite occasional controversies, it has become a crucial platform for emerging African electronic musicians and a celebration of the continent's diverse sonic landscapes.",
+    events: [
+      { name: "Opening Ceremony - Nile Stage", date: "September 15, 2023" },
+      { name: "Dark Star Showcase", date: "September 16, 2023" },
+      { name: "Hibotep & Friends", date: "September 17, 2023" },
+      { name: "Closing Ritual - Beach Stage", date: "September 18, 2023" }
+    ],
+    performances: [
+      { artist: "Kampire", description: "East African bass DJ and core member of Nyege Nyege collective" },
+      { artist: "MC Yallah & Debmaster", description: "Kenyan-Ugandan rapper and Parisian producer delivering intense electronic music" },
+      { artist: "Otim Alpha", description: "Pioneer of electro acholi, reimagining traditional Ugandan wedding music" },
+      { artist: "Hibotep", description: "Ethiopian experimental DJ pushing boundaries with atmospheric sets" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "Lake of Stars Festival",
+    location: "Lake Malawi, Malawi",
+    type: "festival",
+    description: "Held on the stunning shores of Lake Malawi (the third largest lake in Africa), Lake of Stars brings together music, art, and culture against one of the most breathtaking backdrops imaginable. The festival combines international acts with local Malawian talent, creating a unique cultural exchange while contributing significantly to the local economy and tourism.",
+    image: "https://images.unsplash.com/photo-1566055909643-a51b4271d2bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-14.03111",
+    lng: "34.92111",
+    rating: "4.7",
+    tags: ["world music", "beach", "cultural", "afro-fusion"],
+    website: "https://www.lakeofstars.org/",
+    ticketUrl: "https://www.lakeofstars.org/tickets",
+    history: "Founded in 2004 by British-Malawian Will Jameson, Lake of Stars was created to promote Malawian arts and tourism. Over the years, it has grown to become one of Africa's most respected music festivals and has generated millions in revenue for the Malawian economy while showcasing the country's rich cultural heritage.",
+    events: [
+      { name: "Beach Stage Opening", date: "September 27, 2023" },
+      { name: "Cultural Workshops", date: "September 28, 2023" },
+      { name: "Main Stage Headliners", date: "September 29, 2023" },
+      { name: "Sunset Sessions", date: "September 30, 2023" }
+    ],
+    performances: [
+      { artist: "Tay Grin", description: "Malawian hip-hop artist known as 'The Nyau King'" },
+      { artist: "Sonye", description: "Popular band blending traditional Malawian sounds with modern instrumentation" },
+      { artist: "Faith Mussa", description: "One-man band using loop technology to create layered traditional Malawian sounds" },
+      { artist: "Madalitso Band", description: "Two-piece band playing homemade instruments with infectious rhythms" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "Beneath the Baobabs",
+    location: "Kilifi, Kenya",
+    type: "festival",
+    description: "Set in an ancient baobab forest on Kenya's coast, this transformative festival creates a magical environment where music, art, and nature intertwine. The event focuses on sustainability and community, with stages built from natural materials and powered by renewable energy. Dancing beneath stars that shine through the branches of thousand-year-old baobab trees creates an unforgettable experience.",
+    image: "https://images.unsplash.com/photo-1591184510259-b6f1be3d7aff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-3.63111",
+    lng: "39.85000",
+    rating: "4.9",
+    tags: ["electronic", "eco-friendly", "transformational", "cultural"],
+    website: "https://www.kilifibaobabs.com",
+    ticketUrl: "https://www.kilifibaobabs.com/tickets",
+    history: "What began as a small New Year's gathering among friends has evolved into a cultural institution that brings together diverse communities while respecting the sacred forest land. The festival places a strong emphasis on environmental conservation and supports local communities through various initiatives.",
+    events: [
+      { name: "Opening Ceremony", date: "December 28, 2023" },
+      { name: "Forest Stage Takeover", date: "December 29, 2023" },
+      { name: "Sunrise Sessions", date: "December 30, 2023" },
+      { name: "New Year's Celebration", date: "December 31, 2023" }
+    ],
+    performances: [
+      { artist: "Idd Aziz", description: "Kenyan vocalist fusing traditional Taarab music with contemporary sounds" },
+      { artist: "Suraj", description: "Berlin-based Kenyan DJ known for deep, hypnotic sets" },
+      { artist: "Coco Em", description: "Nairobi-based DJ blending African electronic music with global bass" },
+      { artist: "Olith Ratego", description: "Master of Dodo, a traditional form of Luo music from Western Kenya" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "AfrikaBurn",
+    location: "Tankwa Karoo, South Africa",
+    type: "festival",
+    description: "Africa's regional Burning Man event, AfrikaBurn transforms the arid landscape of the Tankwa Karoo into a temporary city of art, self-expression, and experimental community. Spectacular art installations, mutant vehicles, and themed camps dot the desert, while musical performances range from electronic dance music to acoustic sessions under the vast South African sky.",
+    image: "https://images.unsplash.com/photo-1551197574-54b26833a8e6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-32.32639",
+    lng: "19.74667",
+    rating: "4.8",
+    tags: ["transformational", "art", "electronic", "community"],
+    website: "https://www.afrikaburn.com/",
+    ticketUrl: "https://www.afrikaburn.com/the-event/tickets",
+    history: "First held in 2007, AfrikaBurn embraces the same Ten Principles as its parent event, Burning Man, including radical self-reliance, communal effort, and leaving no trace. It has grown to become the largest regional Burning Man event outside of the United States.",
+    events: [
+      { name: "Gate Opening", date: "April 26, 2023" },
+      { name: "The Clan (Effigy Burn)", date: "May 2, 2023" },
+      { name: "Temple Burn", date: "May 3, 2023" },
+      { name: "Exodus (Event Close)", date: "May 4, 2023" }
+    ],
+    performances: [
+      { artist: "The Rhythm Workshop", description: "Collective percussion experience open to all participants" },
+      { artist: "Multiple sound camps", description: "Including Gimme Shelter, The Grease Monkeys, and The Spirit Train" },
+      { artist: "Pop-up acoustic jams", description: "Spontaneous musical gatherings throughout the temporary city" },
+      { artist: "Silent Disco", description: "Late-night dancing under the stars with wireless headphones" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "Sounds Waves Zanzibar",
+    location: "Stone Town, Zanzibar, Tanzania",
+    type: "festival",
+    description: "This boutique festival combines electronic music with the exotic atmosphere of Zanzibar's historic Stone Town. Set against the backdrop of the Indian Ocean, the festival features multiple stages on pristine beaches and within ancient ruins, creating a perfect harmony between cutting-edge music and cultural heritage. Days are spent exploring the island or relaxing on beaches, while nights transform into magical musical journeys.",
+    image: "https://images.unsplash.com/photo-1572260914146-7def76676552?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-6.16667",
+    lng: "39.19167",
+    rating: "4.6",
+    tags: ["electronic", "beach", "island", "cultural"],
+    website: "https://soundsofzanzibar.com",
+    ticketUrl: "https://soundsofzanzibar.com/tickets",
+    history: "Founded in 2018, Sound Waves Zanzibar was conceived as a way to highlight the rich cultural heritage of Stone Town (a UNESCO World Heritage site) while creating economic opportunities through sustainable tourism. The festival donates a portion of proceeds to local community projects.",
+    events: [
+      { name: "Beach Stage Opening", date: "October 5, 2023" },
+      { name: "Sunset Dhow Cruise with DJs", date: "October 6, 2023" },
+      { name: "Old Fort Stage Night", date: "October 7, 2023" },
+      { name: "Beach Closing Party", date: "October 8, 2023" }
+    ],
+    performances: [
+      { artist: "Floyd Lavine", description: "South African producer blending afro house and techno" },
+      { artist: "Thakzin", description: "Master of deep afro house rhythms from South Africa" },
+      { artist: "Hyenah", description: "Mysterious masked DJ celebrating African electronic music" },
+      { artist: "Kanoo", description: "Zanzibar-born artist fusing traditional Taarab music with electronic beats" }
+    ],
+    regionId: "africa"
+  },
+
+  // EUROPE REGION
+  {
+    name: "Meadows in the Mountains",
+    location: "Rhodope Mountains, Bulgaria",
+    type: "festival",
+    description: "Perched high in Bulgaria's mystical Rhodope Mountains, Meadows in the Mountains offers a truly magical festival experience. At an elevation of 850 meters, attendees dance above the clouds as misty mountain views provide a breathtaking backdrop. The festival balances electronic music with folk traditions, sustainability initiatives, and a strong community ethos. Solar-powered stages, compostable toilets, and locally-sourced food embody the festival's commitment to environmental consciousness.",
+    image: "https://images.unsplash.com/photo-1504680177321-2e6a879aac86?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "41.85944",
+    lng: "24.84222",
+    rating: "4.9",
+    tags: ["electronic", "mountain", "eco-friendly", "immersive"],
+    website: "https://www.meadowsinthemountains.com/",
+    ticketUrl: "https://www.meadowsinthemountains.com/tickets",
+    history: "Started in 2011 by the Sasse family, Meadows in the Mountains began as an intimate gathering of friends. The festival has maintained its personal touch while growing into an internationally recognized event known for its breathtaking location and commitment to supporting the local Bulgarian community.",
+    events: [
+      { name: "Welcome Ceremony", date: "June 2, 2023" },
+      { name: "Sunrise Stage - Mountain Top", date: "June 3, 2023" },
+      { name: "Yoga & Wellness Sessions", date: "June 4, 2023" },
+      { name: "Closing Celebration", date: "June 5, 2023" }
+    ],
+    performances: [
+      { artist: "Dora", description: "Swiss/Bulgarian DJ blending electronic sounds with Balkan elements" },
+      { artist: "Stavroz", description: "Belgian collective known for organic electronic compositions" },
+      { artist: "Local Bulgarian Folk Musicians", description: "Traditional performances showcasing regional heritage" },
+      { artist: "Sassy J", description: "Renowned selector known for eclectic, soulful sets" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Teatro La Fenice",
+    location: "Venice, Italy",
+    type: "venue",
+    description: "One of the most famous and renowned opera houses in history, Teatro La Fenice ('The Phoenix') has lived up to its name by rising from the ashes of multiple fires. The opulent interior features gold leaf, ornate stucco work, and plush royal blue seating, creating perfect acoustics for opera and classical performances. The experience of attending a performance here, surrounded by centuries of musical history in the magical setting of Venice, is truly unforgettable.",
+    image: "https://images.unsplash.com/photo-1553434320-e9f5757e5fa2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "45.43361",
+    lng: "12.33333",
+    rating: "4.9",
+    tags: ["opera", "classical", "historic", "elegant"],
+    website: "https://www.teatrolafenice.it/",
+    ticketUrl: "https://www.teatrolafenice.it/en/tickets/",
+    history: "First opened in 1792, the theater's name reflects its remarkable resilience, having been rebuilt after fires in 1836 and 1996. Many important operas premiered here, including works by Rossini, Bellini, Donizetti, and Verdi. The most recent reconstruction meticulously restored the theater to its original splendor.",
+    events: [
+      { name: "La Traviata by Giuseppe Verdi", date: "Year-round performances" },
+      { name: "The Barber of Seville by Gioachino Rossini", date: "Seasonal" },
+      { name: "Symphony Orchestra Concerts", date: "Monthly" },
+      { name: "New Year's Concert", date: "December 31, 2023" }
+    ],
+    performances: [
+      { artist: "Teatro La Fenice Orchestra", description: "The resident orchestra of international acclaim" },
+      { artist: "Teatro La Fenice Chorus", description: "Exceptional vocal ensemble maintaining operatic traditions" },
+      { artist: "International opera stars", description: "Rotating cast of world-renowned singers" },
+      { artist: "Guest conductors", description: "Leading maestros from around the world" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Lindisfarne Festival",
+    location: "Holy Island, Northumberland, UK",
+    type: "festival",
+    description: "Set on the stunning Northumberland coast with views of Holy Island (Lindisfarne), this intimate festival combines music, art, and wellness in a magical coastal setting. The festival's intimate size (around 5,000 attendees) creates a friendly community atmosphere while still attracting impressive musical talent across multiple genres. Taking place at the summer's end, the festival offers a perfect balance of revelry and reflection against the backdrop of ancient ruins and dramatic tidal landscapes.",
+    image: "https://images.unsplash.com/photo-1535151954227-5717c9d053cf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "55.67944",
+    lng: "-1.80278",
+    rating: "4.7",
+    tags: ["indie", "folk", "coastal", "wellness"],
+    website: "https://www.lindisfarnefestival.com/",
+    ticketUrl: "https://www.lindisfarnefestival.com/tickets",
+    history: "Founded in 2015, Lindisfarne Festival quickly established itself as one of the UK's most cherished independent festivals. It deliberately maintains its boutique scale to preserve the community feel while showcasing established acts alongside emerging talent from the North East of England.",
+    events: [
+      { name: "Main Stage Opening", date: "August 31, 2023" },
+      { name: "Sunrise Yoga Sessions", date: "September 1, 2023" },
+      { name: "Viking Workshops", date: "September 2, 2023" },
+      { name: "Closing Fire Ceremony", date: "September 3, 2023" }
+    ],
+    performances: [
+      { artist: "Cymande", description: "Legendary British funk group with spiritual overtones" },
+      { artist: "Gentleman's Dub Club", description: "Nine-piece band delivering energetic dub and reggae" },
+      { artist: "Holy Moly & The Crackers", description: "Newcastle-based folk-rock band with high-energy performances" },
+      { artist: "The Lake Poets", description: "Sunderland singer-songwriter with haunting melodies" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Sõru Saund",
+    location: "Hiiumaa Island, Estonia",
+    type: "festival",
+    description: "Held on Estonia's second-largest island, Sõru Saund crafts an intimate musical experience in a stunning Baltic setting. The festival takes place in and around a small fishing harbor, with performances happening on boats, in forest clearings, and on beautiful beaches. With a capacity of just 1,000 attendees, the festival creates an atmosphere where artists and audience members mingle freely, sharing meals and conversations between sets of experimental, electronic, and folk music.",
+    image: "https://images.unsplash.com/photo-1519929125787-88a2825c25b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "58.69583",
+    lng: "22.51944",
+    rating: "4.8",
+    tags: ["electronic", "experimental", "intimate", "island"],
+    website: "https://www.sorusaund.ee/",
+    ticketUrl: "https://www.sorusaund.ee/en/tickets/",
+    history: "Founded in 2014, Sõru Saund was created to bring experimental music to rural Estonia while celebrating the unique heritage and natural beauty of Hiiumaa Island. The festival has grown to attract an international audience while maintaining its intimate atmosphere and connection to local traditions.",
+    events: [
+      { name: "Harbor Stage Opening", date: "July 7, 2023" },
+      { name: "Forest Concert", date: "July 8, 2023" },
+      { name: "Boat Party", date: "July 8, 2023" },
+      { name: "Beach Closing Session", date: "July 9, 2023" }
+    ],
+    performances: [
+      { artist: "Maarja Nuut", description: "Estonian vocalist and violinist blending folk traditions with modern experiments" },
+      { artist: "Mart Avi", description: "Visionary Estonian artist pushing the boundaries of electronic pop" },
+      { artist: "Dehihelm", description: "Ambient electronic project creating immersive soundscapes" },
+      { artist: "Vera Vice", description: "Futuristic electronic music with influences from Estonian folk" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Sound Waves Slovenia",
+    location: "Tolmin, Slovenia",
+    type: "festival",
+    description: "Nestled in the stunning Soča Valley where emerald rivers flow between Alpine mountains, Sound Waves Slovenia combines electronic music with outdoor adventure. By day, festival-goers can swim in crystal-clear rivers, hike to waterfalls, or try paragliding and whitewater rafting. By night, cutting-edge electronic acts perform on stages set against the dramatic mountain backdrop, with the natural acoustics of the valley enhancing the sonic experience.",
+    image: "https://images.unsplash.com/photo-1578507065211-1c4e9febe7e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "46.18306",
+    lng: "13.73306",
+    rating: "4.7",
+    tags: ["electronic", "adventure", "river", "mountain"],
+    website: "https://soundwavesslovenia.com",
+    ticketUrl: "https://soundwavesslovenia.com/tickets",
+    history: "Launched in 2017, Sound Waves Slovenia was designed to showcase the natural beauty of the Soča Valley while providing a platform for electronic music in a more intimate setting than larger European festivals. The festival emphasizes environmental responsibility and supports local businesses.",
+    events: [
+      { name: "River Stage Opening", date: "July 21, 2023" },
+      { name: "Mountain Hike with Acoustic Session", date: "July 22, 2023" },
+      { name: "Riverside Yoga and Sound Healing", date: "July 23, 2023" },
+      { name: "Forest Closing Party", date: "July 24, 2023" }
+    ],
+    performances: [
+      { artist: "Valentino Kanzyani", description: "Slovenian techno pioneer with deep, minimal sets" },
+      { artist: "Lea Dobričić", description: "Serbian DJ known for emotive, melodic techno" },
+      { artist: "Shekuza", description: "Slovenian producer creating ambient electronic landscapes" },
+      { artist: "Ian F", description: "Slovenian DJ with a focus on deep, hypnotic soundscapes" }
+    ],
+    regionId: "europe"
+  },
+
+  // NORTH AMERICA REGION
+  {
+    name: "Desert Daze",
+    location: "Lake Perris, California, USA",
+    type: "festival",
+    description: "Set against the otherworldly backdrop of Lake Perris and its distinctive rock formations, Desert Daze has earned a reputation as one of the most forward-thinking music festivals in America. The event blends psychedelic rock, experimental electronic music, and avant-garde art installations in a surreal desert landscape. The lakeside setting allows attendees to swim by day while enjoying mind-expanding musical performances at night under star-filled skies and elaborate light shows.",
+    image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "33.85734",
+    lng: "-117.17509",
+    rating: "4.8",
+    tags: ["psychedelic", "rock", "experimental", "immersive"],
+    website: "https://desertdaze.org/",
+    ticketUrl: "https://desertdaze.org/tickets/",
+    history: "Founded in 2012 by Phil Pirrone, Desert Daze began as a small event in the California desert before growing into a major alternative to more commercial festivals. Despite its growth, it has maintained its independent spirit and commitment to creating transformative experiences through carefully curated lineups.",
+    events: [
+      { name: "Moon Stage Opening", date: "October 12, 2023" },
+      { name: "Mystic Bazaar Workshops", date: "October 13, 2023" },
+      { name: "Late Night Dome Performances", date: "October 14, 2023" },
+      { name: "Sunset Sessions at the Lake", date: "October 15, 2023" }
+    ],
+    performances: [
+      { artist: "Tame Impala", description: "Australian psychedelic music project led by Kevin Parker" },
+      { artist: "Stereolab", description: "Pioneering experimental pop group with electronic and krautrock influences" },
+      { artist: "The Black Angels", description: "Psychedelic rock band known for their hypnotic sound" },
+      { artist: "Flying Lotus", description: "Electronic music producer blending jazz, hip-hop and psychedelia" }
+    ],
+    regionId: "north-america"
+  },
+  {
+    name: "Pappy & Harriet's Pioneertown Palace",
+    location: "Pioneertown, California, USA",
+    type: "venue",
+    description: "Hidden in the high desert near Joshua Tree National Park, this legendary roadhouse offers one of the most unique music experiences in America. Originally built as part of a Western movie set, the venue combines rustic desert charm with exceptional live music. The intimate indoor stage and outdoor patio host everything from underground rock bands to surprise shows by major artists, all while serving hearty BBQ and strong drinks. The star-filled desert sky and otherworldly Joshua trees create a mystical atmosphere unlike any other venue.",
+    image: "https://images.unsplash.com/photo-1515607557991-2b9939fa3184?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "34.01583",
+    lng: "-116.48944",
+    rating: "4.9",
+    tags: ["desert", "americana", "rock", "intimate"],
+    website: "https://www.pappyandharriets.com/",
+    ticketUrl: "https://www.pappyandharriets.com/shows",
+    history: "Established in 1982, Pappy & Harriet's has evolved from a local biker bar to a globally recognized music destination. Located in Pioneertown (built in 1946 as a Western movie set), the venue has hosted surprise performances by Paul McCartney, Robert Plant, and many other legendary artists seeking its unique desert magic.",
+    events: [
+      { name: "Thursday Night Live Music", date: "Every Thursday" },
+      { name: "Weekend Concert Series", date: "Friday-Sunday" },
+      { name: "Open Mic Night", date: "Mondays" },
+      { name: "Desert Stars Festival", date: "Annual in Fall" }
+    ],
+    performances: [
+      { artist: "Rotating schedule", description: "Check website for current lineup" },
+      { artist: "Local desert rock bands", description: "Supporting the vibrant local music scene" },
+      { artist: "Surprise famous guests", description: "The venue is known for unannounced performances by major artists" },
+      { artist: "Folk & Americana acts", description: "Perfect soundtrack for the Western desert setting" }
+    ],
+    regionId: "north-america"
+  },
+  {
+    name: "Kingston Mines",
+    location: "Chicago, Illinois, USA",
+    type: "venue",
+    description: "Chicago's oldest and largest continuously operating blues club, Kingston Mines offers authentic blues seven nights a week until the early morning hours. With two stages featuring alternating bands, the music never stops at this iconic venue. The unpretentious atmosphere, soul food kitchen, and world-class musicianship create an essential Chicago experience. Many blues legends have graced its stages, and the venue continues to nurture new talent while honoring the city's rich blues heritage.",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "41.92944",
+    lng: "-87.65389",
+    rating: "4.7",
+    tags: ["blues", "historic", "late-night", "authentic"],
+    website: "https://kingstonmines.com/",
+    ticketUrl: "https://kingstonmines.com/shows-and-tickets/",
+    history: "Founded in 1968 during the height of the Chicago blues explosion, Kingston Mines has survived changing musical trends to remain a cornerstone of the city's blues scene. The club has featured performances by legends like Magic Slim, Koko Taylor, and Junior Wells while continuing to champion both established and emerging blues artists.",
+    events: [
+      { name: "Live Blues (Main Stage)", date: "Every night from 7:30 PM" },
+      { name: "Live Blues (North Stage)", date: "Every night from 8:00 PM" },
+      { name: "Blues Jam Session", date: "Sunday afternoons" },
+      { name: "Chicago Blues Week Special Shows", date: "Annual in June" }
+    ],
+    performances: [
+      { artist: "Joanna Connor", description: "Regular performer known for blistering slide guitar skills" },
+      { artist: "Billy Branch", description: "Harmonica master carrying the Chicago blues tradition" },
+      { artist: "Linsey Alexander", description: "The 'Hoochie Man' delivering authentic Chicago blues" },
+      { artist: "Various rotating artists", description: "Check website for current schedule" }
+    ],
+    regionId: "north-america"
+  },
+  {
+    name: "Roseland Theater",
+    location: "Portland, Oregon, USA",
+    type: "venue",
+    description: "Housed in a historic building in downtown Portland, the Roseland Theater has been a cornerstone of the city's music scene for decades. The main ballroom features a spacious dance floor and excellent sight lines, while the smaller Peter's Room hosts more intimate performances. Known for exceptional acoustics and a wide-ranging booking policy, the venue presents everything from indie rock and electronic music to hip-hop and metal. The Roseland's central location makes it easy to combine a show with Portland's renowned food and drink scene.",
+    image: "https://images.unsplash.com/photo-1508252592163-5d3c3c559139?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "45.52222",
+    lng: "-122.67806",
+    rating: "4.6",
+    tags: ["indie", "historic", "diverse", "urban"],
+    website: "https://www.roselandpdx.com/",
+    ticketUrl: "https://www.roselandpdx.com/events/",
+    history: "Originally opened as the Crystal Ballroom in 1914, the building became the Roseland Theater in 1982. The venue has survived various transformations while maintaining its position as one of Portland's premier music destinations. Its walls have witnessed performances by everyone from Nirvana and Soundgarden in their early days to current chart-topping artists.",
+    events: [
+      { name: "Main Ballroom Concerts", date: "Check website for schedule" },
+      { name: "Peter's Room (Smaller Venue)", date: "Hosting emerging artists" },
+      { name: "EDM Dance Nights", date: "Selected weekends" },
+      { name: "All-Ages Shows", date: "Regularly scheduled" }
+    ],
+    performances: [
+      { artist: "Various touring acts", description: "From indie rock to hip-hop and electronic music" },
+      { artist: "Pacific Northwest bands", description: "Supporting the vibrant regional music scene" },
+      { artist: "Electronic music producers", description: "Regular EDM and dance music events" },
+      { artist: "Metal and hardcore bands", description: "The venue is known for its diverse programming" }
+    ],
+    regionId: "north-america"
+  },
+  {
+    name: "Burning Man",
+    location: "Black Rock Desert, Nevada, USA",
+    type: "festival",
+    description: "More than a festival, Burning Man is a temporary city that emerges from the dust of Nevada's Black Rock Desert for one week each year. This experimental community celebrates radical self-expression, self-reliance, and art through massive installations, mutant vehicles, and hundreds of sound camps playing every genre of music imaginable. From sunrise yoga sessions accompanied by ambient music to late-night techno sets on desert-stranded pirate ships, Burning Man offers countless musical experiences against the backdrop of an otherworldly landscape.",
+    image: "https://images.unsplash.com/photo-1554282350-e1eb9b1ec67d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "40.78361",
+    lng: "-119.20500",
+    rating: "4.9",
+    tags: ["transformational", "art", "electronic", "experimental"],
+    website: "https://burningman.org/",
+    ticketUrl: "https://burningman.org/event/participation/volunteering/",
+    history: "Founded on San Francisco's Baker Beach in 1986 by Larry Harvey and Jerry James, Burning Man moved to the Black Rock Desert in 1990. From humble beginnings with 20 people, it has grown into a 70,000-person phenomenon while maintaining its core values of radical inclusion, decommodification, and leave no trace.",
+    events: [
+      { name: "Gate Opening", date: "August 27, 2023" },
+      { name: "Man Burn", date: "September 2, 2023" },
+      { name: "Temple Burn", date: "September 3, 2023" },
+      { name: "Exodus", date: "September 4, 2023" }
+    ],
+    performances: [
+      { artist: "Mayan Warrior", description: "Legendary art car combining cutting-edge light technology with Mexican cultural elements" },
+      { artist: "Robot Heart", description: "Desert outpost for deep, mystical house and techno" },
+      { artist: "Distrikt", description: "One of the most popular sound camps offering high-energy beats" },
+      { artist: "Duck Pond", description: "Known for eclectic selection of funky house music" }
+    ],
+    regionId: "north-america"
+  },
+  
+  // SOUTH AMERICA REGION
+  {
+    name: "MUTEK.AR",
+    location: "Buenos Aires, Argentina",
+    type: "festival",
+    description: "The Argentine edition of the global MUTEK network, MUTEK.AR transforms Buenos Aires into a hub for digital creativity and electronic music experimentation. The festival takes over multiple venues across the city, from historic theaters to contemporary art spaces, presenting cutting-edge audiovisual performances alongside educational workshops and panel discussions. MUTEK.AR highlights Argentine artists while connecting them with the international electronic music community, creating a platform for innovation and cultural exchange.",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-34.60333",
+    lng: "-58.38167",
+    rating: "4.7",
+    tags: ["electronic", "experimental", "audiovisual", "digital art"],
+    website: "https://mutek.org/es/buenos-aires/",
+    ticketUrl: "https://mutek.org/es/buenos-aires/tickets/",
+    history: "As part of the international MUTEK network founded in Montreal in 2000, MUTEK.AR launched in 2017 to strengthen Argentina's connection to global digital art and electronic music communities. The festival continues the MUTEK tradition of emphasizing artistic innovation, technological advancement, and cultural exchange.",
+    events: [
+      { name: "A/Visions (Audiovisual Performances)", date: "September 13, 2023" },
+      { name: "Experience (Immersive Evening Showcases)", date: "September 14-15, 2023" },
+      { name: "Play (Free Public Programming)", date: "September 16, 2023" },
+      { name: "MUTEK Forum (Panel Discussions)", date: "September 13-16, 2023" }
+    ],
+    performances: [
+      { artist: "Chancha Via Circuito", description: "Argentine producer fusing traditional Latin American sounds with electronic production" },
+      { artist: "JUANA", description: "Audiovisual project exploring connections between nature and technology" },
+      { artist: "Catnapp", description: "Argentine-born, Berlin-based artist blending trap, bass and rave elements" },
+      { artist: "Vlisa", description: "Buenos Aires producer known for experimental techno and industrial sounds" }
+    ],
+    regionId: "south-america"
+  },
+  {
+    name: "Voodoohop",
+    location: "Various locations, Brazil",
+    type: "festival",
+    description: "Not bound to a single location, Voodoohop is a nomadic collective that creates immersive musical experiences in remarkable natural settings throughout Brazil. From secret beaches to mountain forests, each event transforms its environment into a temporary utopian community where experimental electronic music meets Brazilian rhythmic traditions. The collective emphasizes ecological consciousness and spiritual connection, with performances often synchronized with natural phenomena like full moons or solstices.",
+    image: "https://images.unsplash.com/photo-1556035511-3168381ea4d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-23.96083",
+    lng: "-46.33194",
+    rating: "4.8",
+    tags: ["collective", "tropical", "psychedelic", "nomadic"],
+    website: "https://www.voodoohop.com/",
+    ticketUrl: "https://www.voodoohop.com/events",
+    history: "Founded in São Paulo in 2008 by DJ Thomash, Voodoohop began as an underground party series in abandoned urban spaces before evolving into a collective of artists, musicians, and designers exploring the intersection of technology, nature, and spirituality through immersive events.",
+    events: [
+      { name: "Voodoohop Full Moon Gathering", date: "Various dates following lunar calendar" },
+      { name: "Cosmic Serpent Festival", date: "January 2023" },
+      { name: "Urban Interventions", date: "Throughout the year in different cities" },
+      { name: "Forest Dance", date: "July 2023" }
+    ],
+    performances: [
+      { artist: "Carrot Green", description: "São Paulo DJ blending Brazilian rhythms with house and disco" },
+      { artist: "Mestre Toni Vargas", description: "Capoeira master and percussionist connecting tradition with modernity" },
+      { artist: "DJ Thomash", description: "Voodoohop founder known for eclectic, rhythmic selections" },
+      { artist: "L_cio", description: "Producer creating psychedelic soundscapes with tropical influences" }
+    ],
+    regionId: "south-america"
+  },
+  {
+    name: "Festival Nómade",
+    location: "Patagonia, Chile",
+    type: "festival",
+    description: "Set against the breathtaking backdrop of Chilean Patagonia, Festival Nómade creates a temporary artistic community in one of Earth's most dramatic landscapes. The festival balances electronic music with educational workshops on sustainability, indigenous wisdom, and planetary consciousness. Multiple stages nestle between mountains and forests, while art installations respond to the natural environment. The remote location and limited capacity create an intimate atmosphere where deep connections form between attendees and with the Patagonian wilderness.",
+    image: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-41.13611",
+    lng: "-71.31000",
+    rating: "4.9",
+    tags: ["mountain", "sustainability", "electronic", "community"],
+    website: "https://festivalnomade.cl/",
+    ticketUrl: "https://festivalnomade.cl/tickets",
+    history: "Established in 2016, Festival Nómade was created to celebrate the natural beauty of Patagonia while promoting environmental consciousness through art and music. The festival employs advanced sustainability practices and donates a portion of proceeds to local conservation efforts and indigenous communities.",
+    events: [
+      { name: "Opening Ceremony with Local Mapuche Community", date: "February 10, 2023" },
+      { name: "Lake Stage Sunrise Sessions", date: "February 11, 2023" },
+      { name: "Indigenous Wisdom Workshops", date: "February 11-12, 2023" },
+      { name: "Mountain Stage Closing", date: "February 13, 2023" }
+    ],
+    performances: [
+      { artist: "Matanza", description: "Chilean band fusing electronic production with indigenous instruments" },
+      { artist: "Nicolás Jaar", description: "Chilean-American electronic music producer known for atmospheric compositions" },
+      { artist: "Uji", description: "Argentine producer blending global rhythms with digital soundscapes" },
+      { artist: "Rodrigo Gallardo", description: "Chilean artist combining Andean instruments with modern production" }
+    ],
+    regionId: "south-america"
+  },
+  {
+    name: "Mawaca: Teatro Amazonas",
+    location: "Manaus, Brazil",
+    type: "venue",
+    description: "Perhaps the world's most improbable opera house, Teatro Amazonas rises from the heart of the Amazon rainforest like a Renaissance fever dream. Built during the rubber boom of the late 19th century, this pink-and-white domed marvel features materials imported from across the globe: Italian marble, French glass, and English steel. Today, it hosts not only classical performances but also contemporary Brazilian music and the experimental Amazonas Jazz Festival. The surreal experience of hearing music in this opulent venue while surrounded by the world's largest rainforest creates an unforgettable juxtaposition of human and natural grandeur.",
+    image: "https://images.unsplash.com/photo-1591830956224-38eee5f7a8f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-3.13056",
+    lng: "-60.02333",
+    rating: "4.8",
+    tags: ["classical", "historic", "opera", "amazon"],
+    website: "https://teatroamazonas.com.br/",
+    ticketUrl: "https://teatroamazonas.com.br/programacao",
+    history: "Inaugurated in 1896 at the height of the rubber boom that transformed Manaus into a center of wealth and extravagance, Teatro Amazonas symbolizes both the splendor and excess of the era. After years of neglect following the collapse of the rubber industry, the theater was carefully restored and now stands as a symbol of cultural resilience in the heart of the Amazon.",
+    events: [
+      { name: "Amazonas Opera Festival", date: "April-May annually" },
+      { name: "Amazonas Jazz Festival", date: "July annually" },
+      { name: "Amazonas Philharmonic Orchestra", date: "Regular performances" },
+      { name: "Amazonas Film Festival", date: "November annually" }
+    ],
+    performances: [
+      { artist: "Amazonas Philharmonic Orchestra", description: "The resident orchestra performing classical repertoire" },
+      { artist: "Corpo de Dança do Amazonas", description: "Contemporary dance company exploring Amazonian themes" },
+      { artist: "Festival Opera performances", description: "International singers in classic and modern operas" },
+      { artist: "Brazilian popular music concerts", description: "Celebrating the diverse musical heritage of Brazil" }
+    ],
+    regionId: "south-america"
+  },
+  {
+    name: "Lollapalooza Brasil",
+    location: "São Paulo, Brazil",
+    type: "festival",
+    description: "The Brazilian edition of the legendary American festival, Lollapalooza Brasil transforms São Paulo's Autódromo de Interlagos (normally a Formula 1 racetrack) into a massive celebration of global music. With multiple stages featuring more than 100 artists across genres ranging from rock and pop to hip-hop and electronic music, the festival attracts over 300,000 attendees. The event showcases international headliners alongside the best of Brazilian talent, creating a cross-cultural exchange against the backdrop of South America's largest city.",
+    image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-23.70111",
+    lng: "-46.69750",
+    rating: "4.6",
+    tags: ["massive", "diverse", "international", "mainstream"],
+    website: "https://www.lollapaloozabr.com/",
+    ticketUrl: "https://www.lollapaloozabr.com/ingressos",
+    history: "Launched in 2012 as part of Lollapalooza's global expansion, the Brazilian edition quickly established itself as the largest incarnation of the festival outside the United States. While maintaining the alternative spirit of the original Chicago event, Lollapalooza Brasil has evolved to reflect Brazil's unique musical landscape and festival culture.",
+    events: [
+      { name: "Day 1 - Main Stages", date: "March, 2023" },
+      { name: "Day 2 - Main Stages", date: "March, 2023" },
+      { name: "Electronic Music Tent", date: "All festival days" },
+      { name: "Perry's Stage (Electronic Focus)", date: "All festival days" }
+    ],
+    performances: [
+      { artist: "Various international headliners", description: "Major global artists across genres" },
+      { artist: "Brazilian stars", description: "Top artists from Brazil's diverse music scene" },
+      { artist: "Electronic music producers", description: "Both international and Brazilian electronic artists" },
+      { artist: "Alternative and indie bands", description: "Continuing Lollapalooza's alternative music roots" }
+    ],
+    regionId: "south-america"
+  },
+
+  // ASIA REGION
+  {
+    name: "Fuji Rock Festival",
+    location: "Naeba Ski Resort, Niigata, Japan",
+    type: "festival",
+    description: "Nestled in the mountains of Niigata Prefecture, Fuji Rock is Japan's largest outdoor music festival and one of Asia's most renowned. Despite its name (from its original location near Mt. Fuji), the festival now unfolds across the breathtaking landscape of Naeba Ski Resort. Multiple stages connected by woodland paths showcase everything from international headliners to Japanese underground artists. The combination of world-class music, stunning natural beauty, and meticulous Japanese organization creates an experience that manages to be both massive and mindful.",
+    image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "36.79778",
+    lng: "138.79500",
+    rating: "4.8",
+    tags: ["mountain", "international", "eco-friendly", "diverse"],
+    website: "https://www.fujirockfestival.com/",
+    ticketUrl: "https://www.fujirockfestival.com/ticket/",
+    history: "Founded in 1997, Fuji Rock survived a disastrous debut (featuring the Red Hot Chili Peppers performing during a typhoon) to become Asia's premier music festival. After relocating to Naeba in 1999, the festival developed a strong environmental ethic while attracting world-class talent across genres.",
+    events: [
+      { name: "Green Stage Headliners", date: "July 28-30, 2023" },
+      { name: "White Stage Performances", date: "July 28-30, 2023" },
+      { name: "Field of Heaven (Folk & Roots Music)", date: "July 28-30, 2023" },
+      { name: "Red Marquee (Electronic & Late Night)", date: "July 28-30, 2023" }
+    ],
+    performances: [
+      { artist: "International headliners", description: "Major global acts across rock, electronic, and alternative genres" },
+      { artist: "Japanese artists", description: "From established stars to emerging talent" },
+      { artist: "Instrumental and experimental acts", description: "Particularly in the smaller, more intimate stages" },
+      { artist: "Late-night electronic music", description: "Continuing until dawn at the Red Marquee" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Magnetic Fields Festival",
+    location: "Alsisar, Rajasthan, India",
+    type: "festival",
+    description: "Held in a 17th-century palace in the Rajasthani desert, Magnetic Fields creates a stunning juxtaposition of contemporary electronic music and ancient architecture. The festival transforms Alsisar Mahal into a wonderland where traditional Indian elements meet cutting-edge sound and visual art. Attendees can dance to techno in the palace courtyard, experience ambient sunrise sets on desert dunes, or discover traditional Rajasthani folk musicians performing alongside electronic producers. The festival offers luxury palace accommodations alongside desert camping options, creating a unique blend of opulence and adventure.",
+    image: "https://images.unsplash.com/photo-1477927849362-0fb1e894b5db?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "28.01389",
+    lng: "75.28250",
+    rating: "4.9",
+    tags: ["palace", "electronic", "desert", "luxury"],
+    website: "https://magneticfields.in/",
+    ticketUrl: "https://magneticfields.in/tickets",
+    history: "Founded in 2013, Magnetic Fields emerged from a desire to showcase India's growing electronic music scene in a setting that honors the country's rich heritage. The festival deliberately maintains a small capacity (around 3,000 attendees) to preserve its intimate atmosphere while attracting discerning music fans from across India and around the world.",
+    events: [
+      { name: "Palace Courtyard Stage", date: "December 15-17, 2023" },
+      { name: "Desert Disco", date: "December 15-17, 2023" },
+      { name: "Sunset Sessions", date: "December 15-17, 2023" },
+      { name: "The Secret Party", date: "December 15-17, 2023" }
+    ],
+    performances: [
+      { artist: "Four Tet", description: "British electronic producer known for eclectic, intricate compositions" },
+      { artist: "Lifafa", description: "Indian artist creating psychedelic Hindi disco" },
+      { artist: "Sid Vashi", description: "Indian-American producer blending electronic production with Indian classical elements" },
+      { artist: "Manganiyar musicians", description: "Traditional Rajasthani folk performers" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Wonderfruit",
+    location: "Pattaya, Thailand",
+    type: "festival",
+    description: "More than just a music festival, Wonderfruit is a holistic celebration of art, music, food, wellness, and sustainability in the Thai countryside. The festival features breathtaking architectural stages built from sustainable materials (including bamboo and recycled plastic), each hosting different musical genres from live bands and world music to electronic sets. Between performances, attendees can participate in workshops on permaculture, attend talks on environmental issues, practice sunrise yoga, or feast at farm-to-table banquets prepared by renowned chefs. Wonderfruit's ambitious scope creates a temporary community devoted to creative, sustainable living.",
+    image: "https://images.unsplash.com/photo-1530023367847-a683933f4172?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "12.76361",
+    lng: "100.95278",
+    rating: "4.8",
+    tags: ["sustainable", "immersive", "wellness", "diverse"],
+    website: "https://wonderfruit.co/",
+    ticketUrl: "https://wonderfruit.co/tickets/",
+    history: "Founded in 2014 by Thai entrepreneur Pranitan 'Pete' Phornprapha, Wonderfruit was designed as a catalyst for positive social change through the universal languages of art and music. The festival operates on a deep commitment to sustainability, using compostable materials, banning single-use plastics, and offsetting its carbon footprint.",
+    events: [
+      { name: "The Solar Stage", date: "December 14-18, 2023" },
+      { name: "The Farm (Culinary Experiences)", date: "December 14-18, 2023" },
+      { name: "Bath House (Wellness Area)", date: "December 14-18, 2023" },
+      { name: "Theatre of Feasts (Banquet Dining)", date: "December 14-18, 2023" }
+    ],
+    performances: [
+      { artist: "Four Tet", description: "British electronic music producer" },
+      { artist: "Khruangbin", description: "American trio blending global musical influences" },
+      { artist: "Molam Bus", description: "Traditional Thai folk music presented in contemporary context" },
+      { artist: "Floating Points", description: "Electronic music producer known for combining genres" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Epizode Festival",
+    location: "Phu Quoc Island, Vietnam",
+    type: "festival",
+    description: "Spanning 11 days across the New Year period, Epizode transforms a pristine Vietnamese island into an electronic music paradise. Set on the white sands of Phu Quoc Island, the festival combines world-class techno and house music with stunning bamboo architecture and tropical scenery. Multiple stages operate around the clock, allowing attendees to dance at sunrise on the beach, relax in hammocks during the day, then continue into the night. The extended duration creates a unique temporary community where time seems to operate differently as the old year flows into the new.",
+    image: "https://images.unsplash.com/photo-1642201855395-1c8b44e6e42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "10.19611",
+    lng: "103.96278",
+    rating: "4.7",
+    tags: ["electronic", "beach", "island", "immersive"],
+    website: "https://epizode.com/",
+    ticketUrl: "https://epizode.com/tickets",
+    history: "Launched in 2016, Epizode was created by the team behind Kazantip Republic, the legendary underground electronic music festival that originated in Crimea. The festival quickly established itself as Asia's premier electronic music destination, attracting an international crowd of devoted music fans and industry professionals.",
+    events: [
+      { name: "New Year's Eve Celebration", date: "December 31, 2023" },
+      { name: "Sunrise Sessions", date: "Daily" },
+      { name: "Beach Stage", date: "December 28, 2023 - January 7, 2024" },
+      { name: "Frisbee Stage", date: "December 28, 2023 - January 7, 2024" }
+    ],
+    performances: [
+      { artist: "Ricardo Villalobos", description: "Chilean-German minimal techno pioneer" },
+      { artist: "Zip", description: "German DJ known for deep vinyl selections" },
+      { artist: "Raresh", description: "Romanian minimal techno master" },
+      { artist: "Sonja Moonear", description: "Swiss DJ delivering sophisticated, hypnotic sets" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Fushimi Inari After Hours",
+    location: "Kyoto, Japan",
+    type: "venue",
+    description: "One of Japan's most unique musical experiences, this monthly event transforms the lower pathways of Kyoto's famous Fushimi Inari Shrine into an ambient music venue after the tourists have departed. As evening falls, subtle lighting illuminates the sacred vermilion torii gates that line the mountain paths, creating a mystical atmosphere for quiet contemplation and deep listening. Local and international ambient, classical, and traditional Japanese musicians perform respectful, contemplative sets that complement the spiritual nature of this 1300-year-old Shinto shrine.",
+    image: "https://images.unsplash.com/photo-1492571350019-22de08371fd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80",
+    lat: "34.96750",
+    lng: "135.77278",
+    rating: "4.9",
+    tags: ["ambient", "spiritual", "traditional", "unique"],
+    website: "https://fushimi-inari.jp/en/",
+    ticketUrl: "https://fushimi-inari.jp/en/afterhours",
+    history: "Created in 2018 as a collaboration between shrine officials and local musicians, the series aims to share the profound atmosphere of the shrine at night while introducing visitors to contemplative musical traditions. The program carefully balances respect for the sacred site with artistic expression, with a portion of ticket proceeds supporting shrine preservation.",
+    events: [
+      { name: "Full Moon Concert Series", date: "Monthly on lunar calendar" },
+      { name: "Shakuhachi (Bamboo Flute) Performances", date: "Seasonal" },
+      { name: "Electronic Ambient Night", date: "Quarterly" },
+      { name: "Traditional Gagaku Court Music", date: "Bi-monthly" }
+    ],
+    performances: [
+      { artist: "Chihei Hatakeyama", description: "Japanese ambient musician creating textural soundscapes" },
+      { artist: "Kakushin Nishihara", description: "Master of the Satsuma-biwa (traditional Japanese lute)" },
+      { artist: "Hideki Umezawa", description: "Experimental electronic artist using field recordings" },
+      { artist: "Chatori Shimizu", description: "Contemporary composer and performer of the sho (traditional Japanese mouth organ)" }
+    ],
+    regionId: "asia"
+  },
+
+  // OCEANIA REGION
+  {
+    name: "Darwin Railway Club",
+    location: "Darwin, Northern Territory, Australia",
+    type: "venue",
+    description: "This unassuming venue in Australia's tropical north has become legendary for showcasing both Aboriginal music and touring bands in an authentically Territorian atmosphere. The open-air beer garden allows music to be enjoyed under the stars during the dry season, while ceiling fans stir the humid air during the spectacular wet season. The club has been instrumental in bringing indigenous Australian music to wider audiences, regularly featuring pioneering Aboriginal rock, reggae, and traditional performers alongside international touring acts drawn to the Top End's unique character.",
+    image: "https://images.unsplash.com/photo-1598387993441-a364f854c3e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-12.43083",
+    lng: "130.83694",
+    rating: "4.6",
+    tags: ["indigenous", "intimate", "tropical", "authentic"],
+    website: "https://www.darwinrailwayclub.com/",
+    ticketUrl: "https://www.darwinrailwayclub.com/events",
+    history: "Established in 1969 by railway workers, this community club evolved into one of Australia's most important venues for indigenous music. Despite its remote location, the Darwin Railway Club has become a must-play venue for artists touring Australia who seek authentic cultural experiences and appreciate engaged audiences.",
+    events: [
+      { name: "Live Music", date: "Thursday to Sunday nights" },
+      { name: "Darwin Festival Showcase", date: "August annually" },
+      { name: "Barunga Experience", date: "Monthly featuring Aboriginal performers" },
+      { name: "Wet Season Series", date: "November to April" }
+    ],
+    performances: [
+      { artist: "Yothu Yindi", description: "Pioneering Aboriginal rock band combining traditional sounds with contemporary styles" },
+      { artist: "B2M (Bathurst to Melville)", description: "R&B group from the Tiwi Islands" },
+      { artist: "Saltwater Band", description: "Reggae and rock band from Northeast Arnhem Land" },
+      { artist: "Warren H Williams", description: "Country musician singing in both English and Western Arrernte language" }
+    ],
+    regionId: "oceania"
+  },
+  {
+    name: "Splore Festival",
+    location: "Tapapakanga Regional Park, New Zealand",
+    type: "festival",
+    description: "Set in a coastal paradise just outside of Auckland, Splore transforms Tapapakanga Regional Park into a celebration of music, art, and performance against the backdrop of the Firth of Thames. The festival combines a stunning beach location with a strong focus on sustainability and New Zealand's cultural heritage. Multiple stages feature everything from electronic music and reggae to indie bands and traditional Māori performances. The festival's family-friendly atmosphere, commitment to environmental responsibility, and spectacular setting have earned it a special place in New Zealand's cultural landscape.",
+    image: "https://images.unsplash.com/photo-1595971294624-80bcf4a5dea6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-36.93806",
+    lng: "175.17694",
+    rating: "4.8",
+    tags: ["beach", "sustainable", "diverse", "cultural"],
+    website: "https://www.splore.net/",
+    ticketUrl: "https://www.splore.net/tickets",
+    history: "Founded in 1998, Splore has evolved from a small gathering to one of New Zealand's most beloved festivals while maintaining its commitment to social and environmental responsibility. The festival operates on a 'leave no trace' principle and was the first New Zealand festival to eliminate single-use cups.",
+    events: [
+      { name: "Main Stage Performances", date: "February 23-25, 2023" },
+      { name: "Beach Stage", date: "February 23-25, 2023" },
+      { name: "Living Lounge (Talks & Workshops)", date: "February 23-25, 2023" },
+      { name: "Wendy's Wellness Area", date: "February 23-25, 2023" }
+    ],
+    performances: [
+      { artist: "Fat Freddy's Drop", description: "New Zealand dub and reggae collective" },
+      { artist: "Pacific Curls", description: "Group blending Māori, Celtic and Pacific musical traditions" },
+      { artist: "Tiki Taane", description: "Influential New Zealand musician incorporating Māori elements" },
+      { artist: "International DJs", description: "Electronic music spanning house, techno, and drum & bass" }
+    ],
+    regionId: "oceania"
+  },
+  {
+    name: "Sydney Opera House - Bennelong Point",
+    location: "Sydney, Australia",
+    type: "venue",
+    description: "One of the world's most recognizable buildings, the Sydney Opera House is both an architectural marvel and a premier destination for diverse musical experiences. Beyond the classical performances in the Concert Hall, the venue hosts contemporary music in various spaces, including outdoor concerts on the steps with the stunning backdrop of Sydney Harbour. The Utzon Music Series offers intimate recitals, while the Studio space presents cutting-edge contemporary artists. The annual Vivid LIVE festival transforms the building with spectacular light projections while bringing innovative music to the various performance spaces.",
+    image: "https://images.unsplash.com/photo-1510161269785-957f4187f5e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-33.85722",
+    lng: "151.21528",
+    rating: "4.9",
+    tags: ["iconic", "diverse", "classical", "contemporary"],
+    website: "https://www.sydneyoperahouse.com/",
+    ticketUrl: "https://www.sydneyoperahouse.com/events/whats-on.html",
+    history: "Designed by Danish architect Jørn Utzon and completed in 1973, the Sydney Opera House has evolved from a controversial project to a UNESCO World Heritage site and Australia's most recognizable cultural venue. While maintaining its excellence in classical music and opera, the venue has embraced diverse programming that reflects Australia's multicultural society.",
+    events: [
+      { name: "Symphony Orchestra Performances", date: "Year-round" },
+      { name: "Contemporary Music - Concert Hall", date: "Regular schedule" },
+      { name: "Utzon Music Series - Utzon Room", date: "Monthly" },
+      { name: "Vivid LIVE Festival", date: "May-June annually" }
+    ],
+    performances: [
+      { artist: "Sydney Symphony Orchestra", description: "The resident orchestra performing diverse repertoire" },
+      { artist: "International touring acts", description: "From rock legends to electronic innovators" },
+      { artist: "Indigenous performers", description: "Celebrating Australia's First Nations musical traditions" },
+      { artist: "Midnight Oil", description: "Iconic Australian rock band performed reunion show on the steps" }
+    ],
+    regionId: "oceania"
+  },
+  {
+    name: "WOMAD New Zealand",
+    location: "New Plymouth, New Zealand",
+    type: "festival",
+    description: "Set in the beautiful Bowl of Brooklands park, WOMAD brings the world's music to New Zealand's North Island. The festival's three-day program features artists from across the globe performing on multiple stages surrounding a natural amphitheater and lake. Beyond music, the festival offers workshops where attendees can learn traditional instruments and dance forms, a global food village, and a crafts market showcasing artisanal traditions. The festival's family-friendly atmosphere and commitment to showcasing cultural diversity make it a highlight of New Zealand's festival calendar.",
+    image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-39.07583",
+    lng: "174.07889",
+    rating: "4.7",
+    tags: ["world music", "multicultural", "family-friendly", "educational"],
+    website: "https://www.womad.co.nz/",
+    ticketUrl: "https://www.womad.co.nz/tickets",
+    history: "Part of the global WOMAD (World of Music, Arts and Dance) network co-founded by Peter Gabriel, the New Zealand edition began in 1997. Now held in New Plymouth's Bowl of Brooklands, the festival has become a cornerstone of New Zealand's cultural calendar, introducing audiences to musical traditions from around the world.",
+    events: [
+      { name: "Bowl Stage Performances", date: "March 17-19, 2023" },
+      { name: "Dell Stage", date: "March 17-19, 2023" },
+      { name: "Kunming Garden Stage", date: "March 17-19, 2023" },
+      { name: "Te Paepae (Workshop Area)", date: "March 17-19, 2023" }
+    ],
+    performances: [
+      { artist: "Fatoumata Diawara", description: "Malian vocalist and guitarist blending traditional and contemporary styles" },
+      { artist: "Thievery Corporation", description: "American electronic duo incorporating global influences" },
+      { artist: "Bic Runga", description: "Beloved New Zealand singer-songwriter" },
+      { artist: "The Black Seeds", description: "New Zealand dub and reggae band" }
+    ],
+    regionId: "oceania"
+  },
+  {
+    name: "Strawberry Fields Festival",
+    location: "Tocumwal, New South Wales, Australia",
+    type: "festival",
+    description: "Located on the banks of the Murray River, Strawberry Fields creates an intimate electronic music experience in the Australian bush. The festival's thoughtfully designed spaces blend with the natural environment, with stages nestled among river red gums and art installations responding to the landscape. The musical programming emphasizes underground electronic music spanning house, techno, and downtempo, complemented by workshops, talks, and wellness activities. The festival's commitment to sustainability extends to comprehensive waste management systems, renewable energy sources, and community partnerships.",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-35.81222",
+    lng: "145.56750",
+    rating: "4.8",
+    tags: ["electronic", "bush", "sustainable", "immersive"],
+    website: "https://strawberry-fields.com.au/",
+    ticketUrl: "https://strawberry-fields.com.au/tickets/",
+    history: "Founded in 2009, Strawberry Fields began as a small gathering focused on underground electronic music and artistic expression. The festival has grown carefully, maintaining its intimate atmosphere while developing industry-leading sustainability practices that have earned it multiple Green Festival certifications.",
+    events: [
+      { name: "The Wildlands Stage", date: "October 27-29, 2023" },
+      { name: "The Beach Stage", date: "October 27-29, 2023" },
+      { name: "The Woods", date: "October 27-29, 2023" },
+      { name: "Forum (Talks & Workshops)", date: "October 27-29, 2023" }
+    ],
+    performances: [
+      { artist: "CC:DISCO!", description: "Melbourne DJ known for uplifting, eclectic selections" },
+      { artist: "Sleep D", description: "Australian duo delivering analog-heavy electronic sounds" },
+      { artist: "Moodymann", description: "Detroit house music pioneer with soulful, jazz-influenced style" },
+      { artist: "Jennifer Loveless", description: "Canadian-Australian producer crafting emotive house music" }
+    ],
+    regionId: "oceania"
+  },
+
+  // ADDITIONAL VENUES ACROSS REGIONS
+  {
+    name: "B4 Beach Club - Tuesday Nights",
+    location: "Bali, Indonesia",
+    type: "venue",
+    description: "Tucked away on a quiet stretch of black sand beach in Bali's less-developed north coast, B4 Beach Club transforms every Tuesday night into a legendary party that has become a pilgrimage for electronic music lovers. The open-air venue features a custom sound system built into natural bamboo structures, with the dance floor extending onto the beach where waves provide a rhythmic backdrop. Rotating international DJs and local talent deliver sets that evolve with the night, typically building from ambient sunset sounds to underground house and techno that continues until dawn.",
+    image: "https://images.unsplash.com/photo-1546484396-fb3fc6f95f98?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-8.10917",
+    lng: "115.21417",
+    rating: "4.7",
+    tags: ["beach", "electronic", "intimate", "weekly"],
+    website: "https://b4beachclub.com",
+    ticketUrl: "https://b4beachclub.com/events",
+    history: "What began in 2016 as a small gathering of friends has organically grown into one of Asia's most beloved underground music venues. B4 operates with a firm commitment to limiting environmental impact, employing comprehensive waste management systems and supporting local beach clean-up initiatives.",
+    events: [
+      { name: "Tuesday Sessions", date: "Every Tuesday" },
+      { name: "Full Moon Special", date: "Monthly according to lunar calendar" },
+      { name: "International Guest DJ Series", date: "Monthly" },
+      { name: "B4 Records Label Showcases", date: "Quarterly" }
+    ],
+    performances: [
+      { artist: "Local resident DJs", description: "Including Desa, Serayu, and Tantra" },
+      { artist: "Rotating international guests", description: "Check website for upcoming bookings" },
+      { artist: "Balinese traditional performers", description: "Occasional ceremonial opening performances" },
+      { artist: "Surprise guests", description: "The venue is known for unannounced appearances by DJs vacationing in Bali" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Race on the Beach",
+    location: "Encinitas, California, USA",
+    type: "venue",
+    description: "This bohemian beach town's best-kept secret happens every second Sunday, when a rotating collective of musicians, sound engineers, and artists transforms a remote beach accessible only by a hidden trail into a day-long celebration of music and nature. Operating in a legal gray area with tacit local approval, the gathering begins at sunrise with ambient and acoustic performances that evolve throughout the day as the tide recedes, revealing natural rock formations that serve as impromptu stages. Solar-powered sound systems deliver crystal-clear sound while leaving minimal impact, and the event concludes with a silent disco after sunset to respect wildlife and nearby residents.",
+    image: "https://images.unsplash.com/photo-1623949444572-44a932a3e4cf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "33.04667",
+    lng: "-117.29583",
+    rating: "4.9",
+    tags: ["beach", "underground", "community", "eco-friendly"],
+    website: "https://linktr.ee/raceonthebeach",
+    ticketUrl: "Private invitation or local connection required",
+    history: "Started in 2014 by a group of local musicians and environmental activists, Race on the Beach developed as an alternative to commercial music events, emphasizing community, creative expression, and environmental stewardship. The event operates on principles of leave-no-trace and contribution, with participants expected to help with setup, cleanup, and bringing food to share.",
+    events: [
+      { name: "Sunrise Sessions", date: "Bi-monthly, second Sunday" },
+      { name: "Low Tide Stage", date: "Afternoon performances" },
+      { name: "Sunset Ceremony", date: "Featuring local indigenous elders" },
+      { name: "Silent Disco", date: "Post-sunset with wireless headphones" }
+    ],
+    performances: [
+      { artist: "Local musicians collective", description: "Rotating lineup of San Diego County talents" },
+      { artist: "Environmental speakers", description: "Short talks on ocean conservation between sets" },
+      { artist: "Acoustic unplugged sessions", date: "Throughout the morning hours" },
+      { artist: "Surprise guest DJs", description: "Often from Los Angeles or San Francisco scenes" }
+    ],
+    regionId: "north-america"
+  },
+
+  // Continuing with more venues...
+  {
+    name: "The Ruin Bar",
+    location: "Budapest, Hungary",
+    type: "venue",
+    description: "In the heart of Budapest's Jewish Quarter, abandoned buildings have been transformed into 'ruin bars' – eclectic venues filled with mismatched furniture, local art, and vibrant music scenes. The most famous, Szimpla Kert, pioneered this movement and now hosts live music ranging from traditional Hungarian folk to experimental electronic music. Each room offers a different atmosphere, from intimate acoustic spaces to courtyard areas where DJs spin until dawn. The unique aesthetic combines crumbling grandeur with creative repurposing, creating spaces where history and contemporary culture collide.",
+    image: "https://images.unsplash.com/photo-1603068479979-9ad621b37fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "47.49722",
+    lng: "19.05944",
+    rating: "4.7",
+    tags: ["urban", "alternative", "diverse", "historic"],
+    website: "https://szimpla.hu/",
+    ticketUrl: "https://szimpla.hu/program",
+    history: "The ruin bar phenomenon began in the early 2000s when Szimpla Kert opened in an abandoned factory, using recycled furniture and local art to create a unique atmosphere. The movement helped revitalize Budapest's Jewish Quarter, transforming neglected buildings into cultural hotspots while preserving their historical character.",
+    events: [
+      { name: "Live Music - Main Courtyard", date: "Wednesday-Saturday nights" },
+      { name: "World Music Wednesdays", date: "Weekly" },
+      { name: "Electronic Music Nights", date: "Fridays and Saturdays" },
+      { name: "Sunday Farmer's Market with Acoustic Sets", date: "Weekly" }
+    ],
+    performances: [
+      { artist: "Local Hungarian bands", description: "Ranging from traditional to contemporary" },
+      { artist: "Eastern European DJs", description: "Showcasing the region's electronic music scene" },
+      { artist: "Traveling musicians", description: "International artists seeking authentic venues" },
+      { artist: "Spontaneous jam sessions", description: "Particularly during summer months" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "The Stone Church",
+    location: "Newmarket, New Hampshire, USA",
+    type: "venue",
+    description: "Housed in a 19th-century Universalist stone church, this intimate venue combines spiritual architecture with transcendent musical experiences. The original church features, including stained glass windows and wooden pews, create remarkable acoustics perfect for everything from folk and bluegrass to jazz and indie rock. The 225-capacity space creates an intense connection between performers and audience, with many musicians citing it as among their favorite places to play. The non-profit venue emphasizes community building through music, with regular events supporting local causes.",
+    image: "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "43.08250",
+    lng: "-70.93500",
+    rating: "4.8",
+    tags: ["historic", "intimate", "acoustic", "spiritual"],
+    website: "https://stonechurchrocks.com/",
+    ticketUrl: "https://stonechurchrocks.com/calendar",
+    history: "Built in 1832, the building served as a church for over a century before being converted to a music venue in 1970. During the 1970s and 80s, it hosted early performances by artists who would become legends, including Phish and Bonnie Raitt. After closing in 2008, community efforts revived the venue in 2018 as a non-profit organization dedicated to preserving this unique cultural space.",
+    events: [
+      { name: "Friday Night Concert Series", date: "Weekly" },
+      { name: "Saturday Headliners", date: "Weekly" },
+      { name: "Local Spotlight (Regional Artists)", date: "Thursdays" },
+      { name: "Community Benefit Shows", date: "Monthly" }
+    ],
+    performances: [
+      { artist: "Folk and Americana artists", description: "Perfect for the intimate, acoustic-friendly space" },
+      { artist: "Jam bands", description: "Continuing the venue's legacy from the 1970s" },
+      { artist: "Jazz ensembles", description: "Taking advantage of the exceptional acoustics" },
+      { artist: "Rising indie artists", description: "The venue is known for spotting emerging talent" }
+    ],
+    regionId: "north-america"
+  },
+  {
+    name: "Le Sucre",
+    location: "Lyon, France",
+    type: "venue",
+    description: "Perched atop La Sucrière, a converted sugar factory in Lyon's creative riverside district, Le Sucre represents the perfect fusion of industrial heritage and forward-thinking musical programming. The minimal white interior with touches of neon stands in contrast to the building's raw concrete exterior, while a spacious rooftop terrace offers panoramic views of the Saône River. The venue specializes in cutting-edge electronic music, hosting both international DJs and emerging local talent. The combination of exceptional sound design, thoughtful architecture, and progressive musical curation has established Le Sucre as one of Europe's most respected electronic music spaces.",
+    image: "https://images.unsplash.com/photo-1571397217200-c0b7746204d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "45.73417",
+    lng: "4.81750",
+    rating: "4.7",
+    tags: ["electronic", "industrial", "modern", "rooftop"],
+    website: "https://le-sucre.eu/",
+    ticketUrl: "https://le-sucre.eu/billetterie/",
+    history: "Opened in 2013 as part of the redevelopment of Lyon's docklands, Le Sucre was created to provide a dedicated space for electronic music within the broader cultural complex of La Sucrière. The venue's focus on quality programming over commercial appeal has built its reputation as an essential destination for electronic music enthusiasts and artists alike.",
+    events: [
+      { name: "Club Nights (Techno/House)", date: "Friday and Saturday nights" },
+      { name: "Sundays on the Roof", date: "Afternoon sessions May-September" },
+      { name: "Label Showcases", date: "Monthly" },
+      { name: "Nuits Sonores Festival Events", date: "Annually in May" }
+    ],
+    performances: [
+      { artist: "International DJ headliners", description: "From established stars to underground favorites" },
+      { artist: "Local Lyon talent", description: "Supporting the city's growing electronic scene" },
+      { artist: "Live electronic acts", description: "Periodic performances with hardware setups" },
+      { artist: "French electronic music pioneers", description: "Celebrating the country's rich electronic heritage" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "The Root",
+    location: "Johannesburg, South Africa",
+    type: "venue",
+    description: "Hidden beneath a conventional restaurant in Johannesburg's Braamfontein district, The Root is an underground jazz venue that has become the beating heart of South Africa's vibrant jazz scene. The intimate basement space features exposed stone walls, low ceilings, and a small stage that places the audience within touching distance of world-class musicians. The venue honors South Africa's rich jazz history while providing a platform for a new generation of artists pushing the boundaries of the genre. Beyond the music, The Root serves as a community space where political discourse and artistic expression intertwine, continuing South Africa's tradition of jazz as both entertainment and resistance.",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-26.19278",
+    lng: "28.03778",
+    rating: "4.8",
+    tags: ["jazz", "underground", "intimate", "cultural"],
+    website: "https://theroot.co.za",
+    ticketUrl: "https://theroot.co.za/shows",
+    history: "Founded in 2011 by a collective of musicians and activists, The Root was established to preserve South Africa's jazz heritage while creating economic opportunities for contemporary musicians. The venue draws inspiration from the legendary jazz clubs of Sophiatown that flourished before being destroyed during apartheid, creating a space where music continues to serve as both artistic expression and political commentary.",
+    events: [
+      { name: "Thursday Night Jazz Jam", date: "Weekly" },
+      { name: "Friday Headliner Shows", date: "Weekly" },
+      { name: "Saturday Double Bill", date: "Weekly" },
+      { name: "Young Lions Series (Emerging Artists)", date: "Monthly" }
+    ],
+    performances: [
+      { artist: "South African jazz veterans", description: "Masters of Cape Jazz and Township styles" },
+      { artist: "Pan-African collaborations", description: "Featuring musicians from across the continent" },
+      { artist: "The Root Collective", description: "House band featuring rotating membership" },
+      { artist: "University of Witwatersrand Jazz Students", description: "Showcasing the next generation" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "NDSM Werf",
+    location: "Amsterdam, Netherlands",
+    type: "venue",
+    description: "A former shipyard transformed into a sprawling cultural playground, NDSM Werf hosts some of Amsterdam's most adventurous musical events in its industrial spaces. The massive dry docks, towering cranes, and cavernous warehouses create dramatic backdrops for festivals, concerts, and underground raves. The venue's sheer scale allows for multiple simultaneous events, from intimate performances in converted shipping containers to massive electronic music festivals in the main hall. The raw, unfinished aesthetic and spirit of creative reuse have made NDSM a symbol of Amsterdam's approach to preserving industrial heritage through cultural repurposing.",
+    image: "https://images.unsplash.com/photo-1580328055154-49653f5a218d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "52.40167",
+    lng: "4.89972",
+    rating: "4.6",
+    tags: ["industrial", "alternative", "massive", "waterfront"],
+    website: "https://ndsm.nl/en/",
+    ticketUrl: "https://ndsm.nl/en/agenda",
+    history: "After the bankruptcy of the Netherlands Dock and Shipbuilding Company in 1984, the massive industrial complex fell into disuse before artists began occupying the space in the 1990s. By the early 2000s, the city had embraced this organic cultural development, officially designating NDSM as a cultural hotspot and supporting its transformation while preserving its industrial character.",
+    events: [
+      { name: "DGTL Festival", date: "Easter weekend annually" },
+      { name: "Mystic Garden Festival", date: "June annually" },
+      { name: "Pleinvrees Festival", date: "September annually" },
+      { name: "Warehouse Elementenstraat Events", date: "Throughout the year" }
+    ],
+    performances: [
+      { artist: "Electronic music headliners", description: "During major festivals" },
+      { artist: "Experimental sound installations", description: "Utilizing the unique acoustic properties of industrial spaces" },
+      { artist: "Local Amsterdam artists", description: "Many maintain studios within the NDSM complex" },
+      { artist: "Multidisciplinary performances", description: "Combining music with visual art and dance" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Green Mill Jazz Club",
+    location: "Chicago, Illinois, USA",
+    type: "venue",
+    description: "A living piece of American jazz history, the Green Mill has operated continuously since 1907 and was once owned by Al Capone's henchman 'Machine Gun' Jack McGurn. The art deco interior remains largely unchanged since the Prohibition era, with vintage booths, a curved bar, and original artwork creating an authentically historic atmosphere. The club maintains strict traditions: audience talking during performances is discouraged, and the music takes center stage. Known for its late-night shows that often continue until 4 AM, the Green Mill offers everything from traditional jazz and bebop to poetry slams and contemporary improvisational music.",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "41.96944",
+    lng: "-87.66000",
+    rating: "4.9",
+    tags: ["jazz", "historic", "traditional", "late-night"],
+    website: "https://greenmilljazz.com/",
+    ticketUrl: "Cash cover at the door",
+    history: "Established in 1907, the Green Mill reached its heyday during Prohibition when it operated as a speakeasy frequented by Al Capone, who reportedly had a favorite booth with clear sightlines to both entrances. The venue has survived changing musical trends and neighborhood transformations to remain one of America's most authentic jazz clubs, with many of its original features intact.",
+    events: [
+      { name: "Late Night Jazz Sessions", date: "Nightly until 4 AM" },
+      { name: "Uptown Poetry Slam", date: "Sunday nights" },
+      { name: "Saturday Afternoon Jazz Showcase", date: "Weekly" },
+      { name: "After Hours Jam Sessions", date: "Friday and Saturday nights" }
+    ],
+    performances: [
+      { artist: "Patricia Barber", description: "Acclaimed jazz pianist with regular Monday night residency" },
+      { artist: "Green Mill Jazz Orchestra", description: "Weekly Sunday night performances" },
+      { artist: "Guest national jazz artists", description: "Regular touring performers" },
+      { artist: "Chicago jazz veterans", description: "Representing the city's rich jazz tradition" }
+    ],
+    regionId: "north-america"
+  },
+  // Additional destinations for Africa
+  {
+    name: "MTN Bushfire Festival",
+    location: "Malkerns Valley, Eswatini",
+    type: "festival",
+    description: "Set in the stunning Malkerns Valley, Bushfire is one of Africa's most diverse festivals, focused on music, arts, and making a social impact. The festival's motto 'Bring Your Fire' encourages positive energy and social change. With multiple stages showcasing pan-African talent, alongside crafts markets, food stalls, and camping areas, Bushfire creates a vibrant temporary community celebrating African creativity.",
+    image: "https://images.unsplash.com/photo-1520095972714-909e91b038e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-26.50778",
+    lng: "31.18500",
+    rating: "4.8",
+    tags: ["world music", "cultural", "socially conscious", "african"],
+    website: "https://www.bush-fire.com/",
+    ticketUrl: "https://www.bush-fire.com/tickets",
+    history: "Founded in 2007, MTN Bushfire has grown from a small local gathering to an internationally recognized festival attended by over 25,000 people from more than 60 countries. All festival proceeds support young orphaned and vulnerable children in Eswatini through the 'Young Heroes' organization.",
+    events: [
+      { name: "Opening Ceremony", date: "May 26, 2023" },
+      { name: "Main Stage Performances", date: "May 27, 2023" },
+      { name: "Global Food Village", date: "Throughout festival" },
+      { name: "Handcraft & Design Marketplace", date: "Throughout festival" }
+    ],
+    performances: [
+      { artist: "Samthing Soweto", description: "South African vocalist blending jazz and traditional sounds" },
+      { artist: "BCUC", description: "Bantu Continua Uhuru Consciousness - powerful indigenous funk from Soweto" },
+      { artist: "Mandla Mlangeni", description: "Award-winning South African jazz trumpeter" },
+      { artist: "Nile Dancers", description: "Traditional dance troupe from Uganda" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "Festival au Désert",
+    location: "Essakane, Mali",
+    type: "festival",
+    description: "Known as 'the most remote music festival in the world,' Festival au Désert brings together nomadic Tuareg culture with global music in the stunning setting of the Sahara Desert. Attendees experience traditional Tuareg music, desert blues, and international collaborations while sleeping in traditional tents under vast desert skies. The festival was founded to celebrate peace and cultural exchange in a region often affected by conflict.",
+    image: "https://images.unsplash.com/photo-1489493887464-892be6d1daae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "16.77889",
+    lng: "-3.00917",
+    rating: "4.9",
+    tags: ["desert blues", "tuareg", "traditional", "world music"],
+    website: "https://www.festival-au-desert.org/",
+    ticketUrl: "https://www.festival-au-desert.org/tickets",
+    history: "Founded in 2001, the festival was originally a celebration of peace following a rebellion in the 1990s. Due to security concerns in Mali, the festival has operated as a 'festival in exile' in recent years, with events held in different locations worldwide, while working toward a permanent return to its desert home.",
+    events: [
+      { name: "Traditional Tuareg Welcome", date: "January 12, 2023" },
+      { name: "Desert Stage Performances", date: "January 13-14, 2023" },
+      { name: "Camel Races", date: "Morning activities" },
+      { name: "Cultural Exchange Workshops", date: "Throughout festival" }
+    ],
+    performances: [
+      { artist: "Tinariwen", description: "Grammy-winning group of Tuareg musicians from the Sahara Desert region" },
+      { artist: "Bombino", description: "Acclaimed Nigerien guitarist and singer" },
+      { artist: "Ali Farka Touré Band", description: "Continuing the legacy of the legendary Malian bluesman" },
+      { artist: "Tartit", description: "Traditional female Tuareg ensemble" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "Sauti za Busara",
+    location: "Stone Town, Zanzibar, Tanzania",
+    type: "festival",
+    description: "Set in the historic Old Fort of Stone Town, Sauti za Busara ('Sounds of Wisdom') showcases the rich musical heritage of Africa with a focus on East African talent. The magnificent Arabian-influenced architecture of the venue creates a magical backdrop for performances ranging from traditional taarab and lingala to contemporary afro-fusion and hip-hop, all performed live with no playback allowed.",
+    image: "https://images.unsplash.com/photo-1508159842391-77f320cdc1e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-6.16000",
+    lng: "39.19139",
+    rating: "4.7",
+    tags: ["african", "traditional", "cultural", "live music"],
+    website: "https://www.busaramusic.org/",
+    ticketUrl: "https://www.busaramusic.org/tickets",
+    history: "Founded in 2004, Sauti za Busara has established itself as one of East Africa's leading cultural events, with a strong commitment to promoting African music that maintains cultural roots while embracing innovation. The festival plays a vital role in cultural preservation and providing a platform for artists who might otherwise struggle for recognition.",
+    events: [
+      { name: "Opening Parade", date: "February 9, 2023" },
+      { name: "Main Stage Performances", date: "February 10-12, 2023" },
+      { name: "Fringe Events Around Stone Town", date: "Throughout festival" },
+      { name: "Music Industry Networking", date: "Daytime program" }
+    ],
+    performances: [
+      { artist: "Siti & The Band", description: "Zanzibar's leading taarab fusion ensemble" },
+      { artist: "Makadem", description: "Kenyan artist blending traditional Benga with modern sounds" },
+      { artist: "Simangavole", description: "Reunion Island group performing Maloya music" },
+      { artist: "Faith Mussa", description: "Malawian one-man band using loop technology" }
+    ],
+    regionId: "africa"
+  },
+  {
+    name: "HIFA (Harare International Festival of the Arts)",
+    location: "Harare, Zimbabwe",
+    type: "festival",
+    description: "Zimbabwe's largest cultural event transforms the city of Harare into a vibrant celebration of music, dance, theater, film, and visual arts. Six days of performances across multiple venues create an atmosphere of creative energy and community celebration. HIFA is known for its innovative programming that spans traditional Zimbabwean music to international jazz, classical, and contemporary performances.",
+    image: "https://images.unsplash.com/photo-1527266237111-a4989d028b4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-17.82917",
+    lng: "31.05361",
+    rating: "4.6",
+    tags: ["multi-disciplinary", "arts", "cultural", "urban"],
+    website: "https://hifa.co.zw/",
+    ticketUrl: "https://hifa.co.zw/tickets",
+    history: "Founded in 1999, HIFA has operated despite significant economic and political challenges in Zimbabwe, becoming a powerful symbol of resilience and creative expression. The festival has grown into an important platform for cultural diplomacy and artistic development in Southern Africa.",
+    events: [
+      { name: "Opening Ceremony", date: "April 30, 2023" },
+      { name: "Main Stage Global Performances", date: "May 1-5, 2023" },
+      { name: "Youth Zone Programs", date: "Daily workshops" },
+      { name: "Classical Music Series", date: "Evening concerts" }
+    ],
+    performances: [
+      { artist: "Oliver Mtukudzi Tribute", description: "Celebrating Zimbabwe's most iconic musician" },
+      { artist: "Mokoomba", description: "Internationally acclaimed band from Victoria Falls" },
+      { artist: "Hope Masike", description: "Zimbabwe's 'Princess of Mbira'" },
+      { artist: "Djembe Monks", description: "Percussion ensemble fusing traditional and contemporary rhythms" }
+    ],
+    regionId: "africa"
+  },
+  
+,  // Additional destinations for Europe
+  {
+    name: "Haldern Pop Festival",
+    location: "Haldern, Germany",
+    type: "festival",
+    description: "Hidden in the picturesque rural village of Haldern near the Dutch border, this intimate festival has become known for its impeccable curation and magical atmosphere. Taking place in and around a 19th-century village church and surrounding fields, Haldern Pop offers an experience focused on musical discovery rather than headline acts. The unique setting and limited capacity (only 7,000 tickets) create a special community atmosphere where artists mingle freely with attendees.",
+    image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "51.77194",
+    lng: "6.22500",
+    rating: "4.8",
+    tags: ["indie", "folk", "intimate", "rural"],
+    website: "https://haldernpop.com/",
+    ticketUrl: "https://haldernpop.com/tickets",
+    history: "Founded in 1984 as a small local event, Haldern Pop has maintained its independent spirit while gaining international recognition for spotting emerging talent. Many artists who performed at Haldern early in their careers have gone on to worldwide fame, creating a tradition of discovery that has become the festival's hallmark.",
+    events: [
+      { name: "Spiegelzelt Sessions", date: "August 10, 2023" },
+      { name: "Church Acoustic Performances", date: "August 11, 2023" },
+      { name: "Main Field Stage", date: "August 11-13, 2023" },
+      { name: "Pop Bar Late Night Shows", date: "Nightly" }
+    ],
+    performances: [
+      { artist: "The Notwist", description: "German indie rock pioneers in a rare intimate setting" },
+      { artist: "Aldous Harding", description: "New Zealand folk artist known for intense performances" },
+      { artist: "Black Country, New Road", description: "Experimental rock collective from the UK" },
+      { artist: "Efterklang", description: "Danish art-rock ensemble performing in the church" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Midi Festival",
+    location: "Hyères, France",
+    type: "festival",
+    description: "Set across multiple venues in the picturesque coastal town of Hyères on the French Riviera, Midi Festival creates a perfect blend of musical discovery and Mediterranean holiday. Daytime performances take place in the stunning Villa Noailles (a modernist masterpiece), while evening shows move to beaches and historic sites. The boutique festival combines cutting-edge indie music with the relaxed atmosphere of the Côte d'Azur.",
+    image: "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "43.12028",
+    lng: "6.13056",
+    rating: "4.7",
+    tags: ["indie", "electronic", "coastal", "boutique"],
+    website: "https://www.midi-festival.com/",
+    ticketUrl: "https://www.midi-festival.com/tickets",
+    history: "Founded in 2005, Midi has established itself as one of France's most respected independent festivals, known for its forward-thinking curation and spectacular settings. The festival collaborates closely with the International Festival of Fashion and Photography also held in Hyères, creating interdisciplinary connections between music and visual arts.",
+    events: [
+      { name: "Villa Noailles Afternoon Sessions", date: "July 21-23, 2023" },
+      { name: "Beach Stage Sunset Concerts", date: "July 21-23, 2023" },
+      { name: "DJ Sets at La Plage", date: "Late night program" },
+      { name: "Morning Yoga with Sound Bath", date: "Morning activities" }
+    ],
+    performances: [
+      { artist: "The Limiñanas", description: "French psychedelic rock duo" },
+      { artist: "Bagarre", description: "Electronic collective with theatrical performances" },
+      { artist: "Michelle Blades", description: "Panama-born experimental pop artist" },
+      { artist: "Bon Voyage Organisation", description: "Exotica-influenced ensemble performing retro-futuristic grooves" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Jazz Middelheim",
+    location: "Antwerp, Belgium",
+    type: "festival",
+    description: "Set in the beautiful Park Den Brandt on the outskirts of Antwerp, Jazz Middelheim has been Belgium's premier jazz festival for over five decades. The intimate setting allows close interaction between performers and audience, with performances ranging from traditional jazz legends to avant-garde experimentalists. The combination of world-class music, gourmet food options, and the leafy park setting creates a sophisticated yet relaxed atmosphere.",
+    image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "51.19167",
+    lng: "4.38333",
+    rating: "4.8",
+    tags: ["jazz", "classical", "sophisticated", "outdoor"],
+    website: "https://www.jazzmiddelheim.be/",
+    ticketUrl: "https://www.jazzmiddelheim.be/tickets",
+    history: "First held in 1969, Jazz Middelheim has grown into one of Europe's most respected jazz events, with a reputation for astute programming that balances tradition and innovation. The festival has hosted virtually every major jazz figure of the past five decades while maintaining a commitment to showcasing emerging Belgian talent.",
+    events: [
+      { name: "Main Stage Performances", date: "August 12-15, 2023" },
+      { name: "Club Stage for Emerging Artists", date: "Daily program" },
+      { name: "Masterclasses", date: "Morning educational sessions" },
+      { name: "Late Night Jam Sessions", date: "After main performances" }
+    ],
+    performances: [
+      { artist: "Thelonious Monk Institute Alumni", description: "Collective of graduates from the prestigious jazz program" },
+      { artist: "Pharoah Sanders Quintet", description: "Spiritual jazz from the legendary saxophonist" },
+      { artist: "Melanie De Biasio", description: "Belgian vocalist creating minimalist, atmospheric jazz" },
+      { artist: "TaxiWars", description: "Jazz meets rock project led by dEUS frontman Tom Barman" }
+    ],
+    regionId: "europe"
+  },
+  {
+    name: "Palais Idéal du Facteur Cheval",
+    location: "Hauterives, France",
+    type: "venue",
+    description: "One of the world's most extraordinary examples of naïve art architecture, this palace was built single-handedly by rural postman Ferdinand Cheval over 33 years. Today, the fantastical structure hosts intimate concerts in a setting that can only be described as surreal. Performances take place in the garden or inside the palace itself, with the otherworldly architecture creating natural acoustics and an atmosphere that enhances the musical experience in unexpected ways.",
+    image: "https://images.unsplash.com/photo-1597910037310-7dd8ddb93e24?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "45.25611",
+    lng: "5.02833",
+    rating: "4.9",
+    tags: ["unusual", "intimate", "artistic", "acoustic"],
+    website: "https://www.facteurcheval.com/",
+    ticketUrl: "https://www.facteurcheval.com/en/practical-information/tickets",
+    history: "Between 1879 and 1912, Ferdinand Cheval collected stones during his daily postal rounds and built his dream palace by night. Inspired by nature, postcards, and magazines, he created a structure mixing influences from different cultures and his own imagination. Recognized by Surrealists like André Breton and declared a cultural landmark in 1969, the palace now hosts a summer concert series embracing its unique acoustics and atmosphere.",
+    events: [
+      { name: "Summer Night Concerts", date: "June-September, Friday evenings" },
+      { name: "Midsummer Piano Recitals", date: "July 21-22, 2023" },
+      { name: "Chamber Music Series", date: "First Sunday of each month" },
+      { name: "Contemporary Music & Palace Sound Installations", date: "August 5-15, 2023" }
+    ],
+    performances: [
+      { artist: "Colleen", description: "French electronic musician using unusual instruments" },
+      { artist: "Christine Ott", description: "Ondes Martenot virtuoso creating ethereal soundscapes" },
+      { artist: "La Femme", description: "Psychedelic rock band performing acoustic sets" },
+      { artist: "Anne Paceo", description: "Genre-defying drummer and composer" }
+    ],
+    regionId: "europe"
+  },
+  
+,  // Additional destinations for Asia
+  {
+    name: "Rainbow Serpent Festival",
+    location: "Lexton, Victoria, Australia",
+    type: "festival",
+    description: "Set in the Australian bush, Rainbow Serpent has evolved from a small gathering into an internationally recognized event celebrating electronic music, art, and alternative lifestyle. The festival creates a temporary community embracing sustainability, spiritual growth, and creative expression. Multiple stages offer continuous music across genres ranging from psytrance and techno to dub and world music, while art installations transform the landscape into an immersive playground.",
+    image: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "-37.31667",
+    lng: "143.50000",
+    rating: "4.8",
+    tags: ["electronic", "psytrance", "transformational", "art"],
+    website: "https://rainbowserpent.net/",
+    ticketUrl: "https://rainbowserpent.net/tickets",
+    history: "Founded in 1997, the festival takes its name from the Indigenous Australian Rainbow Serpent creator being. It has grown from its roots in psytrance music to encompass multiple musical genres and art forms while maintaining a strong focus on Indigenous recognition, environmental sustainability, and community building.",
+    events: [
+      { name: "Opening Ceremony with Traditional Owners", date: "January 26, 2023" },
+      { name: "Market Stage Showcase", date: "January 27-29, 2023" },
+      { name: "Chillout Gardens", date: "Continuous ambient music" },
+      { name: "Workshop Program", date: "Daily skills sharing" }
+    ],
+    performances: [
+      { artist: "Perfect Stranger", description: "Israeli progressive psytrance producer" },
+      { artist: "Hilight Tribe", description: "Natural trance band using traditional instruments" },
+      { artist: "Desert Dwellers", description: "Fusion of deep bass with world music influences" },
+      { artist: "Dragonfly", description: "Australian electronic trio with didgeridoo and live elements" }
+    ],
+    regionId: "oceania"
+  },
+  {
+    name: "Wonderfruit Festival",
+    location: "Pattaya, Thailand",
+    type: "festival",
+    description: "Set in the Fields at Siam Country Club, Wonderfruit combines music, art, food, wellness, and workshops with a strong focus on sustainability. The festival features stunning architectural stages built from bamboo and recycled materials, creating a temporary city where global electronic and live music meet Thai culture. Beyond music, attendees can experience everything from sunrise yoga and meditation to talks on environmental innovation and feast at farm-to-table banquets.",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "12.91889",
+    lng: "100.98972",
+    rating: "4.9",
+    tags: ["electronic", "sustainable", "wellness", "immersive"],
+    website: "https://wonderfruit.co/",
+    ticketUrl: "https://wonderfruit.co/tickets",
+    history: "Founded in 2014, Wonderfruit was created to promote sustainable living in a festival format. It is one of Asia's leading transformational festivals, combining environmental consciousness with cutting-edge production and curation. The festival has pioneered initiatives like carbon offset programs, banned single-use plastics, and created stages from sustainable or recycled materials.",
+    events: [
+      { name: "Sunrise Yoga at the Solar Stage", date: "Morning activities" },
+      { name: "Bath House Sound Healing", date: "Wellness programs" },
+      { name: "Scribbly Farms Dinners", date: "Farm-to-table experiences" },
+      { name: "Theatre Stage Main Performances", date: "December 14-18, 2023" }
+    ],
+    performances: [
+      { artist: "Floating Points", description: "UK producer blending electronic, jazz and classical" },
+      { artist: "Khruangbin", description: "Texas trio fusing global influences from Thai funk to Middle Eastern music" },
+      { artist: "Viet Anh Nguyen", description: "Vietnamese multi-instrumentalist creating ambient soundscapes" },
+      { artist: "Paradise Bangkok Molam International Band", description: "Contemporizing traditional Thai rural music" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Magnetic Fields Festival",
+    location: "Alsisar, Rajasthan, India",
+    type: "festival",
+    description: "Held in a 17th-century palace in the desert state of Rajasthan, Magnetic Fields offers a unique blend of contemporary music and traditional Indian heritage. The magnificent Alsisar Mahal provides a spectacular backdrop for cutting-edge electronic music, with stages set in palace courtyards, rooftops, and the surrounding desert. By day, attendees can explore desert activities and cultural programs; by night, the palace transforms into a wonderland of sound and light.",
+    image: "https://images.unsplash.com/photo-1567942712661-82b9b407abbf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "28.31667",
+    lng: "75.28333",
+    rating: "4.8",
+    tags: ["electronic", "cultural", "boutique", "palace"],
+    website: "https://magneticfields.in/",
+    ticketUrl: "https://magneticfields.in/tickets",
+    history: "Founded in 2013, Magnetic Fields has established itself as India's most forward-thinking music festival. By bringing contemporary electronic music to a heritage property, the festival creates a unique dialogue between traditional Rajasthani culture and global music movements. The festival has been instrumental in nurturing India's growing electronic music scene.",
+    events: [
+      { name: "Palace Courtyard Stage", date: "December 15-17, 2023" },
+      { name: "Sunset Desert Sessions", date: "Afternoon performances" },
+      { name: "Resident Advisor Underground Party", date: "Late night/early morning" },
+      { name: "Traditional Rajasthani Folk Performances", date: "Cultural program" }
+    ],
+    performances: [
+      { artist: "Hunee", description: "Genre-spanning selector known for eclectic DJ sets" },
+      { artist: "Lifafa", description: "Indian electronic producer blending Hindi lyrics with synth-pop" },
+      { artist: "Manpower", description: "Founder of Nepal's leading club night" },
+      { artist: "Dar Disku", description: "DJ duo specializing in Middle Eastern and South Asian disco" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Fuji Rock Festival",
+    location: "Naeba Ski Resort, Japan",
+    type: "festival",
+    description: "Set in the breathtaking mountains of Niigata Prefecture, Fuji Rock is Japan's largest outdoor music event, combining international headliners with domestic talent across multiple stages connected by scenic woodland boardwalks. Despite the name, the festival is no longer held at Mt. Fuji, but the mountainous setting creates a magical atmosphere, especially at the Field of Heaven stage surrounded by forest. The festival is known for its environmental consciousness and orderly atmosphere.",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "36.80417",
+    lng: "138.79111",
+    rating: "4.9",
+    tags: ["rock", "electronic", "mountain", "eco-friendly"],
+    website: "https://www.fujirockfestival.com/",
+    ticketUrl: "https://www.fujirockfestival.com/tickets",
+    history: "First held at the base of Mount Fuji in 1997 (and moved to Naeba in 1999 after a typhoon), Fuji Rock has established itself as Asia's premier music festival. Drawing inspiration from Glastonbury Festival in the UK, Fuji Rock emphasizes both musical diversity and environmental sustainability, creating an experience that harmonizes with its natural setting.",
+    events: [
+      { name: "Green Stage Headliners", date: "July 28-30, 2023" },
+      { name: "Field of Heaven - Folk & World Music", date: "Daily program" },
+      { name: "Red Marquee - Electronic & Dance", date: "Late night venue" },
+      { name: "Dragondola - World's longest gondola ride", date: "Daily activity" }
+    ],
+    performances: [
+      { artist: "Cornelius", description: "Japanese music pioneer performing intricate audiovisual shows" },
+      { artist: "MONO", description: "Japanese post-rock band creating atmospheric instrumental landscapes" },
+      { artist: "The Avalanches", description: "Australian electronic group known for sample-based classics" },
+      { artist: "Number Girl", description: "Influential Japanese alternative rock band" }
+    ],
+    regionId: "asia"
+  },
+  {
+    name: "Form Arcosanti",
+    location: "Arcosanti, Arizona, USA",
+    type: "festival",
+    description: "Held in the experimental desert town of Arcosanti, FORM offers an immersive weekend of music, art, and ideas in a visionary architectural setting. The festival utilizes the unique spaces of this urban laboratory, with performances taking place in amphitheaters carved from the desert, intimate domes, and cliff-side plazas. Limited to just 2,000 attendees, the boutique festival creates a genuine sense of community and participation.",
+    image: "https://images.unsplash.com/photo-1465188466731-618dfc07a57d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "34.34361",
+    lng: "-112.10083",
+    rating: "4.8",
+    tags: ["indie", "experimental", "intimate", "architectural"],
+    website: "https://experienceform.com/",
+    ticketUrl: "https://experienceform.com/tickets",
+    history: "Founded in 2014, FORM broke the traditional festival model by initially requiring applications to attend (now open to all but with limited capacity). The festival takes place in Arcosanti, an 'urban laboratory' founded in the 1970s by architect Paolo Soleri to explore the concept of 'arcology' - architecture coherent with ecology.",
+    events: [
+      { name: "Amphitheater Performances", date: "May 12-14, 2023" },
+      { name: "Morning Meditations", date: "Daily sunrise sessions" },
+      { name: "Architecture & Sustainability Talks", date: "Afternoon program" },
+      { name: "Late Night DJ Sets in the Vaults", date: "After main performances" }
+    ],
+    performances: [
+      { artist: "Julianna Barwick", description: "Ethereal vocal loop artist perfectly matched to the acoustic spaces" },
+      { artist: "Mary Lattimore", description: "Experimental harpist creating atmospheric soundscapes" },
+      { artist: "Lonnie Holley", description: "Outsider artist and improvisational musician" },
+      { artist: "William Basinski", description: "Ambient composer known for tape loop compositions" }
+    ],
+    regionId: "north-america"
+  },
+  {
+    name: "Montreux Jazz Festival",
+    location: "Montreux, Switzerland",
+    type: "festival",
+    description: "Set on the stunning shores of Lake Geneva with the Alps as a backdrop, Montreux has expanded far beyond its jazz roots to become one of the world's most prestigious music festivals. While maintaining a strong jazz program, the festival now embraces genres from rock and pop to electronic and world music. The combination of breathtaking scenery, Swiss precision in organization, and free lakeside performances alongside ticketed events creates a unique festival atmosphere.",
+    image: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    lat: "46.43111",
+    lng: "6.91056",
+    rating: "4.9",
+    tags: ["jazz", "prestigious", "lakeside", "diverse"],
+    website: "https://www.montreuxjazzfestival.com/",
+    ticketUrl: "https://www.montreuxjazzfestival.com/en/tickets",
+    history: "Founded in 1967 by Claude Nobs, Montreux has hosted nearly every major jazz figure and countless legends from other genres. The festival is renowned for unexpected collaborations and marathon jam sessions. Several iconic live recordings have been made at Montreux, including Deep Purple's 'Smoke on the Water,' which references a fire that burned down the original casino venue in 1971.",
+    events: [
+      { name: "Auditorium Stravinski Concerts", date: "July 1-16, 2023" },
+      { name: "Montreux Jazz Lab - New Talent", date: "Daily program" },
+      { name: "Free Music on the Lake Stage", date: "Afternoon performances" },
+      { name: "Late Night Jazz Clubs", date: "After main performances" }
+    ],
+    performances: [
+      { artist: "Montreux Jazz Academy", description: "Young musicians mentored by established artists" },
+      { artist: "Charles Lloyd Quartet", description: "Legendary saxophonist returning to the festival" },
+      { artist: "Yussef Dayes", description: "Innovative UK drummer pushing jazz boundaries" },
+      { artist: "Nubya Garcia", description: "Leading figure in London's vibrant jazz renaissance" }
+    ],
+    regionId: "europe"
+  }

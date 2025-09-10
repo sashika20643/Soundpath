@@ -34,7 +34,8 @@ export function Layout({ children }: LayoutProps) {
             {/* Logo */}
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
-                <img src={logo} alt="Soundpath Logo" className="h-10 w-auto" /> Sonicpaths
+                <img src={logo} alt="Soundpath Logo" className="h-10 w-auto" />{" "}
+                Sonicpaths
               </div>
             </Link>
 
@@ -86,7 +87,7 @@ export function Layout({ children }: LayoutProps) {
                       className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === "/dashboards/events" ? "font-medium" : ""}`}
                       style={{
                         color:
-                          location === "/dashboards/events"
+                          location === "/dashboards"
                             ? "var(--color-charcoal)"
                             : "var(--color-dark-gray)",
                       }}
@@ -151,37 +152,7 @@ export function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <Link href="/admin-login">
-                    <div
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 hover:shadow-sm cursor-pointer"
-                      style={{
-                        borderColor: "var(--color-light-gray)",
-                        backgroundColor: "transparent",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor =
-                          "var(--color-soft-beige)";
-                        e.currentTarget.style.borderColor =
-                          "var(--color-mid-gray)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.borderColor =
-                          "var(--color-light-gray)";
-                      }}
-                    >
-                      <LogIn
-                        className="w-4 h-4"
-                        style={{ color: "var(--color-mid-gray)" }}
-                      />
-                      <span
-                        className="text-sm"
-                        style={{ color: "var(--color-dark-gray)" }}
-                      >
-                        Admin Login
-                      </span>
-                    </div>
-                  </Link>
+                  <p>Guest</p>
                 )}
               </div>
             </div>

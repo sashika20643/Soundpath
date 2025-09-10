@@ -5,82 +5,113 @@ import { useEvents } from "@/hooks/use-events";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Globe } from "lucide-react";
-import { CityAutocomplete } from "@/components/ui/city-autocomplete";
-import { 
-  getContinents, 
-  getCountriesForContinent, 
-  getCitiesForCountry 
-} from "@/lib/locations";
 
-const continents = getContinents();
+const continents = [
+  "North America",
+  "South America",
+  "Europe",
+  "Asia",
+  "Africa",
+  "Oceania",
+];
+
+const countries = {
+  "North America": ["United States", "Canada", "Mexico"],
+  "South America": ["Brazil", "Argentina", "Chile", "Colombia", "Peru"],
+  Europe: [
+    "United Kingdom",
+    "France",
+    "Germany",
+    "Italy",
+    "Spain",
+    "Netherlands",
+    "Switzerland",
+  ],
+  Asia: ["Japan", "China", "India", "South Korea", "Thailand", "Singapore"],
+  Africa: ["South Africa", "Egypt", "Nigeria", "Kenya", "Morocco"],
+  Oceania: ["Australia", "New Zealand", "Fiji"],
+};
+
+const cities = {
+  "United States": [
+    "New York",
+    "Los Angeles",
+    "Chicago",
+    "San Francisco",
+    "Miami",
+  ],
+  "United Kingdom": ["London", "Manchester", "Edinburgh", "Birmingham"],
+  France: ["Paris", "Lyon", "Marseille", "Nice"],
+  Germany: ["Berlin", "Munich", "Hamburg", "Frankfurt"],
+  Japan: ["Tokyo", "Osaka", "Kyoto", "Yokohama"],
+  Brazil: ["São Paulo", "Rio de Janeiro", "Salvador", "Brasília"],
+  Australia: ["Sydney", "Melbourne", "Brisbane", "Perth"],
+  // Add more cities as needed
+};
 
 export default function MapPage() {
-  usePageMetadata('map');
+  usePageMetadata("map");
 
   const [selectedContinent, setSelectedContinent] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
-  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
-  const [availableCountries, setAvailableCountries] = useState<Array<{isoCode: string, name: string}>>([]);
 
   const scrollRef = useScrollAnimation();
 
   // Build filters for API call
-  const filters = useMemo(() => ({
-    continent: selectedContinent || undefined,
-    country: selectedCountry || undefined,
-    city: selectedCity || undefined,
-    approved: true,
-  }), [selectedContinent, selectedCountry, selectedCity]);
+  const filters = useMemo(
+    () => ({
+      continent: selectedContinent || undefined,
+      country: selectedCountry || undefined,
+      city: selectedCity || undefined,
+      approved: true,
+    }),
+    [selectedContinent, selectedCountry, selectedCity],
+  );
 
   const { data: allEvents = [], isLoading } = useEvents(filters);
 
   // Filter events that have coordinates for the map
-  const eventsWithCoordinates = useMemo(() => 
-    allEvents?.filter(event => event?.latitude && event?.longitude) || [],
-    [allEvents]
+  const eventsWithCoordinates = useMemo(
+    () =>
+      allEvents?.filter((event) => event?.latitude && event?.longitude) || [],
+    [allEvents],
   );
 
-  const handleContinentChange = (continent: string) => {
-    if (continent === "all") {
-      setSelectedContinent("");
-      setSelectedCountry("");
-      setSelectedCity("");
-      setSelectedCountryCode("");
-      setAvailableCountries([]);
-    } else {
-      setSelectedContinent(continent);
-      setSelectedCountry("");
-      setSelectedCity("");
-      setSelectedCountryCode("");
+  // Get available countries based on selected continent
+  const availableCountries = selectedContinent
+    ? countries[selectedContinent as keyof typeof countries] || []
+    : [];
 
-      // Load countries for this continent
-      const countries = getCountriesForContinent(continent);
-      setAvailableCountries(countries);
-    }
+  // Get available cities based on selected country
+  const availableCities = selectedCountry
+    ? cities[selectedCountry as keyof typeof cities] || []
+    : [];
+
+  const handleContinentChange = (value: string) => {
+    const continent = value === "all" ? "" : value;
+    setSelectedContinent(continent);
+    setSelectedCountry("");
+    setSelectedCity("");
   };
 
-  const handleCountryChange = (country: string) => {
-    if (country === "all") {
-      setSelectedCountry("");
-      setSelectedCity("");
-      setSelectedCountryCode("");
-    } else {
-      setSelectedCountry(country);
-      setSelectedCity("");
-
-      // Find country code for city autocomplete
-      const countryData = availableCountries.find(c => c.name === country);
-      if (countryData) {
-        setSelectedCountryCode(countryData.isoCode);
-      }
-    }
+  const handleCountryChange = (value: string) => {
+    const country = value === "all" ? "" : value;
+    setSelectedCountry(country);
+    setSelectedCity("");
   };
 
-  const handleCityChange = (city: string) => {
+  const handleCityChange = (value: string) => {
+    const city = value === "all" ? "" : value;
     setSelectedCity(city);
   };
 
@@ -107,8 +138,8 @@ export default function MapPage() {
                 className="text-editorial text-xl max-w-2xl mx-auto leading-relaxed"
                 style={{ color: "var(--color-dark-gray)" }}
               >
-                Navigate through musical destinations around the globe. 
-                Use the location filters to focus on specific regions and discover 
+                Navigate through musical destinations around the globe. Use the
+                location filters to focus on specific regions and discover
                 events in your area of interest.
               </p>
             </div>
@@ -121,14 +152,14 @@ export default function MapPage() {
             <Card className="mb-8">
               <CardContent className="p-6">
                 <div className="scroll-animate mb-6">
-                  <h2 
+                  <h2
                     className="font-serif text-2xl mb-2 flex items-center gap-2"
                     style={{ color: "var(--color-charcoal)" }}
                   >
                     <Globe className="w-6 h-6" />
                     Location Filters
                   </h2>
-                  <p 
+                  <p
                     className="text-sm"
                     style={{ color: "var(--color-mid-gray)" }}
                   >
@@ -143,13 +174,16 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       Continent
                     </Label>
-                    <Select value={selectedContinent || "all"} onValueChange={handleContinentChange}>
+                    <Select
+                      value={selectedContinent || "all"}
+                      onValueChange={handleContinentChange}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="All Continents" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Continents</SelectItem>
-                        {continents.map(continent => (
+                        {continents.map((continent) => (
                           <SelectItem key={continent} value={continent}>
                             {continent}
                           </SelectItem>
@@ -164,19 +198,25 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       Country
                     </Label>
-                    <Select 
-                      value={selectedCountry || "all"} 
+                    <Select
+                      value={selectedCountry || "all"}
                       onValueChange={handleCountryChange}
                       disabled={!selectedContinent}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={selectedContinent ? "All Countries" : "Select continent first"} />
+                        <SelectValue
+                          placeholder={
+                            selectedContinent
+                              ? "All Countries"
+                              : "Select continent first"
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Countries</SelectItem>
-                        {availableCountries.map(country => (
-                          <SelectItem key={country.isoCode} value={country.name}>
-                            {country.name}
+                        {availableCountries.map((country) => (
+                          <SelectItem key={country} value={country}>
+                            {country}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -189,12 +229,29 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       City
                     </Label>
-                    <CityAutocomplete 
-                      countryCode={selectedCountryCode}
-                      onCitySelect={handleCityChange}
-                      placeholder={selectedCountry ? "Enter city name" : "Select country first"}
+                    <Select
+                      value={selectedCity || "all"}
+                      onValueChange={handleCityChange}
                       disabled={!selectedCountry}
-                    />
+                    >
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={
+                            selectedCountry
+                              ? "All Cities"
+                              : "Select country first"
+                          }
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Cities</SelectItem>
+                        {availableCities.map((city) => (
+                          <SelectItem key={city} value={city}>
+                            {city}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
@@ -254,7 +311,7 @@ export default function MapPage() {
                 </h2>
                 {isLoading && (
                   <div className="animate-pulse">
-                    <div 
+                    <div
                       className="h-4 w-20 rounded"
                       style={{ backgroundColor: "var(--color-light-gray)" }}
                     ></div>
@@ -266,16 +323,16 @@ export default function MapPage() {
             {/* Map Section */}
             <div className="scroll-animate scroll-animate-delay-1">
               {isLoading ? (
-                <div 
+                <div
                   className="rounded-lg animate-pulse"
-                  style={{ 
+                  style={{
                     height: "600px",
-                    backgroundColor: "var(--color-light-gray)"
+                    backgroundColor: "var(--color-light-gray)",
                   }}
                 ></div>
               ) : (
-                <EventMap 
-                  events={eventsWithCoordinates} 
+                <EventMap
+                  events={eventsWithCoordinates}
                   height="600px"
                   className="mx-auto rounded-lg shadow-lg"
                 />
@@ -287,7 +344,7 @@ export default function MapPage() {
               <div className="scroll-animate mt-8">
                 <Card>
                   <CardContent className="p-6">
-                    <h3 
+                    <h3
                       className="font-serif text-xl mb-4"
                       style={{ color: "var(--color-charcoal)" }}
                     >
@@ -295,13 +352,13 @@ export default function MapPage() {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div>
-                        <span 
+                        <span
                           className="font-medium"
                           style={{ color: "var(--color-charcoal)" }}
                         >
                           Total Events:
                         </span>
-                        <span 
+                        <span
                           className="ml-2"
                           style={{ color: "var(--color-dark-gray)" }}
                         >
@@ -309,31 +366,43 @@ export default function MapPage() {
                         </span>
                       </div>
                       <div>
-                        <span 
+                        <span
                           className="font-medium"
                           style={{ color: "var(--color-charcoal)" }}
                         >
                           Countries:
                         </span>
-                        <span 
+                        <span
                           className="ml-2"
                           style={{ color: "var(--color-dark-gray)" }}
                         >
-                          {new Set(eventsWithCoordinates.map(e => e?.country).filter(Boolean)).size}
+                          {
+                            new Set(
+                              eventsWithCoordinates
+                                .map((e) => e?.country)
+                                .filter(Boolean),
+                            ).size
+                          }
                         </span>
                       </div>
                       <div>
-                        <span 
+                        <span
                           className="font-medium"
                           style={{ color: "var(--color-charcoal)" }}
                         >
                           Cities:
                         </span>
-                        <span 
+                        <span
                           className="ml-2"
                           style={{ color: "var(--color-dark-gray)" }}
                         >
-                          {new Set(eventsWithCoordinates.map(e => e?.city).filter(Boolean)).size}
+                          {
+                            new Set(
+                              eventsWithCoordinates
+                                .map((e) => e?.city)
+                                .filter(Boolean),
+                            ).size
+                          }
                         </span>
                       </div>
                     </div>
