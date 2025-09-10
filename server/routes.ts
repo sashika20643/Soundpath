@@ -27,6 +27,7 @@ import {
   getContactMessagesValidator,
 } from "./validators/contactMessageValidator";
 import { contactMessageController } from "./controllers/contactMessageController";
+import { authController } from "./controllers/authController";
 import { requireAdminAuth } from "./middlewares/authMiddleware";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -117,6 +118,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     validateRequest(chatEventValidator),
     chatController.chatWithEvents.bind(chatController),
   );
+
+  // Authentication routes
+  app.post("/api/auth/login", authController.login.bind(authController));
+  app.post("/api/auth/verify", authController.verify.bind(authController));
+  app.post("/api/auth/logout", authController.logout.bind(authController));
+
   // Note: Error handling middleware will be added after Vite setup
 
   const httpServer = createServer(app);

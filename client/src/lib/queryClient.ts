@@ -17,8 +17,8 @@ export async function apiRequest(
   
   const headers: Record<string, string> = data ? { "Content-Type": "application/json" } : {};
   
-  // Add Authorization header if admin token exists
-  if (adminToken === 'authenticated') {
+  // Add Authorization header if admin token exists (now using JWT tokens)
+  if (adminToken) {
     headers['Authorization'] = `Bearer ${adminToken}`;
   }
 
@@ -44,8 +44,8 @@ export const getQueryFn: <T>(options: {
     
     const headers: Record<string, string> = {};
     
-    // Add Authorization header if admin token exists
-    if (adminToken === 'authenticated') {
+    // Add Authorization header if admin token exists (now using JWT tokens)
+    if (adminToken) {
       headers['Authorization'] = `Bearer ${adminToken}`;
     }
 

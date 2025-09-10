@@ -15,12 +15,12 @@ export function AdminLogin() {
   const { login } = useAuth();
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-      const success = login(username, password);
+    try {
+      const success = await login(username, password);
       
       if (success) {
         toast({
@@ -34,10 +34,17 @@ export function AdminLogin() {
           description: "Invalid username or password",
         });
       }
-      
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        variant: "destructive",
+        title: "Login error",
+        description: "An error occurred during login. Please try again.",
+      });
+    } finally {
       setIsLoading(false);
       setPassword('');
-    }, 1000);
+    }
   };
 
   return (

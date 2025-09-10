@@ -1,20 +1,21 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { apiRequest } from '@/lib/queryClient';
+
+interface AuthUser {
+  id: number;
+  username: string;
+}
 
 interface AuthContextType {
   isAdmin: boolean;
-  login: (username: string, password: string) => boolean;
+  user: AuthUser | null;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Simple admin credentials (in production, this should be in environment variables)
-const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123'
-};
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -22,33 +23,91 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
-    const adminToken = localStorage.getItem('admin_token');
-    if (adminToken === 'authenticated') {
-      setIsAdmin(true);
-    }
-    setIsLoading(false);
+    // Check if user is already logged in by verifying stored token
+    const verifyExistingToken = async () => {
+      try {
+        const adminToken = localStorage.getItem('admin_token');
+        if (adminToken) {
+          // Verify token with backend
+          const response = await fetch('/api/auth/verify', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${adminToken}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              setIsAdmin(true);
+              setUser(result.data.user);
+            } else {
+              // Invalid token, remove it
+              localStorage.removeItem('admin_token');
+            }
+          } else {
+            // Invalid token, remove it
+            localStorage.removeItem('admin_token');
+          }
+        }
+      } catch (error) {
+        console.error('Token verification failed:', error);
+        localStorage.removeItem('admin_token');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    verifyExistingToken();
   }, []);
 
-  const login = (username: string, password: string): boolean => {
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-      setIsAdmin(true);
-      localStorage.setItem('admin_token', 'authenticated');
-      return true;
+  const login = async (username: string, password: string): Promise<boolean> => {
+    try {
+      // Call the new login API endpoint
+      const response = await apiRequest('POST', '/api/auth/login', {
+        username,
+        password
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Store the JWT token
+        localStorage.setItem('admin_token', result.data.token);
+        setIsAdmin(true);
+        setUser(result.data.user);
+        return true;
+      } else {
+        console.error('Login failed:', result.error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    return false;
   };
 
-  const logout = () => {
-    setIsAdmin(false);
-    localStorage.removeItem('admin_token');
+  const logout = async () => {
+    try {
+      // Call logout endpoint (optional)
+      await apiRequest('POST', '/api/auth/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear local state regardless of API call result
+      setIsAdmin(false);
+      setUser(null);
+      localStorage.removeItem('admin_token');
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ isAdmin, user, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

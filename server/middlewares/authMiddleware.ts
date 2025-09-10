@@ -1,15 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-
-// Simple admin credentials (in production, this should be in environment variables)
-const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123'
-};
+import { authService, AuthUser } from '../services/authService';
 
 // Type for admin session data
 interface AdminSession {
   isAdmin: boolean;
-  username: string;
+  user: AuthUser;
   loginTime: number;
 }
 
@@ -24,9 +19,9 @@ declare global {
 
 /**
  * Middleware to check for admin authentication
- * Validates the admin token from Authorization header
+ * Validates JWT token from Authorization header against database
  */
-export function requireAdminAuth(req: Request, res: Response, next: NextFunction) {
+export async function requireAdminAuth(req: Request, res: Response, next: NextFunction) {
   try {
     // Check for Authorization header
     const authHeader = req.headers.authorization;
@@ -41,19 +36,20 @@ export function requireAdminAuth(req: Request, res: Response, next: NextFunction
     // Extract token from "Bearer <token>"
     const token = authHeader.substring(7);
     
-    // For simplicity, we'll use a basic token validation
-    // In production, this should be a proper JWT or session validation
-    if (token !== 'authenticated') {
+    // Verify token using AuthService
+    const user = await authService.verifyToken(token);
+    
+    if (!user) {
       return res.status(401).json({
         success: false,
-        error: 'Invalid admin token. Please log in again.'
+        error: 'Invalid or expired admin token. Please log in again.'
       });
     }
 
     // Add admin session info to request
     req.adminSession = {
       isAdmin: true,
-      username: ADMIN_CREDENTIALS.username,
+      user,
       loginTime: Date.now()
     };
 
@@ -70,17 +66,20 @@ export function requireAdminAuth(req: Request, res: Response, next: NextFunction
 /**
  * Optional middleware for admin endpoints that provides admin info but doesn't require auth
  */
-export function optionalAdminAuth(req: Request, res: Response, next: NextFunction) {
+export async function optionalAdminAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const authHeader = req.headers.authorization;
     
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const token = authHeader.substring(7);
       
-      if (token === 'authenticated') {
+      // Try to verify token but don't fail if invalid
+      const user = await authService.verifyToken(token);
+      
+      if (user) {
         req.adminSession = {
           isAdmin: true,
-          username: ADMIN_CREDENTIALS.username,
+          user,
           loginTime: Date.now()
         };
       }

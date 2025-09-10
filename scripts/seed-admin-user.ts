@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { db } from '../server/storage';
+import { db } from '../server/db';
 import { users } from '../shared/schema';
 import { eq } from 'drizzle-orm';
 
@@ -77,16 +77,14 @@ async function seedAdminUser() {
 }
 
 // Run the seeding function
-if (require.main === module) {
-  seedAdminUser()
-    .then(() => {
-      console.log('🎉 Admin user seeding completed successfully!');
-      process.exit(0);
-    })
-    .catch((error) => {
-      console.error('💥 Admin user seeding failed:', error);
-      process.exit(1);
-    });
-}
+seedAdminUser()
+  .then(() => {
+    console.log('🎉 Admin user seeding completed successfully!');
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error('💥 Admin user seeding failed:', error);
+    process.exit(1);
+  });
 
 export { seedAdminUser };
