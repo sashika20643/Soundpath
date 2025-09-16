@@ -54,10 +54,10 @@ import {
   type InsertEvent,
 } from "@shared/schema";
 import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
-import {
-  getContinents,
-  getCountriesForContinent,
-  getCitiesForCountry,
+import { 
+  getContinents, 
+  getCountriesForContinent, 
+  getCitiesForCountry, 
   searchCities,
   getCountryByName
 } from "@/lib/locations";
@@ -88,7 +88,7 @@ export default function Home() {
   // Filter events to only include past events (date is older than current date)
   const currentDate = new Date();
   currentDate.setHours(23, 59, 59, 999); // End of today
-
+  
   const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
 
   // Sort past events for latest discoveries (most recent by date) and hidden gems (oldest by date)
@@ -122,7 +122,6 @@ export default function Home() {
       genreIds: [],
       settingIds: [],
       eventTypeIds: [],
-      extraLinks: [],
     },
   });
 
@@ -137,9 +136,9 @@ export default function Home() {
   useEffect(() => {
     const currentDate = new Date();
     currentDate.setHours(23, 59, 59, 999); // End of today
-
+    
     const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
-
+    
     if (pastEvents.length > 0) {
       const shuffled = [...pastEvents].sort(() => Math.random() - 0.5);
       setRandomEvents(shuffled.slice(0, 6));
@@ -339,7 +338,7 @@ export default function Home() {
                   <div
                     key={i}
                     className="card-minimal rounded-lg overflow-hidden opacity-100"
-                    style={{
+                    style={{ 
                       transitionDelay: `${i * 0.1}s`,
                       animation: 'none'
                     }}
@@ -595,7 +594,7 @@ export default function Home() {
                       {showContinentSuggestions && getContinents().length > 0 && form.watch("continent") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
                           {getContinents()
-                            .filter(continent =>
+                            .filter(continent => 
                               continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
                             )
                             .slice(0, 5)
@@ -661,7 +660,7 @@ export default function Home() {
                           setShowCountrySuggestions(true);
 
                           // Find matching country and load cities
-                          const matchingCountry = availableCountries.find(country =>
+                          const matchingCountry = availableCountries.find(country => 
                             country.name.toLowerCase() === value.toLowerCase()
                           );
                           if (matchingCountry) {
@@ -685,7 +684,7 @@ export default function Home() {
                       {showCountrySuggestions && availableCountries.length > 0 && form.watch("country") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
                           {availableCountries
-                            .filter(country =>
+                            .filter(country => 
                               country.name.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
                             )
                             .slice(0, 10)
@@ -748,7 +747,7 @@ export default function Home() {
                           setShowCitySuggestions(true);
 
                           // Find matching city and use its coordinates
-                          const matchingCity = availableCities.find(city =>
+                          const matchingCity = availableCities.find(city => 
                             city.name.toLowerCase() === value.toLowerCase()
                           );
                           if (matchingCity && matchingCity.latitude && matchingCity.longitude) {
@@ -1006,7 +1005,7 @@ export default function Home() {
                   <div
                     key={i}
                     className="card-minimal rounded-lg overflow-hidden opacity-100"
-                    style={{
+                    style={{ 
                       transitionDelay: `${i * 0.15}s`,
                       animation: 'none'
                     }}

@@ -71,7 +71,6 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
       settingIds: [],
       eventTypeIds: [],
       tags: [],
-      extraLinks: [],
     },
   });
 
@@ -87,11 +86,10 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
         country: event.country || "",
         city: event.city || "",
         instagramLink: event.instagramLink || "",
-        extraLinks: event.extraLinks || [],
       };
-
+      
       console.log('🔄 Resetting form with event data:', formData);
-
+      
       form.reset(formData, { keepDirty: false, keepTouched: false });
       setSelectedGenres(event.genreIds || []);
       setSelectedSettings(event.settingIds || []);
@@ -312,57 +310,6 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
               {...form.register("instagramLink")}
               placeholder="https://instagram.com/..."
             />
-          </div>
-
-          {/* Extra Links */}
-          <div>
-            <Label className="text-base font-medium">Extra Links</Label>
-            <div className="space-y-2">
-              {form.watch("extraLinks").map((link, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <Input
-                    placeholder="Link Name"
-                    value={link.name}
-                    onChange={(e) => {
-                      const newExtraLinks = [...form.watch("extraLinks")];
-                      newExtraLinks[index] = { ...newExtraLinks[index], name: e.target.value };
-                      form.setValue("extraLinks", newExtraLinks);
-                    }}
-                    className="flex-1"
-                  />
-                  <Input
-                    placeholder="Link URL"
-                    value={link.url}
-                    onChange={(e) => {
-                      const newExtraLinks = [...form.watch("extraLinks")];
-                      newExtraLinks[index] = { ...newExtraLinks[index], url: e.target.value };
-                      form.setValue("extraLinks", newExtraLinks);
-                    }}
-                    className="flex-1"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      const newExtraLinks = form.watch("extraLinks").filter((_, i) => i !== index);
-                      form.setValue("extraLinks", newExtraLinks);
-                    }}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                form.setValue("extraLinks", [...form.watch("extraLinks"), { name: "", url: "" }]);
-              }}
-              className="mt-2"
-            >
-              Add Link
-            </Button>
           </div>
 
           {/* Categories */}

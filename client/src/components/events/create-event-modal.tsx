@@ -48,7 +48,6 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
   const [availableCountries, setAvailableCountries] = useState<Array<{isoCode: string, name: string}>>([]);
   const [availableCities, setAvailableCities] = useState<Array<{name: string, latitude?: string, longitude?: string}>>([]);
-  const [extraLinks, setExtraLinks] = useState<Array<{name: string, url: string}>>([]);
 
   const { data: genres = [] } = useCategories({ type: "genre" });
   const { data: settings = [] } = useCategories({ type: "setting" });
@@ -76,7 +75,6 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       settingIds: [],
       eventTypeIds: [],
       tags: [],
-      extraLinks: [],
     },
   });
 
@@ -87,7 +85,6 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       settingIds: selectedSettings,
       eventTypeIds: selectedEventTypes,
       tags: selectedTags,
-      extraLinks,
       fromDashboard: true,
     };
 
@@ -117,7 +114,6 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
     setSelectedTags([]);
     setTagInput("");
     setSelectedContinent("");
-    setExtraLinks([]);
     onClose();
   };
 
@@ -415,63 +411,6 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                   {tag} ×
                 </Badge>
               ))}
-            </div>
-          </div>
-
-          {/* Extra Links */}
-          <div>
-            <Label className="text-base font-medium">Additional Links</Label>
-            <div className="space-y-3 mt-2">
-              {extraLinks.map((link, index) => (
-                <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <Input
-                    placeholder="Link name (e.g. Official Website)"
-                    value={link.name}
-                    onChange={(e) => {
-                      const newLinks = [...extraLinks];
-                      newLinks[index].name = e.target.value;
-                      setExtraLinks(newLinks);
-                    }}
-                  />
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="https://example.com"
-                      value={link.url}
-                      onChange={(e) => {
-                        const newLinks = [...extraLinks];
-                        newLinks[index].url = e.target.value;
-                        setExtraLinks(newLinks);
-                      }}
-                      className="flex-1"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        const newLinks = extraLinks.filter((_, i) => i !== index);
-                        setExtraLinks(newLinks);
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                </div>
-              ))}
-              
-              {extraLinks.length < 5 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setExtraLinks([...extraLinks, { name: "", url: "" }]);
-                  }}
-                  className="w-full"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Link ({extraLinks.length}/5)
-                </Button>
-              )}
             </div>
           </div>
 

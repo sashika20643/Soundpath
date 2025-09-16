@@ -493,50 +493,6 @@ export default function EventDetails() {
               </a>
             </div>
           )}
-
-          {/* Extra Links */}
-          {event.extraLinks && event.extraLinks.length > 0 && (
-            <div
-              className={`mb-16 transition-all duration-1000 delay-600 ${
-                isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              <h3
-                className="font-serif text-2xl mb-8"
-                style={{ color: "var(--color-charcoal)" }}
-              >
-                Additional Resources
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {event.extraLinks.map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-3 px-6 py-4 text-sm font-medium rounded-xl border transition-all duration-500 hover:shadow-xl hover:scale-105"
-                    style={{
-                      borderColor: "var(--color-light-gray)",
-                      color: "var(--color-charcoal)",
-                      backgroundColor: "transparent",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--color-soft-beige)";
-                      e.currentTarget.style.borderColor = "var(--color-mid-gray)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.borderColor = "var(--color-light-gray)";
-                    }}
-                  >
-                    <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" />
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
         </section>
 
         {/* Related Events Section */}
