@@ -93,6 +93,7 @@ export const events = pgTable(
     genreIds: text("genre_ids").array(),
     settingIds: text("setting_ids").array(),
     eventTypeIds: text("event_type_ids").array(),
+    extraLinks: text("extra_links").array(), // JSON array of {name: string, url: string}
     approved: boolean("approved").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -120,6 +121,10 @@ export const insertEventSchema = z.object({
   settingIds: z.array(z.string()).default([]),
   eventTypeIds: z.array(z.string()).default([]),
   tags: z.array(z.string()).default([]),
+  extraLinks: z.array(z.object({
+    name: z.string().min(1, "Link name is required").max(100, "Link name too long"),
+    url: z.string().url("Must be a valid URL")
+  })).default([]).max(5, "Maximum 5 extra links allowed"),
   fromDashboard: z.boolean().optional(),
 });
 
@@ -145,6 +150,10 @@ export const updateEventSchema = createInsertSchema(events, {
   genreIds: z.array(z.string()).optional(),
   settingIds: z.array(z.string()).optional(),
   eventTypeIds: z.array(z.string()).optional(),
+  extraLinks: z.array(z.object({
+    name: z.string().min(1, "Link name is required").max(100, "Link name too long"),
+    url: z.string().url("Must be a valid URL")
+  })).optional(),
 })
   .omit({
     createdAt: true,

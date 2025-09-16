@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { MapPin, Instagram, Calendar, X } from "lucide-react";
+import { MapPin, Instagram, Calendar, X, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -161,6 +161,28 @@ export function EventDetailsModal({ isOpen, onClose, event }: EventDetailsModalP
                   <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                     {tag}
                   </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Extra Links */}
+          {event.extraLinks && event.extraLinks.length > 0 && (
+            <div>
+              <h4 className="text-md font-medium text-gray-900 mb-2">Additional Links</h4>
+              <div className="space-y-2">
+                {event.extraLinks.map((link, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4 text-gray-500" />
+                    <a 
+                      href={link.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      {link.name}
+                    </a>
+                  </div>
                 ))}
               </div>
             </div>
