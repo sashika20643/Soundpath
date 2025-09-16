@@ -7,6 +7,7 @@ import {
   FaChartBar,
   FaCog,
   FaCheckCircle,
+  FaEnvelope,
 } from "react-icons/fa";
 
 export function Sidebar() {
@@ -32,7 +33,13 @@ export function Sidebar() {
           icon: FaCheckCircle,
           label: "Event Approvals",
           href: "/dashboards/approvals",
-          active: location === "/admin/approvals",
+          active: location === "/dashboards/approvals",
+        },
+        {
+          icon: FaEnvelope,
+          label: "Contact Messages",
+          href: "/dashboards/contact-messages",
+          active: location === "/dashboards/contact-messages",
         },
       ],
     },
