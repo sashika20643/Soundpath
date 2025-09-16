@@ -17,6 +17,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, like, and, desc, sql } from "drizzle-orm";
+import { randomUUID } from "crypto";
 
 export interface IStorage {
   // User methods
@@ -158,71 +159,89 @@ export class DatabaseStorage implements IStorage {
     eventTypeIds?: string[];
     tags?: string[];
     search?: string;
-    approved?: any;
+    approved?: string;
   }): Promise<Event[]> {
-    let query = db.select().from(events);
+    try {
+      let eventsQuery = db.select().from(events);
 
-    const conditions = [];
-    console.log("Filtering for ", filters?.approved);
+      const conditions = [];
+      console.log("Filtering for ", filters?.approved);
 
-    const approvedRaw = filters?.approved;
-    if (filters?.approved == true || filters?.approved == undefined) {
-      console.log("Filtering for approved ones", typeof approvedRaw);
-      conditions.push(eq(events.approved, true));
-    }
-    if (filters?.approved == false) {
-      console.log("Filtering for approved ones", typeof approvedRaw);
-      conditions.push(eq(events.approved, false));
-    }
-    if (filters?.continent) {
-      conditions.push(eq(events.continent, filters.continent));
-    }
+      // Filter by approval status
+      if (filters?.approved !== undefined) {
+        console.log("Filtering for ", filters.approved);
+        console.log("Filtering for approved ones", typeof filters.approved);
 
-    if (filters?.country) {
-      conditions.push(eq(events.country, filters.country));
-    }
+        let approvedValue: boolean;
+        if (typeof filters.approved === 'string') {
+          approvedValue = filters.approved === 'true';
+        } else {
+          approvedValue = Boolean(filters.approved);
+        }
 
-    if (filters?.city) {
-      conditions.push(eq(events.city, filters.city));
-    }
+        eventsQuery = eventsQuery.where(eq(events.approved, approvedValue));
+      }
 
-    if (filters?.search) {
-      conditions.push(like(events.title, `%${filters.search}%`));
-    }
+      if (filters?.continent) {
+        conditions.push(eq(events.continent, filters.continent));
+      }
 
-    if (filters?.genreIds && filters.genreIds.length > 0) {
-      const genreIds = filters.genreIds.map(id => `'${id}'`).join(',');
-      conditions.push(sql`${events.genreIds} @> ARRAY[${sql.raw(genreIds)}]::text[]`);
-    }
+      if (filters?.country) {
+        conditions.push(eq(events.country, filters.country));
+      }
 
-    if (filters?.settingIds && filters.settingIds.length > 0) {
-      const settingIds = filters.settingIds.map(id => `'${id}'`).join(',');
-      conditions.push(sql`${events.settingIds} @> ARRAY[${sql.raw(settingIds)}]::text[]`);
-    }
+      if (filters?.city) {
+        conditions.push(eq(events.city, filters.city));
+      }
 
-    if (filters?.eventTypeIds && filters.eventTypeIds.length > 0) {
-      const eventTypeIds = filters.eventTypeIds.map(id => `'${id}'`).join(',');
-      conditions.push(sql`${events.eventTypeIds} @> ARRAY[${sql.raw(eventTypeIds)}]::text[]`);
-    }
+      if (filters?.search) {
+        conditions.push(like(events.title, `%${filters.search}%`));
+      }
 
-    if (filters?.tags && filters.tags.length > 0) {
-      // Use overlap operator (&&) to check if any of the filter tags exist in the event tags
-      // This handles case-insensitive matching by converting both sides to lowercase
-      const tagConditions = filters.tags.map(tag => 
-        sql`EXISTS (
-          SELECT 1 FROM unnest(${events.tags}) AS event_tag 
-          WHERE LOWER(event_tag) = LOWER(${tag})
-        )`
-      );
-      conditions.push(sql`(${sql.join(tagConditions, sql` OR `)})`);
-    }
+      if (filters?.genreIds && filters.genreIds.length > 0) {
+        const genreIds = filters.genreIds.map(id => `'${id}'`).join(',');
+        conditions.push(sql`${events.genreIds} @> ARRAY[${sql.raw(genreIds)}]::text[]`);
+      }
 
-    if (conditions.length > 0) {
-      query = query.where(and(...conditions)) as any;
-    }
+      if (filters?.settingIds && filters.settingIds.length > 0) {
+        const settingIds = filters.settingIds.map(id => `'${id}'`).join(',');
+        conditions.push(sql`${events.settingIds} @> ARRAY[${sql.raw(settingIds)}]::text[]`);
+      }
 
-    const result = await query.orderBy(desc(events.createdAt));
-    return result;
+      if (filters?.eventTypeIds && filters.eventTypeIds.length > 0) {
+        const eventTypeIds = filters.eventTypeIds.map(id => `'${id}'`).join(',');
+        conditions.push(sql`${events.eventTypeIds} @> ARRAY[${sql.raw(eventTypeIds)}]::text[]`);
+      }
+
+      if (filters?.tags && filters.tags.length > 0) {
+        // Use overlap operator (&&) to check if any of the filter tags exist in the event tags
+        // This handles case-insensitive matching by converting both sides to lowercase
+        const tagConditions = filters.tags.map(tag =>
+          sql`EXISTS (
+            SELECT 1 FROM unnest(${events.tags}) AS event_tag
+            WHERE LOWER(event_tag) = LOWER(${tag})
+          )`
+        );
+        conditions.push(sql`(${sql.join(tagConditions, sql` OR `)})`);
+      }
+
+      if (conditions.length > 0) {
+        eventsQuery = eventsQuery.where(and(...conditions)) as any;
+      }
+
+      const result = await eventsQuery.orderBy(desc(events.createdAt));
+
+      // Ensure extraLinks is parsed properly for each event
+      return result.map(event => ({
+        ...event,
+        extraLinks: event.extraLinks ?
+          (typeof event.extraLinks === 'string' ? JSON.parse(event.extraLinks) : event.extraLinks)
+          : []
+      }));
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      throw new Error(`Database error: ${error.message}`);
+    }
   }
 
   async getEvent(id: string): Promise<Event | undefined> {
@@ -230,20 +249,31 @@ export class DatabaseStorage implements IStorage {
     return event || undefined;
   }
 
-  async createEvent(
-    event: InsertEvent,
-    approved: boolean = false,
-  ): Promise<Event> {
-    const [newEvent] = await db
-      .insert(events)
-      .values({
-        ...event,
-        approved,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
-      .returning();
-    return newEvent;
+  async createEvent(eventData: InsertEvent, approved: boolean = false): Promise<Event> {
+    try {
+      const id = randomUUID();
+      const now = new Date().toISOString();
+
+      const [created] = await this.db
+        .insert(events)
+        .values({
+          ...eventData,
+          id,
+          approved,
+          extraLinks: eventData.extraLinks ? JSON.stringify(eventData.extraLinks) : null,
+          createdAt: now,
+          updatedAt: now,
+        })
+        .returning();
+
+      return {
+        ...created,
+        extraLinks: created.extraLinks ? JSON.parse(created.extraLinks) : []
+      };
+    } catch (error) {
+      console.error("Error creating event:", error);
+      throw new Error(`Database error: ${error.message}`);
+    }
   }
 
   async updateEvent(
