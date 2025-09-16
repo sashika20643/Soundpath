@@ -124,7 +124,7 @@ export const insertEventSchema = z.object({
   extraLinks: z.array(z.object({
     name: z.string().min(1, "Link name is required").max(100, "Link name too long"),
     url: z.string().url("Must be a valid URL")
-  })).default([]).max(5, "Maximum 5 extra links allowed"),
+  })).max(5, "Maximum 5 extra links allowed").default([]),
   fromDashboard: z.boolean().optional(),
 });
 
