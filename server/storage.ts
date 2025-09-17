@@ -49,6 +49,7 @@ export interface IStorage {
     tags?: string[];
     search?: string;
     approved?: string;
+    featured?: string;
   }): Promise<Event[]>;
   getEvent(id: string): Promise<Event | undefined>;
   createEvent(event: InsertEvent, approved?: boolean): Promise<Event>;
@@ -160,6 +161,7 @@ export class DatabaseStorage implements IStorage {
     tags?: string[];
     search?: string;
     approved?: string;
+    featured?: string;
   }): Promise<Event[]> {
     try {
       let eventsQuery = db.select().from(events);
@@ -170,16 +172,23 @@ export class DatabaseStorage implements IStorage {
       // Filter by approval status
       if (filters?.approved !== undefined) {
         console.log("Filtering for ", filters.approved);
-        console.log("Filtering for approved ones", typeof filters.approved);
-
-        let approvedValue: boolean;
-        if (typeof filters.approved === 'string') {
-          approvedValue = filters.approved === 'true';
-        } else {
-          approvedValue = Boolean(filters.approved);
+        console.log("Filtering for ", filters.approved);
+        if (filters.approved === 'true') {
+          console.log("Filtering for approved ones boolean");
+          eventsQuery = eventsQuery.where(eq(events.approved, true));
+        } else if (filters.approved === 'false') {
+          console.log("Filtering for approved ones boolean");
+          eventsQuery = eventsQuery.where(eq(events.approved, false));
         }
+      }
 
-        eventsQuery = eventsQuery.where(eq(events.approved, approvedValue));
+      if (filters?.featured !== undefined) {
+        console.log("Filtering for featured events: ", filters.featured);
+        if (filters.featured === 'true') {
+          eventsQuery = eventsQuery.where(eq(events.featured, true));
+        } else if (filters.featured === 'false') {
+          eventsQuery = eventsQuery.where(eq(events.featured, false));
+        }
       }
 
       if (filters?.continent) {

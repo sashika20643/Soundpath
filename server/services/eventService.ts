@@ -13,6 +13,7 @@ export class EventService {
     tags?: string[]; 
     search?: string; 
     approved?: string;
+    featured?: string;
   }): Promise<Event[]> {
     try {
       console.log("Fetching events with filters:",filters);

@@ -82,6 +82,11 @@ export default function Home() {
     isLoading,
     error,
   } = useEvents({ approved: true });
+  
+  const {
+    data: featuredEvents = [],
+    isLoading: featuredLoading,
+  } = useEvents({ approved: true, featured: true });
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
@@ -275,6 +280,140 @@ export default function Home() {
             <div className="w-px h-16 bg-white/40 animate-pulse"></div>
           </div>
         </section>
+
+        {/* Featured Events Section */}
+        {featuredEvents.length > 0 && (
+          <section
+            className="section-padding"
+            style={{ backgroundColor: "var(--color-cream)" }}
+          >
+            <div className="max-w-7xl mx-auto">
+              <div className="scroll-animate text-center mb-20">
+                <h2
+                  className="font-serif text-section-title mb-8"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
+                  Featured Destinations
+                </h2>
+                <p
+                  className="text-editorial max-w-2xl mx-auto"
+                  style={{ color: "var(--color-dark-gray)" }}
+                >
+                  Handpicked extraordinary musical experiences that define the essence
+                  of sonic exploration. These destinations represent the pinnacle of
+                  where music and place create magic.
+                </p>
+              </div>
+
+              {featuredLoading ? (
+                <div className="grid-magazine">
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="card-minimal rounded-lg overflow-hidden opacity-100"
+                      style={{ 
+                        transitionDelay: `${i * 0.1}s`,
+                        animation: 'none'
+                      }}
+                    >
+                      <div
+                        className="h-80 animate-pulse"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
+                      <div className="p-8">
+                        <div
+                          className="h-6 animate-pulse rounded mb-3"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div className="flex gap-4 mb-4">
+                          <div
+                            className="h-4 animate-pulse rounded w-24"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                          <div
+                            className="h-4 animate-pulse rounded w-32"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                        </div>
+                        <div className="flex gap-2 mb-4">
+                          <div
+                            className="h-6 animate-pulse rounded-full w-16"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                          <div
+                            className="h-6 animate-pulse rounded-full w-20"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                        </div>
+                        <div className="space-y-2 mb-6">
+                          <div
+                            className="h-4 animate-pulse rounded"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                          <div
+                            className="h-4 animate-pulse rounded w-4/5"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                          <div
+                            className="h-4 animate-pulse rounded w-3/5"
+                            style={{ backgroundColor: "var(--color-light-gray)" }}
+                          ></div>
+                        </div>
+                        <div
+                          className="h-10 animate-pulse rounded"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid-magazine">
+                  {featuredEvents.slice(0, 6).map((event, index) => (
+                    <div
+                      key={event.id}
+                      className="scroll-animate opacity-100 visible"
+                      style={{
+                        transitionDelay: `${index * 0.1}s`,
+                        animation: 'none',
+                        transform: 'none',
+                        transition: 'none'
+                      }}
+                    >
+                      <EventCard event={event} index={index} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* View All Featured Events Button */}
+              {featuredEvents.length > 6 && (
+                <div className="scroll-animate scroll-animate-delay-2 text-center mt-16">
+                  <Link href="/events?featured=true">
+                    <button
+                      className="px-8 py-3 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-lg hover:scale-105"
+                      style={{
+                        borderColor: "var(--color-light-gray)",
+                        color: "var(--color-charcoal)",
+                        backgroundColor: "transparent",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                        e.currentTarget.style.borderColor = "var(--color-mid-gray)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.borderColor = "var(--color-light-gray)";
+                      }}
+                    >
+                      View All Featured Events
+                    </button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* World Map Section - Editorial Style */}
         <section

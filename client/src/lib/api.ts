@@ -24,6 +24,7 @@ export interface EventsFilters {
   tags?: string[];
   search?: string;
   approved?: boolean;
+  featured?: boolean;
 }
 
 export const categoryApi = {
@@ -77,12 +78,13 @@ export const eventApi = {
     if (filters?.continent) params.append('continent', filters.continent);
     if (filters?.country) params.append('country', filters.country);
     if (filters?.city) params.append('city', filters.city);
-    if (filters?.genreIds?.length) params.append('genreIds', filters.genreIds.join(','));
-    if (filters?.settingIds?.length) params.append('settingIds', filters.settingIds.join(','));
-    if (filters?.eventTypeIds?.length) params.append('eventTypeIds', filters.eventTypeIds.join(','));
-    if (filters?.tags?.length) params.append('tags', filters.tags.join(','));
+    if (filters?.genreIds) filters.genreIds.forEach(id => params.append('genreIds', id));
+    if (filters?.settingIds) filters.settingIds.forEach(id => params.append('settingIds', id));
+    if (filters?.eventTypeIds) filters.eventTypeIds.forEach(id => params.append('eventTypeIds', id));
+    if (filters?.tags) filters.tags.forEach(tag => params.append('tags', tag));
     if (filters?.search) params.append('search', filters.search);
     if (filters?.approved !== undefined) params.append('approved', filters.approved.toString());
+    if (filters?.featured !== undefined) params.append('featured', filters.featured.toString());
 
     const url = `/api/events${params.toString() ? `?${params.toString()}` : ''}`;
     const response = await fetch(url, { credentials: 'include' });

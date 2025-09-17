@@ -19,6 +19,7 @@ export class EventController {
         tags,
         search,
         approved,
+        featured,
       } = req.query as {
         continent?: string;
         country?: string;
@@ -29,6 +30,7 @@ export class EventController {
         tags?: string[];
         search?: string;
         approved?: string;
+        featured?: string;
       };
 
       const events = await eventService.getAllEvents({
@@ -41,6 +43,7 @@ export class EventController {
         tags,
         search,
         approved,
+        featured,
       });
 
       res.json(
