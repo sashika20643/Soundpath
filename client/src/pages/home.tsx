@@ -367,7 +367,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              ) : (
+              ) : featuredEvents.length > 0 ? (
                 <div className="grid-magazine">
                   {featuredEvents.slice(0, 6).map((event, index) => (
                     <div
@@ -383,6 +383,30 @@ export default function Home() {
                       <EventCard event={event} index={index} />
                     </div>
                   ))}
+                </div>
+              ) : (
+                <div className="text-center py-20">
+                  <div
+                    className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
+                    style={{
+                      borderColor: "var(--color-light-gray)",
+                      color: "var(--color-mid-gray)",
+                    }}
+                  >
+                    <Star className="w-10 h-10" />
+                  </div>
+                  <h3
+                    className="font-serif text-2xl mb-4"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
+                    No Featured Events Yet
+                  </h3>
+                  <p
+                    className="text-editorial"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Featured events will appear here once they are marked as featured.
+                  </p>
                 </div>
               )}
 
