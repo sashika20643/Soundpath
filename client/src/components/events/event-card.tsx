@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Calendar, MapPin, Music } from "lucide-react";
 import type { Event } from "@shared/schema";
+import musicDefaultImage from "@/assets/Musicdefault.jpg";
 
 interface EventCardProps {
   event: Event;
@@ -20,44 +21,17 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
       style={{ transitionDelay: `${index * 0.1}s` }}
     >
       <div className="relative h-80 overflow-hidden">
-        {event.heroImage ? (
-          <img
-            src={event.heroImage}
-            alt={event.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const parent = target.parentElement;
-              if (parent) {
-                parent.innerHTML = `
-                  <div class="w-full h-full flex items-center justify-center" style="background-color: var(--color-soft-beige)">
-                    <div class="w-16 h-16 rounded-full border-2 flex items-center justify-center" style="border-color: var(--color-mid-gray); color: var(--color-mid-gray);">
-                      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-2.895 2 2 2s2-.895 2-2M9 19c0-1.105.895-2 2-2s2 .895 2 2m0-14c0 1.105-2.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                `;
-              }
-            }}
-          />
-        ) : (
-          <div
-            className="w-full h-full flex items-center justify-center"
-            style={{ backgroundColor: "var(--color-soft-beige)" }}
-          >
-            <div
-              className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
-              style={{
-                borderColor: "var(--color-mid-gray)",
-                color: "var(--color-mid-gray)",
-              }}
-            >
-              <Music className="w-8 h-8" />
-            </div>
-          </div>
-        )}
+        <img
+          src={event.heroImage || musicDefaultImage}
+          alt={event.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== musicDefaultImage) {
+              target.src = musicDefaultImage;
+            }
+          }}
+        />
         {showNewBadge && (
           <div className="absolute top-6 right-6">
             <span
