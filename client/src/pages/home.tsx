@@ -83,10 +83,9 @@ export default function Home() {
     error,
   } = useEvents({ approved: true });
   
-  const {
-    data: featuredEvents = [],
-    isLoading: featuredLoading,
-  } = useEvents({ approved: true, featured: true });
+  // Filter featured events from allEvents in frontend
+  const featuredEvents = allEvents.filter(event => event.featured === true);
+  const featuredLoading = isLoading;
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
