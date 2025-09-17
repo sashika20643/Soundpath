@@ -32,9 +32,10 @@ export function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
+
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
-                <img src={logo} alt="Soundpath Logo" className="h-10 w-auto" />{" "}
+                <img src={logo} alt="Soundpath Logo" className="h-10 w-auto" />
                 Sonicpaths
               </div>
             </Link>
@@ -180,11 +181,7 @@ export function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="flex justify-center mb-8">
-              <img
-                src={logo}
-                alt="Soundpath Logo"
-                className="h-16 w-auto brightness-0 invert"
-              />
+              <img src={logo} alt="Soundpath Logo" className="h-20 w-auto" />
             </div>
             <p
               className="text-editorial max-w-lg mx-auto mb-12"
