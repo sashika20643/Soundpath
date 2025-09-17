@@ -53,7 +53,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
   const { data: settings = [] } = useCategories({ type: "setting" });
   const { data: eventTypes = [] } = useCategories({ type: "eventType" });
 
-  
+
 
   const createEventMutation = useCreateEvent();
 
@@ -67,7 +67,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       continent: "",
       country: "",
       city: "",
-      locationName: "",
+      locationName: undefined,
       latitude: undefined,
       longitude: undefined,
       instagramLink: "",
@@ -75,6 +75,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
       settingIds: [],
       eventTypeIds: [],
       tags: [],
+      featured: false,
     },
   });
 
@@ -225,12 +226,12 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                   form.setValue("country", "");
                   form.setValue("city", "");
                   setSelectedCountryCode("");
-                  
+
                   // Load countries for this continent
                   const countries = getCountriesForContinent(value);
                   setAvailableCountries(countries);
                   setAvailableCities([]);
-                  
+
                   // Auto-generate coordinates for continent center
                   const continentCoords = getContinentCoordinates(value);
                   if (continentCoords) {
@@ -257,7 +258,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                 onValueChange={(value) => {
                   form.setValue("country", value);
                   form.setValue("city", "");
-                  
+
                   // Find country code and load cities
                   const country = availableCountries.find(c => c.name === value);
                   if (country) {
@@ -265,7 +266,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                     const cities = getCitiesForCountry(country.isoCode);
                     setAvailableCities(cities);
                   }
-                  
+
                   // Auto-generate coordinates for country center
                   const countryCoords = getCountryCoordinates(value);
                   if (countryCoords) {
@@ -307,7 +308,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
               />
             </div>
           </div>
-          
+
           {/* Display selected location coordinates */}
           {form.watch("latitude") && form.watch("longitude") && (
             <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
@@ -414,6 +415,19 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
             </div>
           </div>
 
+          {/* Featured Event */}
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="featured"
+              checked={form.watch("featured")}
+              onCheckedChange={(checked) => form.setValue("featured", !!checked)}
+            />
+            <Label htmlFor="featured" className="text-base font-medium">
+              Featured Event
+            </Label>
+            <span className="text-sm text-gray-500">(Will be highlighted prominently on the site)</span>
+          </div>
+
           <DialogFooter className="flex flex-col gap-4">
             {/* Form validation errors */}
             {Object.keys(form.formState.errors).length > 0 && (
@@ -430,7 +444,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
                 </ul>
               </div>
             )}
-            
+
             <div className="flex gap-3 justify-end">
               <Button type="button" variant="outline" onClick={handleClose}>
                 Cancel

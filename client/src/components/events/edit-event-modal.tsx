@@ -71,6 +71,7 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
       settingIds: [],
       eventTypeIds: [],
       tags: [],
+      featured: false,
     },
   });
 
@@ -86,10 +87,11 @@ export function EditEventModal({ isOpen, onClose, event }: EditEventModalProps) 
         country: event.country || "",
         city: event.city || "",
         instagramLink: event.instagramLink || "",
+        featured: event.featured || false,
       };
-      
+
       console.log('🔄 Resetting form with event data:', formData);
-      
+
       form.reset(formData, { keepDirty: false, keepTouched: false });
       setSelectedGenres(event.genreIds || []);
       setSelectedSettings(event.settingIds || []);
