@@ -5,58 +5,23 @@ import { useEvents } from "@/hooks/use-events";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Globe } from "lucide-react";
+import {
+  getContinents,
+  getCountriesForContinent,
+  getCitiesForCountry,
+  searchCities,
+  getCountryByName,
+} from "@/lib/locations";
+import {
+  getContinentCoordinates,
+  getCountryCoordinates,
+  getCityCoordinates,
+} from "@/lib/coordinates";
 
-const continents = [
-  "North America",
-  "South America",
-  "Europe",
-  "Asia",
-  "Africa",
-  "Oceania",
-];
-
-const countries = {
-  "North America": ["United States", "Canada", "Mexico"],
-  "South America": ["Brazil", "Argentina", "Chile", "Colombia", "Peru"],
-  Europe: [
-    "United Kingdom",
-    "France",
-    "Germany",
-    "Italy",
-    "Spain",
-    "Netherlands",
-    "Switzerland",
-  ],
-  Asia: ["Japan", "China", "India", "South Korea", "Thailand", "Singapore"],
-  Africa: ["South Africa", "Egypt", "Nigeria", "Kenya", "Morocco"],
-  Oceania: ["Australia", "New Zealand", "Fiji"],
-};
-
-const cities = {
-  "United States": [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "San Francisco",
-    "Miami",
-  ],
-  "United Kingdom": ["London", "Manchester", "Edinburgh", "Birmingham"],
-  France: ["Paris", "Lyon", "Marseille", "Nice"],
-  Germany: ["Berlin", "Munich", "Hamburg", "Frankfurt"],
-  Japan: ["Tokyo", "Osaka", "Kyoto", "Yokohama"],
-  Brazil: ["São Paulo", "Rio de Janeiro", "Salvador", "Brasília"],
-  Australia: ["Sydney", "Melbourne", "Brisbane", "Perth"],
-  // Add more cities as needed
-};
+const continents = getContinents();
 
 export default function MapPage() {
   usePageMetadata("map");
@@ -64,6 +29,17 @@ export default function MapPage() {
   const [selectedContinent, setSelectedContinent] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
+  const [availableCountries, setAvailableCountries] = useState<
+    Array<{ isoCode: string; name: string }>
+  >([]);
+  const [availableCities, setAvailableCities] = useState<
+    Array<{ name: string; latitude?: string; longitude?: string }>
+  >([]);
+  const [showContinentSuggestions, setShowContinentSuggestions] =
+    useState(false);
+  const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
 
   const scrollRef = useScrollAnimation();
 
@@ -87,31 +63,40 @@ export default function MapPage() {
     [allEvents],
   );
 
-  // Get available countries based on selected continent
-  const availableCountries = selectedContinent
-    ? countries[selectedContinent as keyof typeof countries] || []
-    : [];
-
-  // Get available cities based on selected country
-  const availableCities = selectedCountry
-    ? cities[selectedCountry as keyof typeof cities] || []
-    : [];
-
-  const handleContinentChange = (value: string) => {
-    const continent = value === "all" ? "" : value;
+  const handleContinentChange = (continent: string) => {
     setSelectedContinent(continent);
     setSelectedCountry("");
     setSelectedCity("");
+    setSelectedCountryCode("");
+    setAvailableCountries([]);
+    setAvailableCities([]);
+
+    if (continent) {
+      // Load countries for this continent
+      const countries = getCountriesForContinent(continent);
+      setAvailableCountries(countries);
+    }
   };
 
-  const handleCountryChange = (value: string) => {
-    const country = value === "all" ? "" : value;
+  const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
     setSelectedCity("");
+    setSelectedCountryCode("");
+    setAvailableCities([]);
+
+    if (country) {
+      // Find country code for city autocomplete
+      const countryData = availableCountries.find((c) => c.name === country);
+      if (countryData) {
+        setSelectedCountryCode(countryData.isoCode);
+        // Load cities for this country
+        const cities = getCitiesForCountry(countryData.isoCode);
+        setAvailableCities(cities);
+      }
+    }
   };
 
-  const handleCityChange = (value: string) => {
-    const city = value === "all" ? "" : value;
+  const handleCityChange = (city: string) => {
     setSelectedCity(city);
   };
 
@@ -174,22 +159,71 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       Continent
                     </Label>
-                    <Select
-                      value={selectedContinent || "all"}
-                      onValueChange={handleContinentChange}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="All Continents" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Continents</SelectItem>
-                        {continents.map((continent) => (
-                          <SelectItem key={continent} value={continent}>
-                            {continent}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="relative">
+                      <Input
+                        value={selectedContinent}
+                        placeholder="e.g. North America, Europe, Asia..."
+                        className="py-3 px-4 text-base border-2 rounded-lg"
+                        style={{
+                          borderColor: "var(--color-light-gray)",
+                          backgroundColor: "var(--color-warm-white)",
+                          color: "var(--color-charcoal)",
+                        }}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setSelectedContinent(value);
+                          setShowContinentSuggestions(true);
+                          // Reset country and city when continent changes
+                          setSelectedCountry("");
+                          setAvailableCountries([]);
+                          setSelectedCity("");
+                          setAvailableCities([]);
+                          setSelectedCountryCode("");
+                        }}
+                        onFocus={() => setShowContinentSuggestions(true)}
+                        onBlur={() =>
+                          setTimeout(
+                            () => setShowContinentSuggestions(false),
+                            200,
+                          )
+                        }
+                      />
+                      {showContinentSuggestions &&
+                        getContinents().length > 0 &&
+                        selectedContinent && (
+                          <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                            {getContinents()
+                              .filter((continent) =>
+                                continent
+                                  .toLowerCase()
+                                  .includes(selectedContinent.toLowerCase()),
+                              )
+                              .slice(0, 5)
+                              .map((continent) => (
+                                <button
+                                  key={continent}
+                                  type="button"
+                                  className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                  onClick={() => {
+                                    setSelectedContinent(continent);
+                                    setShowContinentSuggestions(false);
+                                    // Load countries for the selected continent
+                                    const countries =
+                                      getCountriesForContinent(continent);
+                                    setAvailableCountries(countries);
+                                    // Reset country and city when continent changes
+                                    setSelectedCountry("");
+                                    setAvailableCities([]);
+                                    setSelectedCity("");
+                                    setSelectedCountryCode("");
+                                  }}
+                                >
+                                  {continent}
+                                </button>
+                              ))}
+                          </div>
+                        )}
+                    </div>
                   </div>
 
                   {/* Country Filter */}
@@ -198,29 +232,80 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       Country
                     </Label>
-                    <Select
-                      value={selectedCountry || "all"}
-                      onValueChange={handleCountryChange}
-                      disabled={!selectedContinent}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={
-                            selectedContinent
-                              ? "All Countries"
-                              : "Select continent first"
+                    <div className="relative">
+                      <Input
+                        value={selectedCountry}
+                        placeholder="e.g. United States, France, Japan..."
+                        className="py-3 px-4 text-base border-2 rounded-lg"
+                        style={{
+                          borderColor: "var(--color-light-gray)",
+                          backgroundColor: "var(--color-warm-white)",
+                          color: "var(--color-charcoal)",
+                        }}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setSelectedCountry(value);
+                          setShowCountrySuggestions(true);
+
+                          // Find matching country and load cities
+                          const matchingCountry = availableCountries.find(
+                            (country) =>
+                              country.name.toLowerCase() ===
+                              value.toLowerCase(),
+                          );
+                          if (matchingCountry) {
+                            setSelectedCountryCode(matchingCountry.isoCode);
+                            const cities = getCitiesForCountry(
+                              matchingCountry.isoCode,
+                            );
+                            setAvailableCities(cities);
+                            setSelectedCity(""); // Reset city when country changes
                           }
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Countries</SelectItem>
-                        {availableCountries.map((country) => (
-                          <SelectItem key={country} value={country}>
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                        }}
+                        onFocus={() => setShowCountrySuggestions(true)}
+                        onBlur={() =>
+                          setTimeout(
+                            () => setShowCountrySuggestions(false),
+                            200,
+                          )
+                        }
+                        disabled={!selectedContinent}
+                      />
+                      {showCountrySuggestions &&
+                        availableCountries.length > 0 &&
+                        selectedCountry && (
+                          <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                            {availableCountries
+                              .filter((country) =>
+                                country.name
+                                  .toLowerCase()
+                                  .includes(selectedCountry.toLowerCase()),
+                              )
+                              .slice(0, 10)
+                              .map((country) => (
+                                <button
+                                  key={country.isoCode}
+                                  type="button"
+                                  className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                  onClick={() => {
+                                    setSelectedCountry(country.name);
+                                    setSelectedCountryCode(country.isoCode);
+                                    setShowCountrySuggestions(false);
+
+                                    // Load cities for this country
+                                    const cities = getCitiesForCountry(
+                                      country.isoCode,
+                                    );
+                                    setAvailableCities(cities);
+                                    setSelectedCity(""); // Reset city
+                                  }}
+                                >
+                                  {country.name}
+                                </button>
+                              ))}
+                          </div>
+                        )}
+                    </div>
                   </div>
 
                   {/* City Filter */}
@@ -229,69 +314,107 @@ export default function MapPage() {
                       <MapPin className="inline w-4 h-4 mr-1" />
                       City
                     </Label>
-                    <Select
-                      value={selectedCity || "all"}
-                      onValueChange={handleCityChange}
-                      disabled={!selectedCountry}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={
-                            selectedCountry
-                              ? "All Cities"
-                              : "Select country first"
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Cities</SelectItem>
-                        {availableCities.map((city) => (
-                          <SelectItem key={city} value={city}>
-                            {city}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="relative">
+                      <Input
+                        value={selectedCity}
+                        placeholder="e.g. New York, Paris, Tokyo..."
+                        className="py-3 px-4 text-base border-2 rounded-lg"
+                        style={{
+                          borderColor: "var(--color-light-gray)",
+                          backgroundColor: "var(--color-warm-white)",
+                          color: "var(--color-charcoal)",
+                        }}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setSelectedCity(value);
+                          setShowCitySuggestions(true);
+                        }}
+                        onFocus={() => setShowCitySuggestions(true)}
+                        onBlur={() =>
+                          setTimeout(() => setShowCitySuggestions(false), 200)
+                        }
+                        disabled={!selectedCountryCode}
+                      />
+                      {showCitySuggestions &&
+                        selectedCountryCode &&
+                        selectedCity && (
+                          <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                            {searchCities(
+                              selectedCountryCode,
+                              selectedCity,
+                              undefined,
+                              10,
+                            ).map((city) => (
+                              <button
+                                key={city.name}
+                                type="button"
+                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                onClick={() => {
+                                  setSelectedCity(city.name);
+                                  setShowCitySuggestions(false);
+                                }}
+                              >
+                                {city.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Active Filters Display */}
                 {(selectedContinent || selectedCountry || selectedCity) && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
-                    <div className="flex flex-wrap gap-2">
-                      {selectedContinent && (
-                        <span
-                          className="px-3 py-1 text-xs rounded-full"
-                          style={{
-                            backgroundColor: "var(--color-cream)",
-                            color: "var(--color-charcoal)",
-                          }}
-                        >
-                          {selectedContinent}
-                        </span>
-                      )}
-                      {selectedCountry && (
-                        <span
-                          className="px-3 py-1 text-xs rounded-full"
-                          style={{
-                            backgroundColor: "var(--color-cream)",
-                            color: "var(--color-charcoal)",
-                          }}
-                        >
-                          {selectedCountry}
-                        </span>
-                      )}
-                      {selectedCity && (
-                        <span
-                          className="px-3 py-1 text-xs rounded-full"
-                          style={{
-                            backgroundColor: "var(--color-cream)",
-                            color: "var(--color-charcoal)",
-                          }}
-                        >
-                          {selectedCity}
-                        </span>
-                      )}
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap gap-2">
+                        {selectedContinent && (
+                          <span
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-cream)",
+                              color: "var(--color-charcoal)",
+                            }}
+                          >
+                            {selectedContinent}
+                          </span>
+                        )}
+                        {selectedCountry && (
+                          <span
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-cream)",
+                              color: "var(--color-charcoal)",
+                            }}
+                          >
+                            {selectedCountry}
+                          </span>
+                        )}
+                        {selectedCity && (
+                          <span
+                            className="px-3 py-1 text-xs rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-cream)",
+                              color: "var(--color-charcoal)",
+                            }}
+                          >
+                            {selectedCity}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => {
+                          setSelectedContinent("");
+                          setSelectedCountry("");
+                          setSelectedCity("");
+                          setSelectedCountryCode("");
+                          setAvailableCountries([]);
+                          setAvailableCities([]);
+                        }}
+                        className="text-xs text-gray-500 hover:text-gray-700 underline"
+                      >
+                        Clear all filters
+                      </button>
                     </div>
                   </div>
                 )}
