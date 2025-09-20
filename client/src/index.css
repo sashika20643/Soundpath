@@ -38,7 +38,12 @@
     font-weight: 400;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-serif);
     font-weight: 500;
     line-height: 1.2;
@@ -75,6 +80,17 @@
 
   .section-padding-large {
     padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  /* Mobile-specific padding adjustments */
+  @media (max-width: 768px) {
+    .section-padding {
+      padding: var(--spacing-lg) var(--spacing-sm);
+    }
+
+    .section-padding-large {
+      padding: var(--spacing-xl) var(--spacing-sm);
+    }
   }
 }
 
@@ -137,6 +153,21 @@
   align-items: start;
 }
 
+/* Mobile grid adjustments */
+@media (max-width: 768px) {
+  .grid-magazine {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    margin: 0;
+    padding: 0;
+  }
+
+  .grid-magazine>* {
+    margin: 0;
+    padding: 0;
+  }
+}
+
 /* Full-bleed image containers */
 .image-full-bleed {
   width: 100vw;
@@ -193,27 +224,36 @@
 
 /* Dashboard Overview Animations */
 @keyframes gradient-shift {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
+
   50% {
     box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
   }
@@ -251,9 +291,12 @@
 
 /* Gradient text animations */
 @keyframes gradient-text {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -378,7 +421,12 @@ body {
     font-family: 'Inter', sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-semibold;
   }
 }
