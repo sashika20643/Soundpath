@@ -43,69 +43,81 @@ export default function ApprovalDashboard() {
     event: Event;
     showActions?: boolean;
   }) => (
-    <Card className="hover:shadow-lg transition-all duration-200">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div className="space-y-2">
-            <CardTitle className="text-xl">{event.title}</CardTitle>
-            <CardDescription className="flex items-center gap-4 text-sm">
+    <Card className="hover:shadow-lg transition-all duration-200 flex flex-col h-full">
+      <CardHeader className="pb-3">
+        <div className="flex justify-between items-start gap-2">
+          <div className="space-y-2 flex-1 min-w-0">
+            <CardTitle className="text-base sm:text-lg lg:text-xl line-clamp-2">
+              {event.title}
+            </CardTitle>
+            <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm">
               <span className="flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
-                {format(new Date(event.date), "MMM dd, yyyy")}
+                <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="truncate">
+                  {format(new Date(event.date), "MMM dd, yyyy")}
+                </span>
               </span>
               <span className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                {event.city}, {event.country}
+                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="truncate">
+                  {event.city}, {event.country}
+                </span>
               </span>
             </CardDescription>
           </div>
-          <Badge variant={event.approved ? "default" : "secondary"}>
+          <Badge 
+            variant={event.approved ? "default" : "secondary"}
+            className="flex-shrink-0 text-xs"
+          >
             {event.approved ? "Approved" : "Pending"}
           </Badge>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 flex-1 flex flex-col">
         {event.heroImage && (
           <img
             src={event.heroImage}
             alt={event.title}
-            className="w-full h-48 object-cover rounded-lg"
+            className="w-full h-32 sm:h-40 lg:h-48 object-cover rounded-lg"
           />
         )}
 
-        <p className="text-sm text-muted-foreground line-clamp-3">
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 flex-1">
           {event.shortDescription}
         </p>
 
-        <div className="flex items-center justify-between pt-4">
-          <Link href={`/event/${event.id}`}>
-            <Button variant="outline" size="sm">
-              <Eye className="w-4 h-4 mr-2" />
+        {/* Actions section - Always at bottom */}
+        <div className="flex flex-col sm:flex-row gap-2 pt-4 mt-auto">
+          <Link href={`/event/${event.id}`} className="w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs">
+              <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
               View Details
             </Button>
           </Link>
 
           {showActions && !event.approved && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => handleApprove(event.id, false)}
                 disabled={approveEventMutation.isPending}
-                className="text-red-600 border-red-200 hover:bg-red-50"
+                className="flex-1 sm:flex-initial text-red-600 border-red-200 hover:bg-red-50 text-xs"
               >
-                <XCircle className="w-4 h-4 mr-1" />
-                Reject
+                <XCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Reject</span>
+                <span className="sm:hidden">✕</span>
               </Button>
               <Button
                 size="sm"
                 onClick={() => handleApprove(event.id, true)}
                 disabled={approveEventMutation.isPending}
-                className="bg-green-600 hover:bg-green-700"
+                className="flex-1 sm:flex-initial bg-green-600 hover:bg-green-700 text-xs"
               >
-                <CheckCircle className="w-4 h-4 mr-1" />
-                Approve
+                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Approve</span>
+                <span className="sm:hidden">✓</span>
               </Button>
             </div>
           )}
@@ -143,7 +155,7 @@ export default function ApprovalDashboard() {
 
             <TabsContent value="pending" className="mt-6">
               {loadingPending ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {[...Array(6)].map((_, i) => (
                     <Card key={i} className="animate-pulse">
                       <CardHeader>
@@ -151,7 +163,7 @@ export default function ApprovalDashboard() {
                         <div className="h-4 bg-muted rounded w-1/2"></div>
                       </CardHeader>
                       <CardContent>
-                        <div className="h-48 bg-muted rounded mb-4"></div>
+                        <div className="h-32 sm:h-48 bg-muted rounded mb-4"></div>
                         <div className="space-y-2">
                           <div className="h-4 bg-muted rounded"></div>
                           <div className="h-4 bg-muted rounded w-2/3"></div>
@@ -171,7 +183,7 @@ export default function ApprovalDashboard() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {pendingEvents.map((event) => (
                     <EventCard key={event.id} event={event} />
                   ))}
@@ -181,7 +193,7 @@ export default function ApprovalDashboard() {
 
             <TabsContent value="approved" className="mt-6">
               {loadingApproved ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {[...Array(6)].map((_, i) => (
                     <Card key={i} className="animate-pulse">
                       <CardHeader>
@@ -189,7 +201,7 @@ export default function ApprovalDashboard() {
                         <div className="h-4 bg-muted rounded w-1/2"></div>
                       </CardHeader>
                       <CardContent>
-                        <div className="h-48 bg-muted rounded mb-4"></div>
+                        <div className="h-32 sm:h-48 bg-muted rounded mb-4"></div>
                         <div className="space-y-2">
                           <div className="h-4 bg-muted rounded"></div>
                           <div className="h-4 bg-muted rounded w-2/3"></div>
@@ -211,7 +223,7 @@ export default function ApprovalDashboard() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {approvedEvents.map((event) => (
                     <EventCard
                       key={event.id}

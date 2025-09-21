@@ -126,25 +126,25 @@ export default function DashboardEvents() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {events.map((event) => {
                   const eventCategories = getEventCategories(event);
 
                   return (
                     <Card
                       key={event.id}
-                      className="group hover:shadow-md transition-shadow"
+                      className="group hover:shadow-md transition-shadow flex flex-col h-full"
                     >
-                      <CardHeader>
+                      <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <CardTitle className="text-lg line-clamp-2 group-hover:text-blue-600 transition-colors">
+                          <div className="flex-1 min-w-0">
+                            <CardTitle className="text-base sm:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors">
                               {event.title}
                             </CardTitle>
-                            <div className="flex items-center gap-4 text-sm text-gray-500 mt-2">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-gray-500 mt-2">
                               <div className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" />
-                                <span>
+                                <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                                <span className="truncate">
                                   {new Date(event.date).toLocaleDateString(
                                     "en-US",
                                     {
@@ -156,16 +156,16 @@ export default function DashboardEvents() {
                                 </span>
                               </div>
                               <div className="flex items-center gap-1">
-                                <MapPin className="w-4 h-4" />
-                                <span>{formatLocation(event)}</span>
+                                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                                <span className="truncate">{formatLocation(event)}</span>
                               </div>
                             </div>
                           </div>
                         </div>
                       </CardHeader>
 
-                      <CardContent>
-                        <div className="space-y-4">
+                      <CardContent className="flex-1 flex flex-col justify-between">
+                        <div className="space-y-3 flex-1">
                           {eventCategories.length > 0 && (
                             <div className="flex flex-wrap gap-1">
                               {eventCategories.slice(0, 3).map((category) => (
@@ -185,36 +185,40 @@ export default function DashboardEvents() {
                             </div>
                           )}
 
-                          <p className="text-sm text-gray-600 line-clamp-3">
+                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-3">
                             {event.shortDescription}
                           </p>
+                        </div>
 
-                          <div className="flex gap-2 pt-2">
+                        {/* Button Actions - Always at bottom */}
+                        <div className="flex flex-col sm:flex-row gap-2 pt-4 mt-auto">
+                          <div className="flex gap-2">
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleView(event)}
-                              className="flex-1"
+                              className="flex-1 sm:flex-initial text-xs"
                             >
-                              <Eye className="w-4 h-4 mr-1" />
-                              View
+                              <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                              <span className="hidden sm:inline">View</span>
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleEdit(event)}
-                              className="flex-1"
+                              className="flex-1 sm:flex-initial text-xs"
                             >
-                              <Edit className="w-4 h-4 mr-1" />
-                              Edit
+                              <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                              <span className="hidden sm:inline">Edit</span>
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleDelete(event)}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="flex-1 sm:flex-initial text-red-600 hover:text-red-700 hover:bg-red-50 text-xs"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                              <span className="hidden sm:inline ml-1">Delete</span>
                             </Button>
                           </div>
                         </div>
