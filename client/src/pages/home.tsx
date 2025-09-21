@@ -769,7 +769,9 @@ export default function Home() {
                                 key={continent}
                                 type="button"
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                                onClick={() => {
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
                                   form.setValue("continent", continent);
                                   setSelectedContinent(continent);
                                   setShowContinentSuggestions(false);
@@ -824,17 +826,35 @@ export default function Home() {
                         onChange={(e) => {
                           const value = e.target.value;
                           form.setValue("country", value);
-                          setShowCountrySuggestions(true);
+                          setShowCountrySuggestions(value.length > 0);
 
-                          // Find matching country and load cities
-                          const matchingCountry = availableCountries.find(country => 
+                          // Find matching country (both exact and partial matches for autocomplete)
+                          const exactMatch = availableCountries.find(country => 
                             country.name.toLowerCase() === value.toLowerCase()
                           );
+                          const partialMatch = availableCountries.find(country => 
+                            country.name.toLowerCase().includes(value.toLowerCase()) && value.length >= 2
+                          );
+                          
+                          const matchingCountry = exactMatch || partialMatch;
+                          
                           if (matchingCountry) {
                             setSelectedCountryCode(matchingCountry.isoCode);
                             const cities = getCitiesForCountry(matchingCountry.isoCode);
                             setAvailableCities(cities);
-                            form.setValue("city", ""); // Reset city when country changes
+                            if (exactMatch) {
+                              form.setValue("city", ""); // Only reset city on exact match
+                            }
+                          } else if (value.length >= 3) {
+                            // Try to find country by name with more liberal matching
+                            const liberalMatch = availableCountries.find(country => 
+                              country.name.toLowerCase().includes(value.toLowerCase())
+                            );
+                            if (liberalMatch) {
+                              setSelectedCountryCode(liberalMatch.isoCode);
+                              const cities = getCitiesForCountry(liberalMatch.isoCode);
+                              setAvailableCities(cities);
+                            }
                           }
 
                           // Auto-generate coordinates for country center
@@ -845,7 +865,7 @@ export default function Home() {
                           }
                         }}
                         onFocus={() => setShowCountrySuggestions(true)}
-                        onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 200)}
+                        onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 150)}
                         disabled={!selectedContinent}
                       />
                       {showCountrySuggestions && availableCountries.length > 0 && form.watch("country") && (
@@ -860,7 +880,9 @@ export default function Home() {
                                 key={country.isoCode}
                                 type="button"
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                                onClick={() => {
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
                                   form.setValue("country", country.name);
                                   setSelectedCountryCode(country.isoCode);
                                   setShowCountrySuggestions(false);
@@ -933,8 +955,8 @@ export default function Home() {
                           }
                         }}
                         onFocus={() => setShowCitySuggestions(true)}
-                        onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
-                        disabled={!selectedCountryCode}
+                        onBlur={() => setTimeout(() => setShowCitySuggestions(false), 150)}
+                        disabled={!selectedCountryCode && !form.watch("country")}
                       />
                       {showCitySuggestions && selectedCountryCode && form.watch("city") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
@@ -944,7 +966,9 @@ export default function Home() {
                                 key={city.name}
                                 type="button"
                                 className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                                onClick={() => {
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
                                   form.setValue("city", city.name);
                                   setShowCitySuggestions(false);
 

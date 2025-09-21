@@ -34,20 +34,24 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
 
   const genreOptions = categories
     .filter(cat => cat.type === "genre")
-    .map(cat => ({ value: cat.id, label: cat.name }));
+    .map(cat => ({ value: cat.id, label: cat.name }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const settingOptions = categories
     .filter(cat => cat.type === "setting")
-    .map(cat => ({ value: cat.id, label: cat.name }));
+    .map(cat => ({ value: cat.id, label: cat.name }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const eventTypeOptions = categories
     .filter(cat => cat.type === "eventType")
-    .map(cat => ({ value: cat.id, label: cat.name }));
+    .map(cat => ({ value: cat.id, label: cat.name }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
-  // Get unique countries from cities data
+  // Get unique countries from cities data and sort alphabetically
   const countries = Object.keys(cities).flatMap(continent => 
     Object.keys(cities[continent as keyof typeof cities])
-  ).filter((country, index, array) => array.indexOf(country) === index);
+  ).filter((country, index, array) => array.indexOf(country) === index)
+   .sort();
 
   const availableCities = filters.country 
     ? Object.keys(cities).flatMap(continent => {
@@ -58,14 +62,15 @@ export function EventSearchForm({ filters, onFiltersChange, onSearch }: EventSea
         }
         return [];
       }).filter((city, index, array) => array.indexOf(city) === index)
+       .sort()
     : [];
 
-  // Available tags for pill-style selection
+  // Available tags for pill-style selection - sorted alphabetically
   const availableTags = [
-    "Electronic", "Live Band", "DJ Set", "Acoustic", "Underground", 
-    "Rooftop", "Beach", "Festival", "Intimate", "Outdoor", "Indoor",
-    "Jazz", "Rock", "Classical", "World Music", "Experimental",
-    "Techno", "House", "Ambient", "Folk", "Alternative"
+    "Acoustic", "Alternative", "Ambient", "Beach", "Classical", "DJ Set",
+    "Electronic", "Experimental", "Festival", "Folk", "House", "Indoor",
+    "Intimate", "Jazz", "Live Band", "Outdoor", "Rock", "Rooftop", 
+    "Techno", "Underground", "World Music"
   ];
 
   const handleClearFilters = () => {

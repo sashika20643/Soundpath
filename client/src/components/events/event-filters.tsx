@@ -16,15 +16,15 @@ interface EventFiltersProps {
 
 const continents = [
   "Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America"
-];
+].sort();
 
 const countries = {
-  "North America": ["United States", "Canada", "Mexico"],
-  "Europe": ["United Kingdom", "France", "Germany", "Spain", "Italy", "Netherlands"],
-  "Asia": ["Japan", "China", "India", "South Korea", "Thailand", "Singapore"],
-  "Africa": ["South Africa", "Nigeria", "Egypt", "Kenya", "Morocco"],
-  "South America": ["Brazil", "Argentina", "Chile", "Colombia", "Peru"],
-  "Oceania": ["Australia", "New Zealand", "Fiji"],
+  "North America": ["Canada", "Mexico", "United States"].sort(),
+  "Europe": ["France", "Germany", "Italy", "Netherlands", "Spain", "United Kingdom"].sort(),
+  "Asia": ["China", "India", "Japan", "Singapore", "South Korea", "Thailand"].sort(),
+  "Africa": ["Egypt", "Kenya", "Morocco", "Nigeria", "South Africa"].sort(),
+  "South America": ["Argentina", "Brazil", "Chile", "Colombia", "Peru"].sort(),
+  "Oceania": ["Australia", "Fiji", "New Zealand"].sort(),
   "Antarctica": []
 };
 
@@ -100,6 +100,11 @@ export function EventFilters({ onFiltersChange, filters }: EventFiltersProps) {
   };
 
   const availableCountries = filters.continent ? countries[filters.continent as keyof typeof countries] || [] : [];
+  
+  // Sort categories alphabetically by name
+  const sortedGenres = [...genres].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedSettings = [...settings].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedEventTypes = [...eventTypes].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <Card className="mb-6">
@@ -183,7 +188,7 @@ export function EventFilters({ onFiltersChange, filters }: EventFiltersProps) {
               Genres
             </Label>
             <div className="space-y-2 max-h-32 overflow-y-auto">
-              {genres.map(genre => (
+              {sortedGenres.map(genre => (
                 <label key={genre.id} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -202,7 +207,7 @@ export function EventFilters({ onFiltersChange, filters }: EventFiltersProps) {
               Settings
             </Label>
             <div className="space-y-2 max-h-32 overflow-y-auto">
-              {settings.map(setting => (
+              {sortedSettings.map(setting => (
                 <label key={setting.id} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -221,7 +226,7 @@ export function EventFilters({ onFiltersChange, filters }: EventFiltersProps) {
               Event Types
             </Label>
             <div className="space-y-2 max-h-32 overflow-y-auto">
-              {eventTypes.map(eventType => (
+              {sortedEventTypes.map(eventType => (
                 <label key={eventType.id} className="flex items-center space-x-2">
                   <input
                     type="checkbox"

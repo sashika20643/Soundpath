@@ -109,11 +109,16 @@ export function CityAutocomplete({
     }
   };
 
-  const handleSuggestionClick = (city: string) => {
+  const handleSuggestionClick = (city: string, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     onChange(city);
     setIsOpen(false);
     setHighlightedIndex(-1);
-    inputRef.current?.focus();
+    // Small delay to prevent blur event conflicts
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 10);
   };
 
   const showSuggestions = isOpen && suggestions.length > 0 && !disabled;
@@ -159,7 +164,7 @@ export function CityAutocomplete({
               className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${
                 index === highlightedIndex ? 'bg-blue-50 text-blue-700' : 'text-gray-900'
               }`}
-              onClick={() => handleSuggestionClick(city)}
+              onMouseDown={(e) => handleSuggestionClick(city, e)}
               onMouseEnter={() => setHighlightedIndex(index)}
             >
               <div className="flex items-center">
