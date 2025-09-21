@@ -322,7 +322,7 @@ export function Layout({ children }: LayoutProps) {
 
           {/* Mobile Menu Footer */}
           <div className="px-6 py-6 border-t" style={{ borderColor: "var(--color-light-gray)" }}>
-            {isAdmin ? (
+            {isAdmin && (
               <div className="space-y-4">
                 <div
                   className="flex items-center gap-3 px-4 py-3 rounded-lg border"
@@ -352,19 +352,6 @@ export function Layout({ children }: LayoutProps) {
                   <span>Logout</span>
                 </button>
               </div>
-            ) : (
-              <Link href="/admin-login" onClick={closeMobileMenu}>
-                <div className="flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-300"
-                  style={{
-                    borderColor: "var(--color-light-gray)",
-                    color: "var(--color-charcoal)",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  <LogIn className="w-5 h-5" />
-                  <span>Admin Login</span>
-                </div>
-              </Link>
             )}
           </div>
         </div>

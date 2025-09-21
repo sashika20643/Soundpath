@@ -4,8 +4,8 @@ import { users } from '../shared/schema';
 import { eq } from 'drizzle-orm';
 
 const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123'
+  username: 'matt5ver',
+  password: 'mat@5ver'
 };
 
 const SALT_ROUNDS = 12; // Strong salt rounds for password hashing
