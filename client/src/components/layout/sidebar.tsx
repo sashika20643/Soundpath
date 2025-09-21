@@ -9,9 +9,12 @@ import {
   FaCheckCircle,
   FaEnvelope,
 } from "react-icons/fa";
+import { useSidebar } from "@/components/ui/sidebar";
+import { X } from "lucide-react";
 
 export function Sidebar() {
   const [location] = useLocation();
+  const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const navigationItems = [
     {
@@ -45,53 +48,97 @@ export function Sidebar() {
     },
   ];
 
+  const closeMobileSidebar = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
   return (
-    <aside className="w-64 bg-white shadow-sm border-r border-gray-200 h-full">
-      <div className="p-6">
-        <h1 className="text-xl font-semibold text-gray-900 flex items-center">
-          <FaCubes className="text-primary mr-2" />
-          Admin Dashboard
-        </h1>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {isMobile && openMobile && (
+        <div
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+          onClick={closeMobileSidebar}
+        />
+      )}
 
-      <nav className="mt-6">
-        {navigationItems.map((section) => (
-          <div key={section.title} className="px-3 mb-6">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
-              {section.title}
-            </p>
-            {section.items.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <Link key={item.href} href={item.href}>
-                  <div
-                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors cursor-pointer ${
-                      item.active
-                        ? "text-white bg-primary"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`}
-                  >
-                    <IconComponent className="mr-3 w-4 h-4" />
-                    {item.label}
-                  </div>
-                </Link>
-              );
-            })}
+      {/* Sidebar */}
+      <aside
+        className={`${
+          isMobile
+            ? `fixed top-0 left-0 z-50 h-full transform transition-transform duration-300 ease-in-out ${
+                openMobile ? "translate-x-0" : "-translate-x-full"
+              }`
+            : "relative"
+        } w-64 bg-white shadow-sm border-r border-gray-200 h-full`}
+      >
+        {/* Mobile Header with Close Button */}
+        {isMobile && (
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <h1 className="text-lg font-semibold text-gray-900 flex items-center">
+              <FaCubes className="text-primary mr-2" />
+              Admin Dashboard
+            </h1>
+            <button
+              onClick={closeMobileSidebar}
+              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
           </div>
-        ))}
-      </nav>
+        )}
 
-      {/* Visit Website Link */}
-      <div className="mt-auto p-6 border-t border-gray-200">
-        <Link href="/">
-          <div className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer text-gray-600 hover:text-gray-900 hover:bg-gray-50">
-            <svg className="mr-3 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-            Visit Website
+        {/* Desktop Header */}
+        {!isMobile && (
+          <div className="p-6">
+            <h1 className="text-xl font-semibold text-gray-900 flex items-center">
+              <FaCubes className="text-primary mr-2" />
+              Admin Dashboard
+            </h1>
           </div>
-        </Link>
-      </div>
-    </aside>
+        )}
+
+        <nav className={isMobile ? "mt-4" : "mt-6"}>
+          {navigationItems.map((section) => (
+            <div key={section.title} className="px-3 mb-6">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                {section.title}
+              </p>
+              {section.items.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <Link key={item.href} href={item.href} onClick={closeMobileSidebar}>
+                    <div
+                      className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors cursor-pointer ${
+                        item.active
+                          ? "text-white bg-primary"
+                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      }`}
+                    >
+                      <IconComponent className="mr-3 w-4 h-4" />
+                      {item.label}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
+        </nav>
+
+        {/* Visit Website Link */}
+        <div className="mt-auto p-6 border-t border-gray-200">
+          <Link href="/" onClick={closeMobileSidebar}>
+            <div className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+              <svg className="mr-3 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Visit Website
+            </div>
+          </Link>
+        </div>
+      </aside>
+    </>
   );
 }
