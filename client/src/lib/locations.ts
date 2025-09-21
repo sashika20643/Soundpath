@@ -90,11 +90,13 @@ export function getCitiesForCountry(countryCode: string, stateCode?: string): Ar
     cities = City.getCitiesOfCountry(countryCode);
   }
   
+  if (!cities) return [];
+  
   return cities
     .map(city => ({
       name: city.name,
-      latitude: city.latitude,
-      longitude: city.longitude
+      latitude: city.latitude || undefined,
+      longitude: city.longitude || undefined
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
