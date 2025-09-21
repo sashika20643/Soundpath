@@ -13,7 +13,7 @@ export default function AdminLoginPage() {
 
   useEffect(() => {
     if (isAdmin) {
-      setLocation('/dashboards/events');
+      setLocation('/dashboards');
     }
   }, [isAdmin, setLocation]);
 

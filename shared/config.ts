@@ -46,6 +46,11 @@ export const APP_CONFIG = {
       title: "Contact Us - Sonic Paths",
       description: "Get in touch with the Sonic Paths team. Share your music discoveries, ask questions, or connect with our community.",
       keywords: "contact, get in touch, music community, questions, support"
+    },
+    "admin-login": {
+      title: "Admin Login - Sonic Paths",
+      description: "Admin access to manage musical events, categories, and user submissions for the Sonic Paths platform.",
+      keywords: "admin login, management, administration, music events"
     }
   },
   
