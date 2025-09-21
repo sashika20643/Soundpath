@@ -213,7 +213,7 @@ export default function Home() {
         }}
       >
         {/* Hero Section - Kinfolk Style with Background Image */}
-        <section className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
+        <section id="hero" className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
           {/* Background Image*/}
           <div className="absolute inset-0 z-0">
             <img
@@ -283,6 +283,7 @@ export default function Home() {
         {/* Featured Events Section */}
         {featuredEvents.length > 0 && (
           <section
+            id="featured"
             className="section-padding"
             style={{ backgroundColor: "var(--color-cream)" }}
           >
@@ -440,6 +441,7 @@ export default function Home() {
 
         {/* World Map Section - Editorial Style */}
         <section
+          id="map"
           className="section-padding"
           style={{ backgroundColor: "var(--color-soft-beige)" }}
         >
@@ -474,6 +476,7 @@ export default function Home() {
 
         {/* 🕵️‍♀️ Last Discoveries Section - Most Recent Events */}
         <section
+          id="discoveries"
           className="section-padding"
           style={{ backgroundColor: "var(--color-warm-white)" }}
         >
@@ -608,6 +611,7 @@ export default function Home() {
 
         {/* Submit Discovery Section - Editorial Style */}
         <section
+          id="submit"
           className="section-padding"
           style={{ backgroundColor: "var(--color-cream)" }}
         >
@@ -1151,6 +1155,7 @@ export default function Home() {
 
         {/* 💎 Hidden Gems Section - Oldest Events */}
         <section
+          id="hidden-gems"
           className="section-padding"
           style={{ backgroundColor: "var(--color-soft-beige)" }}
         >

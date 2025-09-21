@@ -262,79 +262,81 @@ export function Layout({ children }: LayoutProps) {
               </ul>
             </div>
 
-            {isAdmin && (
-              <div>
-                <h4
-                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                  style={{ color: "var(--color-warm-white)" }}
-                >
-                  Dashboard
-                </h4>
-                <ul className="space-y-3">
-                  <li>
-                    <Link
-                      href="/dashboards"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Overview
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/dashboards/events"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Events
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/dashboards/approvals"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Approvals
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/dashboards/contact-messages"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Messages
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <div>
+              <h4
+                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                style={{ color: "var(--color-warm-white)" }}
+              >
+                Discover
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="#featured"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Featured Destinations
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#discoveries"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Latest Discoveries
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#hidden-gems"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Hidden Gems
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#map"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    World Map
+                  </a>
+                </li>
+              </ul>
+            </div>
 
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
                 style={{ color: "var(--color-warm-white)" }}
               >
-                About
+                Contribute
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <span
-                    className="text-sm"
+                  <a
+                    href="#submit"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
                     style={{ color: "var(--color-mid-gray)" }}
                   >
-                    {APP_CONFIG.tagline}
-                  </span>
+                    Submit Discovery
+                  </a>
                 </li>
-                <li>
-                  <span
-                    className="text-sm"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    Music Discovery Platform
-                  </span>
-                </li>
+                {isAdmin && (
+                  <li>
+                    <Link
+                      href="/dashboards/events"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
