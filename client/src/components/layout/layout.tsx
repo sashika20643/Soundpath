@@ -192,7 +192,7 @@ export function Layout({ children }: LayoutProps) {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-center">
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
@@ -231,36 +231,6 @@ export function Layout({ children }: LayoutProps) {
               </ul>
             </div>
 
-            <div>
-              <h4
-                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "var(--color-warm-white)" }}
-              >
-                Connect
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/contact"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    Contact Us
-                  </Link>
-                </li>
-                {!isAdmin && (
-                  <li>
-                    <Link
-                      href="/admin-login"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Admin Login
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </div>
 
             <div>
               <h4
@@ -314,7 +284,7 @@ export function Layout({ children }: LayoutProps) {
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
                 style={{ color: "var(--color-warm-white)" }}
               >
-                Contribute
+                Get Involved
               </h4>
               <ul className="space-y-3">
                 <li>
@@ -326,17 +296,15 @@ export function Layout({ children }: LayoutProps) {
                     Submit Discovery
                   </a>
                 </li>
-                {isAdmin && (
-                  <li>
-                    <Link
-                      href="/dashboards/events"
-                      className="text-sm hover:opacity-70 transition-opacity duration-300"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Admin Dashboard
-                    </Link>
-                  </li>
-                )}
+                <li>
+                  <Link
+                    href="/contact"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Contact Us
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
