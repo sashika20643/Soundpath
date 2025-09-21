@@ -172,22 +172,19 @@ export class DatabaseStorage implements IStorage {
       // Filter by approval status
       if (filters?.approved !== undefined) {
         console.log("Filtering for ", filters.approved);
-        console.log("Filtering for ", filters.approved);
-        if (filters.approved === 'true') {
-          console.log("Filtering for approved ones boolean");
-          eventsQuery = eventsQuery.where(eq(events.approved, true));
-        } else if (filters.approved === 'false') {
-          console.log("Filtering for approved ones boolean");
-          eventsQuery = eventsQuery.where(eq(events.approved, false));
+        if (filters.approved === true || filters.approved === 'true') {
+          conditions.push(eq(events.approved, true));
+        } else if (filters.approved === false || filters.approved === 'false') {
+          conditions.push(eq(events.approved, false));
         }
       }
 
       if (filters?.featured !== undefined) {
         console.log("Filtering for featured events: ", filters.featured);
-        if (filters.featured === 'true') {
-          eventsQuery = eventsQuery.where(eq(events.featured, true));
-        } else if (filters.featured === 'false') {
-          eventsQuery = eventsQuery.where(eq(events.featured, false));
+        if (filters.featured === true || filters.featured === 'true') {
+          conditions.push(eq(events.featured, true));
+        } else if (filters.featured === false || filters.featured === 'false') {
+          conditions.push(eq(events.featured, false));
         }
       }
 
