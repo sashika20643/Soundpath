@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEvents, useApproveEvent } from "@/hooks/use-events";
 import { usePageMetadata } from "@/hooks/use-page-metadata";
+import { EventDetailsModal } from "@/components/events/event-details-modal";
 import type { Event } from "@shared/schema";
 import { CheckCircle, XCircle, MapPin, Calendar, Eye } from "lucide-react";
 import { format } from "date-fns";
@@ -20,6 +21,8 @@ import { Link } from "wouter";
 export default function ApprovalDashboard() {
   usePageMetadata("dashboard");
   const [activeTab, setActiveTab] = useState("pending");
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   // Fetch events based on active tab
   const { data: pendingEvents = [], isLoading: loadingPending } = useEvents({
@@ -36,6 +39,11 @@ export default function ApprovalDashboard() {
     approveEventMutation.mutate({ id: eventId, approved });
   };
 
+  const handleViewDetails = (event: Event) => {
+    setSelectedEvent(event);
+    setIsDetailsModalOpen(true);
+  };
+
   const EventCard = ({
     event,
     showActions = true,
@@ -50,16 +58,16 @@ export default function ApprovalDashboard() {
             <CardTitle className="text-base sm:text-lg lg:text-xl line-clamp-2">
               {event.title}
             </CardTitle>
-            <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm">
-              <span className="flex items-center gap-1">
+            <CardDescription className="flex flex-col gap-1 text-xs sm:text-sm">
+              <span className="flex items-center gap-1 min-w-0">
                 <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 <span className="truncate">
                   {format(new Date(event.date), "MMM dd, yyyy")}
                 </span>
               </span>
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1 min-w-0">
                 <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                <span className="truncate">
+                <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-full">
                   {event.city}, {event.country}
                 </span>
               </span>
@@ -83,19 +91,22 @@ export default function ApprovalDashboard() {
           />
         )}
 
-        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 flex-1">
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 flex-1 text-justify">
           {event.shortDescription}
         </p>
 
         {/* Actions section - Always at bottom */}
         <div className="flex flex-col gap-2 pt-4 mt-auto">
-          <Link href={`/event/${event.id}`} className="w-full">
-            <Button variant="outline" size="sm" className="w-full text-xs px-2 py-1">
-              <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-              <span className="hidden sm:inline">View Details</span>
-              <span className="sm:hidden">View</span>
-            </Button>
-          </Link>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full text-xs px-2 py-1"
+            onClick={() => handleViewDetails(event)}
+          >
+            <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+            <span className="hidden sm:inline">View Details</span>
+            <span className="sm:hidden">View</span>
+          </Button>
 
           {showActions && !event.approved && (
             <div className="flex gap-2 w-full">
@@ -238,6 +249,12 @@ export default function ApprovalDashboard() {
           </Tabs>
         </div>
       </main>
+
+      <EventDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        event={selectedEvent}
+      />
     </div>
   );
 }

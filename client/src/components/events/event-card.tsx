@@ -102,7 +102,7 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
           </div>
         )}
         <p
-          className="text-editorial line-clamp-3 mb-6"
+          className="text-editorial line-clamp-3 mb-6 text-justify"
           style={{ color: "var(--color-dark-gray)" }}
         >
           {event.shortDescription}

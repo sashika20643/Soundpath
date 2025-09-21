@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { MapPin, Instagram, Calendar, X } from "lucide-react";
+import { MapPin, Instagram, Calendar, X, Star, CheckCircle, Clock, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -68,19 +68,58 @@ export function EventDetailsModal({ isOpen, onClose, event }: EventDetailsModalP
             </div>
           )}
 
-          {/* Event Metadata */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              {/* Location */}
-              <div className="flex items-center text-gray-600">
-                <MapPin className="w-4 h-4 mr-2" />
-                <span>{formatLocation(event) || 'No location specified'}</span>
+          {/* Event Status */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {/* Approval Status */}
+            <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className={`w-5 h-5 ${event.approved ? 'text-green-600' : 'text-orange-500'}`} />
+                <span className={`font-medium ${event.approved ? 'text-green-700' : 'text-orange-600'}`}>
+                  {event.approved ? 'Approved' : 'Pending Approval'}
+                </span>
               </div>
+            </div>
 
-              {/* Created Date */}
-              <div className="flex items-center text-gray-600">
-                <Calendar className="w-4 h-4 mr-2" />
-                <span>Created {format(new Date(event.createdAt), 'MMMM d, yyyy')}</span>
+            {/* Featured Status */}
+            <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-2">
+                <Star className={`w-5 h-5 ${event.featured ? 'text-yellow-500' : 'text-gray-400'}`} />
+                <span className={`font-medium ${event.featured ? 'text-yellow-600' : 'text-gray-600'}`}>
+                  {event.featured ? 'Featured' : 'Not Featured'}
+                </span>
+              </div>
+            </div>
+
+            {/* Event Date */}
+            <div className="flex items-center justify-center p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-5 h-5 text-blue-600" />
+                <span className="font-medium text-blue-700">
+                  {format(new Date(event.date), 'MMM d, yyyy')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Event Metadata */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-gray-900">Location Details</h4>
+              
+              {/* Full Location */}
+              <div className="flex items-start text-gray-600">
+                <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                <div className="space-y-1">
+                  <div>{formatLocation(event) || 'No location specified'}</div>
+                  {event.locationName && (
+                    <div className="text-sm text-gray-500">Venue: {event.locationName}</div>
+                  )}
+                  {(event.latitude && event.longitude) && (
+                    <div className="text-sm text-gray-500">
+                      Coordinates: {event.latitude.toFixed(6)}, {event.longitude.toFixed(6)}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Instagram Link */}
@@ -97,6 +136,33 @@ export function EventDetailsModal({ isOpen, onClose, event }: EventDetailsModalP
                   </a>
                 </div>
               )}
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-gray-900">Timestamps</h4>
+              
+              {/* Created Date */}
+              <div className="flex items-center text-gray-600">
+                <Clock className="w-4 h-4 mr-2" />
+                <span>Created {format(new Date(event.createdAt), 'MMMM d, yyyy \'at\' h:mm a')}</span>
+              </div>
+
+              {/* Updated Date */}
+              <div className="flex items-center text-gray-600">
+                <Clock className="w-4 h-4 mr-2" />
+                <span>Updated {format(new Date(event.updatedAt), 'MMMM d, yyyy \'at\' h:mm a')}</span>
+              </div>
+
+              {/* Event ID */}
+              <div className="flex items-start text-gray-600">
+                <Globe className="w-4 h-4 mr-2 mt-0.5" />
+                <div>
+                  <div className="text-sm text-gray-500">Event ID</div>
+                  <div className="text-xs font-mono bg-gray-100 px-2 py-1 rounded mt-1 break-all">
+                    {event.id}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

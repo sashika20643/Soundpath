@@ -141,8 +141,8 @@ export default function DashboardEvents() {
                             <CardTitle className="text-base sm:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors">
                               {event.title}
                             </CardTitle>
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-gray-500 mt-2">
-                              <div className="flex items-center gap-1">
+                            <div className="flex flex-col gap-1 text-xs sm:text-sm text-gray-500 mt-2">
+                              <div className="flex items-center gap-1 min-w-0">
                                 <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                                 <span className="truncate">
                                   {new Date(event.date).toLocaleDateString(
@@ -155,9 +155,11 @@ export default function DashboardEvents() {
                                   )}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-1">
+                              <div className="flex items-center gap-1 min-w-0">
                                 <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                                <span className="truncate">{formatLocation(event)}</span>
+                                <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-full">
+                                  {formatLocation(event)}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -185,7 +187,7 @@ export default function DashboardEvents() {
                             </div>
                           )}
 
-                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-3">
+                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-3 text-justify">
                             {event.shortDescription}
                           </p>
                         </div>
