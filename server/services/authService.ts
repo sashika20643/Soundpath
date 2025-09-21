@@ -87,7 +87,7 @@ export class AuthService {
       const decoded = jwt.verify(token, JWT_SECRET) as any;
       
       if (!decoded || !decoded.id || !decoded.username) {
-        console.log('❌ Token verification failed: Invalid token structure');
+        // Token has invalid structure - this is normal for expired/malformed tokens
         return null;
       }
 
@@ -109,10 +109,9 @@ export class AuthService {
       };
 
     } catch (error) {
-      if (error instanceof jwt.JsonWebTokenError) {
-        console.log('❌ Token verification failed: Invalid token');
-      } else if (error instanceof jwt.TokenExpiredError) {
-        console.log('❌ Token verification failed: Token expired');
+      if (error instanceof jwt.JsonWebTokenError || error instanceof jwt.TokenExpiredError) {
+        // Token invalid/expired - this is normal behavior, no need to log
+        return null;
       } else {
         console.error('❌ Token verification error:', error);
       }
