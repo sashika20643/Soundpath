@@ -274,10 +274,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Minimal scroll indicator */}
-          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
-            <div className="w-px h-16 bg-white/40 animate-pulse"></div>
-          </div>
         </section>
 
         {/* Featured Events Section */}

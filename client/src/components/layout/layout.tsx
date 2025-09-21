@@ -159,7 +159,7 @@ export function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <p>Guest</p>
+                  <p></p>
                 )}
               </div>
             </div>
