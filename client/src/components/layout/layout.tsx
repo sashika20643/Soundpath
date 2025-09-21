@@ -203,6 +203,15 @@ export function Layout({ children }: LayoutProps) {
               <ul className="space-y-3">
                 <li>
                   <Link
+                    href="/"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/events"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
                     style={{ color: "var(--color-mid-gray)" }}
@@ -212,40 +221,11 @@ export function Layout({ children }: LayoutProps) {
                 </li>
                 <li>
                   <Link
-                    href="/dashboards/events"
+                    href="/map"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
                     style={{ color: "var(--color-mid-gray)" }}
                   >
-                    Dashboard
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4
-                className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "var(--color-warm-white)" }}
-              >
-                Discover
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    Latest Discoveries
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    Hidden Gems
+                    Map
                   </Link>
                 </li>
               </ul>
@@ -260,25 +240,76 @@ export function Layout({ children }: LayoutProps) {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="#submit"
+                  <Link
+                    href="/contact"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
                     style={{ color: "var(--color-mid-gray)" }}
                   >
-                    Submit Experience
-                  </a>
+                    Contact Us
+                  </Link>
                 </li>
-                <li>
-                  <a
-                    href="#community"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    Community
-                  </a>
-                </li>
+                {!isAdmin && (
+                  <li>
+                    <Link
+                      href="/admin-login"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Admin Login
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
+
+            {isAdmin && (
+              <div>
+                <h4
+                  className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
+                  style={{ color: "var(--color-warm-white)" }}
+                >
+                  Dashboard
+                </h4>
+                <ul className="space-y-3">
+                  <li>
+                    <Link
+                      href="/dashboards"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Overview
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboards/events"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Events
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboards/approvals"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Approvals
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboards/contact-messages"
+                      className="text-sm hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: "var(--color-mid-gray)" }}
+                    >
+                      Messages
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
 
             <div>
               <h4
@@ -289,22 +320,20 @@ export function Layout({ children }: LayoutProps) {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="#story"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                  <span
+                    className="text-sm"
                     style={{ color: "var(--color-mid-gray)" }}
                   >
-                    Our Story
-                  </a>
+                    {APP_CONFIG.tagline}
+                  </span>
                 </li>
                 <li>
-                  <a
-                    href="#contact"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                  <span
+                    className="text-sm"
                     style={{ color: "var(--color-mid-gray)" }}
                   >
-                    Contact
-                  </a>
+                    Music Discovery Platform
+                  </span>
                 </li>
               </ul>
             </div>
@@ -315,7 +344,7 @@ export function Layout({ children }: LayoutProps) {
             style={{ borderColor: "var(--color-dark-gray)" }}
           >
             <p className="text-sm" style={{ color: "var(--color-mid-gray)" }}>
-              © 2025 Soundpath. Crafted for music lovers and wanderers.
+              © 2025 {APP_CONFIG.name}. Crafted for music lovers and wanderers.
             </p>
           </div>
         </div>
