@@ -255,7 +255,7 @@ export class DatabaseStorage implements IStorage {
   async createEvent(eventData: InsertEvent, approved: boolean = false): Promise<Event> {
     try {
       const id = randomUUID();
-      const now = new Date().toISOString();
+      const now = new Date();
 
       const [created] = await db
         .insert(events)
