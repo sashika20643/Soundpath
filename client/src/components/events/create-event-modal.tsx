@@ -195,6 +195,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
               <Label htmlFor="title">Title *</Label>
               <Input
                 id="title"
+                data-testid="modal-input-title"
                 {...form.register("title")}
                 placeholder="Event title"
               />
@@ -209,6 +210,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
               <Label htmlFor="heroImage">Hero Image URL</Label>
               <Input
                 id="heroImage"
+                data-testid="modal-input-hero-image"
                 {...form.register("heroImage")}
                 placeholder="https://example.com/image.jpg"
               />
@@ -219,6 +221,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
             <Label htmlFor="shortDescription">Short Description *</Label>
             <Textarea
               id="shortDescription"
+              data-testid="modal-textarea-short-description"
               {...form.register("shortDescription")}
               placeholder="Brief description for listing views"
               rows={3}
@@ -252,6 +255,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
               <div className="relative">
                 <Input
                   id="continent"
+                  data-testid="modal-input-continent"
                   value={selectedContinent}
                   placeholder="e.g. North America, Europe, Asia..."
                   onChange={(e) => {
@@ -333,6 +337,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
               <div className="relative">
                 <Input
                   id="country"
+                  data-testid="modal-input-country"
                   value={form.watch("country") || ""}
                   placeholder="e.g. United States, France, Japan..."
                   onChange={(e) => {
@@ -424,6 +429,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
               <div className="relative">
                 <Input
                   id="city"
+                  data-testid="modal-input-city"
                   value={form.watch("city") || ""}
                   placeholder="e.g. New York, Paris, Tokyo..."
                   onChange={(e) => {
@@ -574,6 +580,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
             <Input
               id="date"
               type="date"
+              data-testid="modal-input-date"
               {...form.register("date")}
               className="w-full"
             />
@@ -686,6 +693,7 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
           <div className="flex items-center space-x-2">
             <Checkbox
               id="featured"
+              data-testid="modal-checkbox-featured"
               checked={form.watch("featured")}
               onCheckedChange={(checked) =>
                 form.setValue("featured", !!checked)
@@ -719,11 +727,17 @@ export function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
             )}
 
             <div className="flex gap-3 justify-end">
-              <Button type="button" variant="outline" onClick={handleClose}>
+              <Button 
+                type="button" 
+                variant="outline" 
+                data-testid="modal-button-cancel"
+                onClick={handleClose}
+              >
                 Cancel
               </Button>
               <Button
                 type="submit"
+                data-testid="modal-button-submit-event"
                 disabled={createEventMutation.isPending}
                 className="flex items-center"
               >
