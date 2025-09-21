@@ -240,13 +240,7 @@ export class DatabaseStorage implements IStorage {
 
       const result = await eventsQuery.orderBy(desc(events.createdAt));
 
-      // Ensure extraLinks is parsed properly for each event
-      return result.map(event => ({
-        ...event,
-        extraLinks: event.extraLinks ?
-          (typeof event.extraLinks === 'string' ? JSON.parse(event.extraLinks) : event.extraLinks)
-          : []
-      }));
+      return result;
     } catch (error) {
       console.error("Error fetching events:", error);
       throw new Error(`Database error: ${error.message}`);
@@ -263,22 +257,18 @@ export class DatabaseStorage implements IStorage {
       const id = randomUUID();
       const now = new Date().toISOString();
 
-      const [created] = await this.db
+      const [created] = await db
         .insert(events)
         .values({
           ...eventData,
           id,
           approved,
-          extraLinks: eventData.extraLinks ? JSON.stringify(eventData.extraLinks) : null,
           createdAt: now,
           updatedAt: now,
         })
         .returning();
 
-      return {
-        ...created,
-        extraLinks: created.extraLinks ? JSON.parse(created.extraLinks) : []
-      };
+      return created;
     } catch (error) {
       console.error("Error creating event:", error);
       throw new Error(`Database error: ${error.message}`);
