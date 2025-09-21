@@ -191,36 +191,34 @@ export default function DashboardEvents() {
                         </div>
 
                         {/* Button Actions - Always at bottom */}
-                        <div className="flex flex-col sm:flex-row gap-2 pt-4 mt-auto">
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleView(event)}
-                              className="flex-1 sm:flex-initial text-xs"
-                            >
-                              <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                              <span className="hidden sm:inline">View</span>
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleEdit(event)}
-                              className="flex-1 sm:flex-initial text-xs"
-                            >
-                              <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                              <span className="hidden sm:inline">Edit</span>
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleDelete(event)}
-                              className="flex-1 sm:flex-initial text-red-600 hover:text-red-700 hover:bg-red-50 text-xs"
-                            >
-                              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                              <span className="hidden sm:inline ml-1">Delete</span>
-                            </Button>
-                          </div>
+                        <div className="flex gap-2 pt-4 mt-auto">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleView(event)}
+                            className="flex-1 text-xs px-2 py-1"
+                          >
+                            <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                            <span className="hidden lg:inline">View</span>
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEdit(event)}
+                            className="flex-1 text-xs px-2 py-1"
+                          >
+                            <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                            <span className="hidden lg:inline">Edit</span>
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDelete(event)}
+                            className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50 text-xs px-2 py-1"
+                          >
+                            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <span className="hidden lg:inline ml-1">Delete</span>
+                          </Button>
                         </div>
                       </CardContent>
                     </Card>

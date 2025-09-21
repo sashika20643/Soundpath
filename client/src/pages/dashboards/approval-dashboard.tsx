@@ -88,22 +88,23 @@ export default function ApprovalDashboard() {
         </p>
 
         {/* Actions section - Always at bottom */}
-        <div className="flex flex-col sm:flex-row gap-2 pt-4 mt-auto">
-          <Link href={`/event/${event.id}`} className="w-full sm:w-auto">
-            <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs">
-              <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-              View Details
+        <div className="flex flex-col gap-2 pt-4 mt-auto">
+          <Link href={`/event/${event.id}`} className="w-full">
+            <Button variant="outline" size="sm" className="w-full text-xs px-2 py-1">
+              <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">View Details</span>
+              <span className="sm:hidden">View</span>
             </Button>
           </Link>
 
           {showActions && !event.approved && (
-            <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
+            <div className="flex gap-2 w-full">
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => handleApprove(event.id, false)}
                 disabled={approveEventMutation.isPending}
-                className="flex-1 sm:flex-initial text-red-600 border-red-200 hover:bg-red-50 text-xs"
+                className="flex-1 text-red-600 border-red-200 hover:bg-red-50 text-xs px-2 py-1"
               >
                 <XCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                 <span className="hidden sm:inline">Reject</span>
@@ -113,7 +114,7 @@ export default function ApprovalDashboard() {
                 size="sm"
                 onClick={() => handleApprove(event.id, true)}
                 disabled={approveEventMutation.isPending}
-                className="flex-1 sm:flex-initial bg-green-600 hover:bg-green-700 text-xs"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-xs px-2 py-1"
               >
                 <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                 <span className="hidden sm:inline">Approve</span>
