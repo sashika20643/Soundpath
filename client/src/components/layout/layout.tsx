@@ -192,7 +192,7 @@ export function Layout({ children }: LayoutProps) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-center md:text-left">
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
@@ -231,7 +231,6 @@ export function Layout({ children }: LayoutProps) {
               </ul>
             </div>
 
-
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
@@ -267,15 +266,6 @@ export function Layout({ children }: LayoutProps) {
                     Hidden Gems
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="#map"
-                    className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    World Map
-                  </a>
-                </li>
               </ul>
             </div>
 
@@ -304,6 +294,15 @@ export function Layout({ children }: LayoutProps) {
                   >
                     Contact Us
                   </Link>
+                </li>
+                <li>
+                  <a
+                    href="#hero"
+                    className="text-sm hover:opacity-70 transition-opacity duration-300"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
+                    Back to Top
+                  </a>
                 </li>
               </ul>
             </div>
