@@ -93,7 +93,6 @@ export const events = pgTable(
     genreIds: text("genre_ids").array(),
     settingIds: text("setting_ids").array(),
     eventTypeIds: text("event_type_ids").array(),
-    feature: text("feature"),
     featured: boolean("featured").default(false).notNull(),
     approved: boolean("approved").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -122,7 +121,6 @@ export const insertEventSchema = z.object({
   settingIds: z.array(z.string()).default([]),
   eventTypeIds: z.array(z.string()).default([]),
   tags: z.array(z.string()).default([]),
-  feature: z.string().optional(),
   featured: z.boolean().default(false),
   fromDashboard: z.boolean().optional(),
 });
@@ -149,7 +147,6 @@ export const updateEventSchema = createInsertSchema(events, {
   genreIds: z.array(z.string()).optional(),
   settingIds: z.array(z.string()).optional(),
   eventTypeIds: z.array(z.string()).optional(),
-  feature: z.string().optional(),
   featured: z.boolean().optional(),
 })
   .omit({
