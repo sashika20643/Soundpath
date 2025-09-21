@@ -173,7 +173,7 @@ export default function Home() {
       await createEventMutation.mutateAsync({ ...data, fromDashboard: false });
 
       toast({
-        title: "Evenåt submitted successfully!",
+        title: "Event submitted successfully!",
         description:
           "Your musical discovery has been submitted for review. It will appear publicly once approved.",
       });
@@ -646,6 +646,7 @@ export default function Home() {
                     </Label>
                     <Input
                       id="title"
+                      data-testid="input-title"
                       {...form.register("title")}
                       placeholder="Sunset Concert at Red Rocks"
                       className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
@@ -672,6 +673,7 @@ export default function Home() {
                     <Input
                       id="date"
                       type="date"
+                      data-testid="input-date"
                       {...form.register("date")}
                       className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
                       style={{
@@ -696,6 +698,7 @@ export default function Home() {
                     </Label>
                     <Input
                       id="heroImage"
+                      data-testid="input-hero-image"
                       {...form.register("heroImage")}
                       placeholder="https://example.com/image.jpg"
                       className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
@@ -725,6 +728,7 @@ export default function Home() {
                     <div className="relative">
                       <Input
                         id="continent"
+                        data-testid="input-continent"
                         {...form.register("continent")}
                         placeholder="e.g. North America, Europe, Asia..."
                         className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
@@ -809,6 +813,7 @@ export default function Home() {
                     <div className="relative">
                       <Input
                         id="country"
+                        data-testid="input-country"
                         {...form.register("country")}
                         placeholder="e.g. United States, France, Japan..."
                         className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
@@ -896,6 +901,7 @@ export default function Home() {
                     <div className="relative">
                       <Input
                         id="city"
+                        data-testid="input-city"
                         {...form.register("city")}
                         placeholder="e.g. New York, Paris, Tokyo..."
                         className="py-4 px-4 text-base border-0 border-b-2 rounded-none bg-transparent focus:bg-transparent focus:ring-0"
@@ -1010,6 +1016,7 @@ export default function Home() {
                     </Label>
                     <Input
                       id="instagramLink"
+                      data-testid="input-instagram-link"
                       {...form.register("instagramLink")}
                       placeholder="https://instagram.com/..."
                       className="py-4 px-4 text-base border-2 rounded-lg"
@@ -1046,6 +1053,7 @@ export default function Home() {
                     </Label>
                     <Textarea
                       id="shortDescription"
+                      data-testid="textarea-short-description"
                       {...form.register("shortDescription")}
                       placeholder="A captivating summary of this musical experience..."
                       rows={4}
@@ -1072,6 +1080,7 @@ export default function Home() {
                       Full Story *
                     </Label>
                     <RichTextEditor
+                      data-testid="editor-long-description"
                       value={form.watch("longDescription") || ""}
                       onChange={(value) =>
                         form.setValue("longDescription", value)
@@ -1090,6 +1099,7 @@ export default function Home() {
                 <div className="text-center pt-8">
                   <button
                     type="submit"
+                    data-testid="button-submit-event"
                     disabled={createEventMutation.isPending}
                     className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide flex items-center justify-center mx-auto"
                   >
