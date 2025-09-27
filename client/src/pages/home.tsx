@@ -219,21 +219,34 @@ export default function Home() {
           color: "var(--color-charcoal)",
         }}
       >
-        {/* Hero Section - Kinfolk Style with Background Image */}
+        {/* Hero Section - Enhanced with Mobile Dynamics */}
         <section id="hero" className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
-          {/* Background Image*/}
+          {/* Dynamic Background with Parallax Effect*/}
           <div className="absolute inset-0 z-0">
             <img
               src={heroImage}
               alt="Musical performance audience"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-1000 ease-out mobile-parallax-bg"
+              style={{
+                transform: 'scale(1.05) translateZ(0)',
+                willChange: 'transform',
+              }}
               loading="eager"
               decoding="async"
               fetchPriority="high"
             />
-            {/* Strong dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90"></div>
-            {/* Additional center focus overlay */}
+            {/* Dynamic animated gradient overlay for mobile */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90 transition-opacity duration-1000 md:block hidden"></div>
+            <div className="absolute inset-0 mobile-gradient-shift md:hidden"></div>
+            {/* Floating particles for mobile */}
+            <div className="absolute inset-0 pointer-events-none md:hidden">
+              <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/30 rounded-full mobile-float" style={{ animationDelay: '0s' }}></div>
+              <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-white/40 rounded-full mobile-float" style={{ animationDelay: '2s' }}></div>
+              <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white/25 rounded-full mobile-float" style={{ animationDelay: '4s' }}></div>
+              <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-white/35 rounded-full mobile-float" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute bottom-1/4 right-2/3 w-2 h-2 bg-white/20 rounded-full mobile-float" style={{ animationDelay: '3s' }}></div>
+            </div>
+            {/* Dynamic center focus overlay */}
             <div className="absolute inset-0 bg-radial-gradient from-black/40 via-transparent to-black/60"></div>
           </div>
 

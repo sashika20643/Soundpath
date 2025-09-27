@@ -187,6 +187,29 @@
   }
 }
 
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Mobile-specific hero enhancements */
+@media (max-width: 768px) {
+  .mobile-gradient-shift {
+    background: linear-gradient(-45deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6), rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+  }
+
+  .mobile-parallax-bg {
+    transform: scale(1.1) translateZ(0);
+    transition: transform 0.5s ease-out;
+  }
+}
+
 /* Scroll animations - Fixed to prevent flickering */
 .scroll-animate {
   opacity: 1;
