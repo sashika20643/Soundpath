@@ -253,14 +253,19 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Minimalist Action Buttons */}
+            {/* Minimalist Action Buttons with Mobile Dynamics */}
             <div className="scroll-animate scroll-animate-delay-1 flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <button className="px-8 py-3 text-sm font-medium rounded-lg border border-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50">
-                Explore Destinations
+              <button className="px-8 py-3 text-sm font-medium rounded-lg border border-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50 mobile-tap mobile-pulse relative overflow-hidden group">
+                <span className="relative z-10">Explore Destinations</span>
+                <div className="absolute inset-0 rounded-lg scale-0 bg-white/20 transition-transform duration-300 group-active:scale-100 md:hidden"></div>
               </button>
               <Link href="/events">
-                <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg">
-                  Browse Collection
+                <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg mobile-tap mobile-bounce relative overflow-hidden group">
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    Browse Collection
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </span>
+                  <div className="absolute inset-0 rounded-lg scale-0 bg-black/10 transition-transform duration-300 group-active:scale-100 md:hidden"></div>
                 </button>
               </Link>
             </div>
@@ -1135,17 +1140,23 @@ export default function Home() {
                     type="submit"
                     data-testid="button-submit-event"
                     disabled={createEventMutation.isPending}
-                    className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide flex items-center justify-center mx-auto"
+                    className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide flex items-center justify-center mx-auto mobile-tap mobile-bounce relative overflow-hidden group"
                   >
                     {createEventMutation.isPending ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                        Submitting Discovery...
+                        <span className="relative z-10">Submitting Discovery...</span>
                       </>
                     ) : (
                       <>
-                        <Send className="w-5 h-5 mr-2" />
-                        Submit Discovery
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          <Send className="w-5 h-5" />
+                          <span>Submit Discovery</span>
+                          <span className="transition-transform duration-300 group-hover:translate-x-1">✨</span>
+                        </span>
+                        {/* Ripple effect for mobile */}
+                        <div className="absolute inset-0 rounded-lg scale-0 transition-transform duration-300 group-active:scale-100 md:hidden"
+                             style={{ backgroundColor: "var(--color-accent)", opacity: 0.2 }}></div>
                       </>
                     )}
                   </button>
