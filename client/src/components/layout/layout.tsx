@@ -15,10 +15,17 @@ export function Layout({ children }: LayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
+    console.log('Toggling mobile menu:', !isMobileMenuOpen);
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const closeMobileMenu = () => {
+    console.log('Closing mobile menu');
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleBackdropClick = () => {
+    console.log('Closing mobile menu via backdrop click');
     setIsMobileMenuOpen(false);
   };
 
@@ -214,125 +221,128 @@ export function Layout({ children }: LayoutProps) {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Full Screen Mobile Menu */}
       {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
-          onClick={closeMobileMenu}
-        />
-      )}
-
-      {/* Mobile Menu */}
-      <div
-        className={`fixed top-0 left-0 z-50 w-80 h-full transform transition-transform duration-300 ease-in-out md:hidden ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{
-          backgroundColor: "var(--color-warm-white)",
-          borderRight: "1px solid var(--color-light-gray)",
-          boxShadow: "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
-        }}
-      >
-        <div className="flex flex-col h-full">
-          {/* Mobile Menu Header */}
-          <div className="p-6 pb-4" style={{ backgroundColor: "var(--color-soft-beige)" }}>
-            <div className="flex items-center justify-between mb-4">
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* Invisible backdrop for click-outside */}
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-20" 
+            onClick={handleBackdropClick}
+          />
+          
+          {/* Menu content */}
+          <div 
+            className={`relative z-10 h-full transition-all duration-300 ease-in-out ${
+              isMobileMenuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            }`}
+            style={{
+              backgroundColor: "var(--color-warm-white)",
+            }}
+          >
+            <div className="flex flex-col h-full">
+          {/* Full Screen Menu Header */}
+          <div className="p-6 pb-8" style={{ backgroundColor: "var(--color-soft-beige)" }}>
+            <div className="flex items-center justify-between mb-6">
               <Link href="/" onClick={closeMobileMenu}>
-                <div className="flex items-center gap-3">
-                  <img src={logo} alt="Sonic Paths Logo" className="h-10 w-auto" />
+                <div className="flex items-center gap-4">
+                  <img src={logo} alt="Sonic Paths Logo" className="h-12 w-auto" />
                   <div>
-                    <span className="text-xl font-bold" style={{ color: "var(--color-charcoal)" }}>
+                    <span className="text-2xl font-bold" style={{ color: "var(--color-charcoal)" }}>
                       {APP_CONFIG.name}
                     </span>
+                    <p className="text-sm mt-1" style={{ color: "var(--color-mid-gray)" }}>
+                      {APP_CONFIG.tagline}
+                    </p>
                   </div>
                 </div>
               </Link>
               <button
                 onClick={closeMobileMenu}
-                className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200"
+                className="w-12 h-12 flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110"
                 style={{ 
                   color: "var(--color-mid-gray)",
-                  backgroundColor: "var(--color-warm-white)"
+                  backgroundColor: "var(--color-warm-white)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
                 }}
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </button>
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: "var(--color-dark-gray)" }}>
-              {APP_CONFIG.tagline}
-            </p>
           </div>
 
-          {/* Mobile Menu Navigation */}
-          <nav className="flex-1 px-6 py-6">
-            <div className="space-y-3">
+          {/* Full Screen Menu Navigation */}
+          <nav className="flex-1 px-6 py-4">
+            <div className="grid gap-4 max-w-md mx-auto">
               <Link href="/" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/" ? "font-semibold shadow-sm" : "font-medium"
+                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
+                    location === "/" ? "font-semibold shadow-lg" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/" ? "var(--color-soft-beige)" : "transparent",
+                    backgroundColor: location === "/" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
                     color: location === "/" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: location === "/" ? "1px solid var(--color-light-gray)" : "1px solid transparent"
+                    border: "2px solid",
+                    borderColor: location === "/" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                     backgroundColor: location === "/" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
                   }}>
-                    <Home className="w-5 h-5" />
+                    <Home className="w-7 h-7" />
                   </div>
-                  <div>
-                    <span className="text-base">Home</span>
-                    <p className="text-xs mt-1 opacity-70">Discover music experiences</p>
+                  <div className="flex-1">
+                    <span className="text-lg font-semibold">Home</span>
+                    <p className="text-sm mt-1 opacity-80">Discover music experiences worldwide</p>
                   </div>
                 </div>
               </Link>
 
               <Link href="/events" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/events" ? "font-semibold shadow-sm" : "font-medium"
+                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
+                    location === "/events" ? "font-semibold shadow-lg" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "transparent",
+                    backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
                     color: location === "/events" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: location === "/events" ? "1px solid var(--color-light-gray)" : "1px solid transparent"
+                    border: "2px solid",
+                    borderColor: location === "/events" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                     backgroundColor: location === "/events" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
                   }}>
-                    <Music className="w-5 h-5" />
+                    <Music className="w-7 h-7" />
                   </div>
-                  <div>
-                    <span className="text-base">Events</span>
-                    <p className="text-xs mt-1 opacity-70">Browse all music events</p>
+                  <div className="flex-1">
+                    <span className="text-lg font-semibold">Events</span>
+                    <p className="text-sm mt-1 opacity-80">Browse all amazing music events</p>
                   </div>
                 </div>
               </Link>
 
               <Link href="/map" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/map" ? "font-semibold shadow-sm" : "font-medium"
+                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
+                    location === "/map" ? "font-semibold shadow-lg" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
+                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
                     color: location === "/map" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: location === "/map" ? "1px solid var(--color-light-gray)" : "1px solid transparent"
+                    border: "2px solid",
+                    borderColor: location === "/map" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                     backgroundColor: location === "/map" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
                   }}>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <div>
-                    <span className="text-base">Map</span>
-                    <p className="text-xs mt-1 opacity-70">Explore locations visually</p>
+                  <div className="flex-1">
+                    <span className="text-lg font-semibold">Map</span>
+                    <p className="text-sm mt-1 opacity-80">Explore global music locations</p>
                   </div>
                 </div>
               </Link>
@@ -340,25 +350,26 @@ export function Layout({ children }: LayoutProps) {
               {isAdmin && (
                 <Link href="/dashboards/events" onClick={closeMobileMenu}>
                   <div
-                    className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                      location.startsWith("/dashboards") ? "font-semibold shadow-sm" : "font-medium"
+                    className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
+                      location.startsWith("/dashboards") ? "font-semibold shadow-lg" : "font-medium"
                     }`}
                     style={{
-                      backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "transparent",
+                      backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "var(--color-warm-white)",
                       color: location.startsWith("/dashboards") ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                      border: location.startsWith("/dashboards") ? "1px solid var(--color-light-gray)" : "1px solid transparent"
+                      border: "2px solid",
+                      borderColor: location.startsWith("/dashboards") ? "var(--color-mid-gray)" : "var(--color-light-gray)"
                     }}
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                    <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                       backgroundColor: location.startsWith("/dashboards") ? "var(--color-warm-white)" : "var(--color-soft-beige)"
                     }}>
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                       </svg>
                     </div>
-                    <div>
-                      <span className="text-base">Dashboard</span>
-                      <p className="text-xs mt-1 opacity-70">Manage events & content</p>
+                    <div className="flex-1">
+                      <span className="text-lg font-semibold">Dashboard</span>
+                      <p className="text-sm mt-1 opacity-80">Manage events & content</p>
                     </div>
                   </div>
                 </Link>
@@ -366,53 +377,54 @@ export function Layout({ children }: LayoutProps) {
 
               <Link href="/contact" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/contact" ? "font-semibold shadow-sm" : "font-medium"
+                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
+                    location === "/contact" ? "font-semibold shadow-lg" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "transparent",
+                    backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
                     color: location === "/contact" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: location === "/contact" ? "1px solid var(--color-light-gray)" : "1px solid transparent"
+                    border: "2px solid",
+                    borderColor: location === "/contact" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                     backgroundColor: location === "/contact" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
                   }}>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                     </svg>
                   </div>
-                  <div>
-                    <span className="text-base">Contact</span>
-                    <p className="text-xs mt-1 opacity-70">Get in touch with us</p>
+                  <div className="flex-1">
+                    <span className="text-lg font-semibold">Contact</span>
+                    <p className="text-sm mt-1 opacity-80">Get in touch with our team</p>
                   </div>
                 </div>
               </Link>
             </div>
           </nav>
 
-          {/* Mobile Menu Footer */}
-          <div className="px-6 py-6" style={{ backgroundColor: "var(--color-soft-beige)" }}>
+          {/* Full Screen Menu Footer */}
+          <div className="px-6 py-8 mt-auto" style={{ backgroundColor: "var(--color-soft-beige)" }}>
             {isAdmin ? (
-              <div className="space-y-4">
+              <div className="space-y-4 max-w-md mx-auto">
                 <div
-                  className="flex items-center gap-4 px-5 py-4 rounded-xl border shadow-sm"
+                  className="flex items-center gap-5 px-6 py-5 rounded-2xl border-2 shadow-lg"
                   style={{
-                    borderColor: "var(--color-light-gray)",
+                    borderColor: "var(--color-mid-gray)",
                     backgroundColor: "var(--color-warm-white)",
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                     backgroundColor: "var(--color-soft-beige)"
                   }}>
-                    <User className="w-5 h-5" style={{ color: "var(--color-mid-gray)" }} />
+                    <User className="w-7 h-7" style={{ color: "var(--color-mid-gray)" }} />
                   </div>
-                  <div>
-                    <span className="font-semibold text-base" style={{ color: "var(--color-charcoal)" }}>
-                      Admin
+                  <div className="flex-1">
+                    <span className="font-bold text-lg" style={{ color: "var(--color-charcoal)" }}>
+                      Admin Access
                     </span>
-                    <p className="text-xs mt-1 opacity-70">Administrator access</p>
+                    <p className="text-sm mt-1 opacity-80">Administrative privileges</p>
                   </div>
                 </div>
                 <button
@@ -420,37 +432,42 @@ export function Layout({ children }: LayoutProps) {
                     logout();
                     closeMobileMenu();
                   }}
-                  className="w-full flex items-center gap-4 px-5 py-4 rounded-xl border transition-all duration-300 hover:scale-[1.02]"
+                  className="w-full flex items-center gap-5 px-6 py-5 rounded-2xl border-2 transition-all duration-300 hover:scale-[1.02]"
                   style={{
                     borderColor: "var(--color-light-gray)",
                     color: "var(--color-charcoal)",
                     backgroundColor: "var(--color-warm-white)",
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
                     backgroundColor: "var(--color-soft-beige)"
                   }}>
-                    <LogOut className="w-5 h-5" />
+                    <LogOut className="w-7 h-7" />
                   </div>
-                  <div>
-                    <span className="font-medium text-base">Logout</span>
-                    <p className="text-xs mt-1 opacity-70">Sign out of account</p>
+                  <div className="flex-1 text-left">
+                    <span className="font-semibold text-lg">Logout</span>
+                    <p className="text-sm mt-1 opacity-80">Sign out of your account</p>
                   </div>
                 </button>
               </div>
             ) : (
-              <div className="text-center py-4">
-                <p className="text-sm" style={{ color: "var(--color-dark-gray)" }}>
-                  🎵 Thanks for exploring {APP_CONFIG.name}!
+              <div className="text-center py-8 max-w-sm mx-auto">
+                <div className="mb-4">
+                  <span className="text-4xl">🎵</span>
+                </div>
+                <p className="text-lg font-medium mb-2" style={{ color: "var(--color-charcoal)" }}>
+                  Thanks for exploring {APP_CONFIG.name}!
                 </p>
-                <p className="text-xs mt-2 opacity-70" style={{ color: "var(--color-mid-gray)" }}>
+                <p className="text-base opacity-80" style={{ color: "var(--color-dark-gray)" }}>
                   Discover amazing music experiences worldwide
                 </p>
               </div>
             )}
           </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
