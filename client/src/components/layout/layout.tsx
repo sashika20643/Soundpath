@@ -97,7 +97,7 @@ export function Layout({ children }: LayoutProps) {
                 </div>
 
                 {/* Ripple Effect */}
-                <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`} 
+                <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`}
                      style={{ backgroundColor: "var(--color-charcoal)" }} />
               </button>
             </div>
@@ -389,7 +389,7 @@ export function Layout({ children }: LayoutProps) {
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "var(--color-warm-white)" }}
+                style={{ color: "#fcfbf8" }}
               >
                 Explore
               </h4>
@@ -398,7 +398,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Home
                   </Link>
@@ -407,7 +407,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/events"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     All Events
                   </Link>
@@ -416,7 +416,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/map"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Map
                   </Link>
@@ -427,7 +427,7 @@ export function Layout({ children }: LayoutProps) {
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "var(--color-warm-white)" }}
+                style={{ color: "#fcfbf8" }}
               >
                 Discover
               </h4>
@@ -436,7 +436,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#featured"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Featured Destinations
                   </a>
@@ -445,7 +445,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#discoveries"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Latest Discoveries
                   </a>
@@ -454,7 +454,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#hidden-gems"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Hidden Gems
                   </a>
@@ -465,7 +465,7 @@ export function Layout({ children }: LayoutProps) {
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "var(--color-warm-white)" }}
+                style={{ color: "#fcfbf8" }}
               >
                 Get Involved
               </h4>
@@ -474,7 +474,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#submit"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Submit Discovery
                   </a>
@@ -483,7 +483,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/contact"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Contact Us
                   </Link>
@@ -492,7 +492,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#hero"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "var(--color-mid-gray)" }}
+                    style={{ color: "#aca599" }}
                   >
                     Back to Top
                   </a>
