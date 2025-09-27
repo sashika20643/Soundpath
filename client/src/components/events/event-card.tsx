@@ -18,14 +18,17 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
 
   return (
     <article
-      className="scroll-animate card-minimal rounded-lg overflow-hidden group"
-      style={{ transitionDelay: `${index * 0.1}s` }}
+      className="scroll-animate card-minimal rounded-lg overflow-hidden group mobile-tap mobile-float"
+      style={{ 
+        transitionDelay: `${index * 0.1}s`,
+        animationDelay: `${index * 0.3}s`
+      }}
     >
       <div className="relative h-80 overflow-hidden">
         <OptimizedImage
           src={event.heroImage || musicDefaultImage}
           alt={event.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 md:group-hover:scale-105"
           fallbackSrc={musicDefaultImage}
           loading="lazy"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -107,7 +110,7 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
         </p>
         <Link href={`/event/${event.id}`}>
           <button
-            className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm"
+            className="w-full py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-sm mobile-tap mobile-bounce group/button relative overflow-hidden"
             style={{
               borderColor: "var(--color-light-gray)",
               color: "var(--color-charcoal)",
@@ -122,7 +125,15 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
               e.currentTarget.style.borderColor = "var(--color-light-gray)";
             }}
           >
-            View Details
+            <span className="relative z-10 flex items-center justify-center gap-2">
+              View Details
+              <span className="transition-transform duration-300 group-hover/button:translate-x-1">
+                →
+              </span>
+            </span>
+            {/* Mobile ripple effect */}
+            <div className="absolute inset-0 rounded-lg scale-0 transition-transform duration-300 md:hidden" 
+                 style={{ backgroundColor: "var(--color-accent)", opacity: 0.1 }} />
           </button>
         </Link>
       </div>
