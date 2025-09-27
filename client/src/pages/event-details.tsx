@@ -280,9 +280,9 @@ export default function EventDetails() {
           </button>
         </div>
 
-        {/* Hero Image Section */}
+        {/* Hero Image Section - Mobile Optimized */}
         <section
-          className={`relative h-[500px] overflow-hidden transition-all duration-1000 ${
+          className={`relative h-[300px] md:h-[500px] overflow-hidden transition-all duration-1000 ${
             isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105"
           }`}
         >
@@ -301,10 +301,10 @@ export default function EventDetails() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent transition-opacity duration-500 group-hover:from-black/50"></div>
           </div>
 
-          {/* Floating Title Card */}
-          <div className="absolute bottom-8 left-8 right-8">
+          {/* Mobile-Friendly Title Card */}
+          <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-8">
             <div
-              className={`backdrop-blur-md border rounded-2xl p-8 transition-all duration-1000 delay-300 ${
+              className={`backdrop-blur-md border rounded-2xl p-4 md:p-8 transition-all duration-1000 delay-300 mobile-tap ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{
@@ -314,19 +314,19 @@ export default function EventDetails() {
               }}
             >
               <h1
-                className="font-serif text-3xl md:text-4xl leading-tight mb-4"
+                className="font-serif text-xl md:text-3xl xl:text-4xl leading-tight mb-3 md:mb-4"
                 style={{ color: "var(--color-charcoal)" }}
               >
                 {event.title}
               </h1>
-              <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+              <div className="flex flex-col gap-2 md:flex-row md:gap-4 xl:gap-8">
                 <div className="flex items-center gap-3">
                   <Calendar
-                    className="w-5 h-5"
+                    className="w-4 h-4 md:w-5 md:h-5"
                     style={{ color: "var(--color-mid-gray)" }}
                   />
                   <span
-                    className="text-lg"
+                    className="text-sm md:text-lg"
                     style={{ color: "var(--color-dark-gray)" }}
                   >
                     {new Date(event.date).toLocaleDateString("en-US", {
@@ -338,11 +338,11 @@ export default function EventDetails() {
                 </div>
                 <div className="flex items-center gap-3">
                   <MapPin
-                    className="w-5 h-5"
+                    className="w-4 h-4 md:w-5 md:h-5"
                     style={{ color: "var(--color-mid-gray)" }}
                   />
                   <span
-                    className="text-lg"
+                    className="text-sm md:text-lg"
                     style={{ color: "var(--color-dark-gray)" }}
                   >
                     {event.locationName
@@ -355,43 +355,46 @@ export default function EventDetails() {
           </div>
         </section>
 
-        {/* Content Section */}
-        <section className="max-w-4xl mx-auto px-6 py-16">
-          {/* Short Description */}
-          {event.shortDescription && (
-            <div
-              className={`mb-12 transition-all duration-1000 delay-200 ${
-                isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+        {/* Mobile-Optimized Content Section */}
+        <section className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-16">
+          {/* Long Description */}
+          <div
+            className={`mb-8 md:mb-16 transition-all duration-1000 delay-200 mobile-slide-in ${
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <h3
+              className="font-serif text-xl md:text-2xl mb-4 md:mb-8"
+              style={{ color: "var(--color-charcoal)" }}
             >
-              <p
-                className="text-2xl leading-relaxed font-light"
-                style={{ color: "var(--color-dark-gray)" }}
-              >
-                {event.shortDescription}
-              </p>
-            </div>
-          )}
+              About This Experience
+            </h3>
+            <div
+              className="prose prose-sm md:prose-lg max-w-none text-editorial leading-relaxed"
+              style={{ color: "var(--color-dark-gray)" }}
+              dangerouslySetInnerHTML={{ __html: event.longDescription }}
+            />
+          </div>
 
-          {/* Categories/Tags */}
+          {/* Categories/Tags - Moved After Description */}
           {(eventCategories.length > 0 ||
             (event.tags && event.tags.length > 0)) && (
             <div
-              className={`mb-16 transition-all duration-1000 delay-300 ${
+              className={`mb-8 md:mb-16 transition-all duration-1000 delay-300 mobile-slide-in mobile-slide-in-delay-1 ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
               <h3
-                className="font-serif text-2xl mb-6"
+                className="font-serif text-xl md:text-2xl mb-4 md:mb-6"
                 style={{ color: "var(--color-charcoal)" }}
               >
                 Categories & Tags
               </h3>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 {eventCategories.map((category, index) => (
                   <span
                     key={category.id}
-                    className={`px-4 py-2 text-sm rounded-full border transition-all duration-500 hover:scale-105 hover:shadow-md`}
+                    className={`px-3 py-2 md:px-4 text-xs md:text-sm rounded-full border transition-all duration-500 hover:scale-105 hover:shadow-md mobile-tap`}
                     style={{
                       backgroundColor: "var(--color-cream)",
                       color: "var(--color-charcoal)",
@@ -406,7 +409,7 @@ export default function EventDetails() {
                   event.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className={`px-4 py-2 text-sm rounded-full transition-all duration-500 hover:scale-105 hover:shadow-md`}
+                      className={`px-3 py-2 md:px-4 text-xs md:text-sm rounded-full transition-all duration-500 hover:scale-105 hover:shadow-md mobile-tap`}
                       style={{
                         backgroundColor: "var(--color-soft-beige)",
                         color: "var(--color-dark-gray)",
@@ -420,29 +423,10 @@ export default function EventDetails() {
             </div>
           )}
 
-          {/* Long Description */}
-          <div
-            className={`mb-16 transition-all duration-1000 delay-400 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h3
-              className="font-serif text-2xl mb-8"
-              style={{ color: "var(--color-charcoal)" }}
-            >
-              About This Experience
-            </h3>
-            <div
-              className="prose prose-lg max-w-none text-editorial leading-relaxed"
-              style={{ color: "var(--color-dark-gray)" }}
-              dangerouslySetInnerHTML={{ __html: event.longDescription }}
-            />
-          </div>
-
-          {/* Instagram Link */}
+          {/* Mobile-Optimized Instagram Link */}
           {event.instagramLink && (
             <div
-              className={`mb-16 transition-all duration-1000 delay-500 ${
+              className={`mb-8 md:mb-16 transition-all duration-1000 delay-400 mobile-slide-in mobile-slide-in-delay-2 ${
                 isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -450,7 +434,7 @@ export default function EventDetails() {
                 href={event.instagramLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium rounded-xl border transition-all duration-500 hover:shadow-xl hover:scale-105"
+                className="group inline-flex items-center justify-center gap-3 w-full md:w-auto px-6 md:px-8 py-3 md:py-4 text-sm font-medium rounded-xl border transition-all duration-500 hover:shadow-xl hover:scale-105 mobile-tap mobile-bounce"
                 style={{
                   borderColor: "var(--color-light-gray)",
                   color: "var(--color-charcoal)",
@@ -466,8 +450,9 @@ export default function EventDetails() {
                   e.currentTarget.style.borderColor = "var(--color-light-gray)";
                 }}
               >
-                <ExternalLink className="w-5 h-5 transition-transform duration-300 group-hover:rotate-12" />
-                View on Instagram
+                <ExternalLink className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:rotate-12" />
+                <span>View on Instagram</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </a>
             </div>
           )}
