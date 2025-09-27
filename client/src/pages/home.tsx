@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/layout";
 import { Link } from "wouter";
 import { EventCard } from "@/components/events/event-card";
+import heroImage from "@/assets/hero.avif";
 import { EventMap } from "@/components/map/EventMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -203,8 +204,7 @@ export default function Home() {
     // console.log("Available continents:", continents);
 
     // Preload critical hero background image for better perceived performance
-    const heroImageUrl = "https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg";
-    preloadImage(heroImageUrl, true).catch(() => {
+    preloadImage(heroImage, true).catch(() => {
       console.warn("Failed to preload hero background image");
     });
   }, []);
@@ -224,7 +224,7 @@ export default function Home() {
           {/* Background Image*/}
           <div className="absolute inset-0 z-0">
             <img
-              src="https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg"
+              src={heroImage}
               alt="Musical performance audience"
               className="w-full h-full object-cover"
               loading="eager"
