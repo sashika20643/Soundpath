@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Calendar, MapPin, Music } from "lucide-react";
 import type { Event } from "@shared/schema";
 import musicDefaultImage from "@/assets/Musicdefault.jpg";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface EventCardProps {
   event: Event;
@@ -21,18 +22,13 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
       style={{ transitionDelay: `${index * 0.1}s` }}
     >
       <div className="relative h-80 overflow-hidden">
-        <img
+        <OptimizedImage
           src={event.heroImage || musicDefaultImage}
           alt={event.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          fallbackSrc={musicDefaultImage}
           loading="lazy"
-          decoding="async"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            if (target.src !== musicDefaultImage) {
-              target.src = musicDefaultImage;
-            }
-          }}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {showNewBadge && (
           <div className="absolute top-6 right-6">
