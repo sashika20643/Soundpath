@@ -1,6 +1,7 @@
 import { useRef, useEffect, useId } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useTheme } from "@/contexts/theme-context";
 
 interface RichTextEditorProps {
   value: string;
@@ -19,6 +20,7 @@ export function RichTextEditor({
 }: RichTextEditorProps) {
   const quillRef = useRef<ReactQuill>(null);
   const editorId = useId();
+  const { theme } = useTheme();
 
   // Apply height styles to the editor after it mounts
   useEffect(() => {
@@ -107,7 +109,7 @@ export function RichTextEditor({
   };
 
   return (
-    <div className={`rich-text-editor ${className}`} id={editorId}>
+    <div className={`rich-text-editor ${className} ${theme === 'dark' ? 'dark' : ''}`} id={editorId}>
       <style>{`
         #${editorId} .ql-container {
           height: ${height} !important;
