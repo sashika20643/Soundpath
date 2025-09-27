@@ -38,37 +38,58 @@ export function Layout({ children }: LayoutProps) {
           borderColor: "var(--color-light-gray)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
                 <img src={logo} alt="Soundpath Logo" className="h-10 w-auto" />
-                Sonicpaths
+                <div className="flex flex-col">
+                  <span className="font-bold text-lg" style={{ color: "var(--color-charcoal)" }}>Sonic Paths</span>
+                  <span className="text-xs hidden sm:block" style={{ color: "var(--color-mid-gray)" }}>
+                    {APP_CONFIG.tagline}
+                  </span>
+                </div>
               </div>
             </Link>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border transition-all duration-300"
-              style={{
-                borderColor: "var(--color-light-gray)",
-                color: "var(--color-charcoal)",
-                backgroundColor: "transparent",
-              }}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </button>
+            {/* Mobile Navigation Content */}
+            <div className="md:hidden flex items-center gap-3">
+              {/* Quick Stats or Info */}
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-1" style={{ color: "var(--color-mid-gray)" }}>
+                  <Music className="w-4 h-4" />
+                  <span className="hidden xs:inline">Events</span>
+                </div>
+                <div className="flex items-center gap-1" style={{ color: "var(--color-mid-gray)" }}>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="hidden xs:inline">Map</span>
+                </div>
+              </div>
+              
+              {/* Mobile Menu Button - Aligned Right */}
+              <button
+                onClick={toggleMobileMenu}
+                className="flex items-center justify-center w-12 h-12 rounded-xl border shadow-sm transition-all duration-300"
+                style={{
+                  borderColor: "var(--color-light-gray)",
+                  color: "var(--color-charcoal)",
+                  backgroundColor: "var(--color-soft-beige)",
+                }}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
 
-            {/* Navigation Links */}
-            <div className="flex items-center gap-8">
-              <div className="hidden md:flex items-center gap-8 text-sm">
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center gap-8">
+              <div className="flex items-center gap-8 text-sm">
                 <Link href="/">
                   <span
                     className={`hover:opacity-70 transition-opacity duration-300 cursor-pointer ${location === "/" ? "font-medium" : ""}`}
