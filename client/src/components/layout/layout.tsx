@@ -215,133 +215,136 @@ export function Layout({ children }: LayoutProps) {
             </div>
           </div>
         </div>
-      </nav>
 
-      {/* Mobile Navigation Dropdown */}
-      <div
-        className={`md:hidden border-t transition-all duration-300 ease-in-out overflow-hidden ${
-          isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
-        style={{
-          backgroundColor: "var(--color-warm-white)",
-          borderColor: "var(--color-light-gray)",
-        }}
-      >
-        <div className="px-4 py-4 space-y-2">
-          <Link href="/" onClick={closeMobileMenu}>
-            <div
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                location === "/" ? "font-semibold" : "font-medium"
-              }`}
-              style={{
-                backgroundColor: location === "/" ? "var(--color-soft-beige)" : "transparent",
-                color: location === "/" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-              }}
-            >
-              <Home className="w-5 h-5" />
-              <span>Home</span>
+        {/* Mobile Navigation Dropdown - Absolute positioned overlay */}
+        <div
+          className={`md:hidden absolute inset-x-0 top-full z-50 origin-top transition-all duration-200 ease-out border-t ${
+            isMobileMenuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+          }`}
+          style={{
+            backgroundColor: "var(--color-warm-white)",
+            borderColor: "var(--color-light-gray)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+          }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div className="space-y-2">
+              <Link href="/" onClick={closeMobileMenu}>
+                <div
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    location === "/" ? "font-semibold" : "font-medium"
+                  }`}
+                  style={{
+                    backgroundColor: location === "/" ? "var(--color-soft-beige)" : "transparent",
+                    color: location === "/" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                  }}
+                >
+                  <Home className="w-5 h-5" />
+                  <span>Home</span>
+                </div>
+              </Link>
+
+              <Link href="/events" onClick={closeMobileMenu}>
+                <div
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    location === "/events" ? "font-semibold" : "font-medium"
+                  }`}
+                  style={{
+                    backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "transparent",
+                    color: location === "/events" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                  }}
+                >
+                  <Music className="w-5 h-5" />
+                  <span>Events</span>
+                </div>
+              </Link>
+
+              <Link href="/map" onClick={closeMobileMenu}>
+                <div
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    location === "/map" ? "font-semibold" : "font-medium"
+                  }`}
+                  style={{
+                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
+                    color: location === "/map" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                  }}
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                  </svg>
+                  <span>Map</span>
+                </div>
+              </Link>
+
+              {isAdmin && (
+                <Link href="/dashboards/events" onClick={closeMobileMenu}>
+                  <div
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                      location.startsWith("/dashboards") ? "font-semibold" : "font-medium"
+                    }`}
+                    style={{
+                      backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "transparent",
+                      color: location.startsWith("/dashboards") ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                    }}
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                    </svg>
+                    <span>Dashboard</span>
+                  </div>
+                </Link>
+              )}
+
+              <Link href="/contact" onClick={closeMobileMenu}>
+                <div
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    location === "/contact" ? "font-semibold" : "font-medium"
+                  }`}
+                  style={{
+                    backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "transparent",
+                    color: location === "/contact" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                  }}
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                  <span>Contact</span>
+                </div>
+              </Link>
+
+              {isAdmin && (
+                <div className="pt-2 mt-2 border-t" style={{ borderColor: "var(--color-light-gray)" }}>
+                  <div
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg mb-2"
+                    style={{
+                      backgroundColor: "var(--color-soft-beige)",
+                      color: "var(--color-charcoal)",
+                    }}
+                  >
+                    <User className="w-5 h-5" />
+                    <span className="font-medium">Admin</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      closeMobileMenu();
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200"
+                    style={{
+                      color: "var(--color-charcoal)",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
             </div>
-          </Link>
-
-          <Link href="/events" onClick={closeMobileMenu}>
-            <div
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                location === "/events" ? "font-semibold" : "font-medium"
-              }`}
-              style={{
-                backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "transparent",
-                color: location === "/events" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-              }}
-            >
-              <Music className="w-5 h-5" />
-              <span>Events</span>
-            </div>
-          </Link>
-
-          <Link href="/map" onClick={closeMobileMenu}>
-            <div
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                location === "/map" ? "font-semibold" : "font-medium"
-              }`}
-              style={{
-                backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
-                color: location === "/map" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-              }}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-              </svg>
-              <span>Map</span>
-            </div>
-          </Link>
-
-          {isAdmin && (
-            <Link href="/dashboards/events" onClick={closeMobileMenu}>
-              <div
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  location.startsWith("/dashboards") ? "font-semibold" : "font-medium"
-                }`}
-                style={{
-                  backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "transparent",
-                  color: location.startsWith("/dashboards") ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                }}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                </svg>
-                <span>Dashboard</span>
-              </div>
-            </Link>
-          )}
-
-          <Link href="/contact" onClick={closeMobileMenu}>
-            <div
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                location === "/contact" ? "font-semibold" : "font-medium"
-              }`}
-              style={{
-                backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "transparent",
-                color: location === "/contact" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-              }}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-              </svg>
-              <span>Contact</span>
-            </div>
-          </Link>
-
-          {isAdmin && (
-            <div className="pt-2 mt-2 border-t" style={{ borderColor: "var(--color-light-gray)" }}>
-              <div
-                className="flex items-center gap-3 px-4 py-3 rounded-lg mb-2"
-                style={{
-                  backgroundColor: "var(--color-soft-beige)",
-                  color: "var(--color-charcoal)",
-                }}
-              >
-                <User className="w-5 h-5" />
-                <span className="font-medium">Admin</span>
-              </div>
-              <button
-                onClick={() => {
-                  logout();
-                  closeMobileMenu();
-                }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200"
-                style={{
-                  color: "var(--color-charcoal)",
-                  backgroundColor: "transparent",
-                }}
-              >
-                <LogOut className="w-5 h-5" />
-                <span>Logout</span>
-              </button>
-            </div>
-          )}
+          </div>
         </div>
-      </div>
+      </nav>
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
