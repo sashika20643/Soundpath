@@ -32,7 +32,6 @@ import { usePageMetadata } from "@/hooks/use-page-metadata";
 import { useEvents, useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/hooks/use-toast";
-import { useLazyLoading } from "@/hooks/use-lazy-loading";
 import { APP_CONFIG } from "@shared/config";
 import { preloadImage } from "@/lib/image-utils";
 import {
@@ -79,13 +78,6 @@ export default function Home() {
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const { toast } = useToast();
   const scrollRef = useScrollAnimation();
-
-  // Lazy loading hooks for each section
-  const featuredSection = useLazyLoading({ threshold: 0.1, rootMargin: '200px 0px' });
-  const mapSection = useLazyLoading({ threshold: 0.1, rootMargin: '200px 0px' });
-  const discoveriesSection = useLazyLoading({ threshold: 0.1, rootMargin: '200px 0px' });
-  const submitSection = useLazyLoading({ threshold: 0.1, rootMargin: '100px 0px' });
-  const hiddenGemsSection = useLazyLoading({ threshold: 0.1, rootMargin: '200px 0px' });
 
   const {
     data: allEvents = [],
@@ -315,7 +307,6 @@ export default function Home() {
         {/* Featured Events Section */}
         {featuredEvents.length > 0 && (
           <section
-            ref={featuredSection.elementRef}
             id="featured"
             className="section-padding"
             style={{ backgroundColor: "var(--color-cream)" }}
@@ -338,7 +329,7 @@ export default function Home() {
                 </p>
               </div>
 
-              {featuredLoading || !featuredSection.isVisible ? (
+              {featuredLoading ? (
                 <div className="grid-magazine">
                   {[...Array(6)].map((_, i) => (
                     <div
@@ -474,7 +465,6 @@ export default function Home() {
 
         {/* World Map Section - Editorial Style */}
         <section
-          ref={mapSection.elementRef}
           id="map"
           className="section-padding"
           style={{ backgroundColor: "var(--color-soft-beige)" }}
@@ -499,24 +489,17 @@ export default function Home() {
 
             {/* Interactive Google Maps */}
             <div className="scroll-animate scroll-animate-delay-1">
-              {mapSection.isVisible ? (
-                <EventMap
-                  events={allEvents}
-                  height="500px"
-                  className="mx-auto rounded-lg"
-                />
-              ) : (
-                <div className="mx-auto rounded-lg h-[500px] animate-pulse bg-gray-200 flex items-center justify-center">
-                  <Map className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
+              <EventMap
+                events={allEvents}
+                height="500px"
+                className="mx-auto rounded-lg"
+              />
             </div>
           </div>
         </section>
 
         {/* 🕵️‍♀️ Last Discoveries Section - Most Recent Events */}
         <section
-          ref={discoveriesSection.elementRef}
           id="discoveries"
           className="section-padding"
           style={{ backgroundColor: "var(--color-warm-white)" }}
@@ -538,7 +521,7 @@ export default function Home() {
               </p>
             </div>
 
-            {isLoading || !discoveriesSection.isVisible ? (
+            {isLoading ? (
               <div className="grid-magazine">
                 {[...Array(6)].map((_, i) => (
                   <div
@@ -652,7 +635,6 @@ export default function Home() {
 
         {/* Submit Discovery Section - Editorial Style */}
         <section
-          ref={submitSection.elementRef}
           id="submit"
           className="section-padding"
           style={{ backgroundColor: "var(--color-cream)" }}
@@ -1227,7 +1209,6 @@ export default function Home() {
 
         {/* 💎 Hidden Gems Section - Oldest Events */}
         <section
-          ref={hiddenGemsSection.elementRef}
           id="hidden-gems"
           className="section-padding"
           style={{ backgroundColor: "var(--color-soft-beige)" }}
@@ -1249,7 +1230,7 @@ export default function Home() {
               </p>
             </div>
 
-            {isLoading || !hiddenGemsSection.isVisible ? (
+            {isLoading ? (
               <div className="grid-magazine">
                 {[...Array(6)].map((_, i) => (
                   <div
