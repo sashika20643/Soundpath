@@ -72,10 +72,10 @@ export function Layout({ children }: LayoutProps) {
                   <span className="hidden xs:inline">Map</span>
                 </div>
               </div>
-              
+
               {/* Theme Toggle for Mobile */}
               <ThemeToggle size="icon" variant="ghost" />
-              
+
               {/* Mobile Menu Button - Aligned Right with Dynamic Animation */}
               <button
                 onClick={toggleMobileMenu}
@@ -95,7 +95,7 @@ export function Layout({ children }: LayoutProps) {
                     <Menu className="w-6 h-6" />
                   )}
                 </div>
-                
+
                 {/* Ripple Effect */}
                 <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`} 
                      style={{ backgroundColor: "var(--color-charcoal)" }} />
@@ -177,7 +177,7 @@ export function Layout({ children }: LayoutProps) {
               {/* Theme Toggle and User Section */}
               <div className="flex items-center gap-4">
                 <ThemeToggle size="icon" variant="ghost" />
-                
+
                 {isAdmin ? (
                   <div className="flex items-center gap-2">
                     <div
