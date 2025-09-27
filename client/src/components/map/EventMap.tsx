@@ -111,16 +111,16 @@ export function EventMap({ events, className = "", height = "400px" }: EventMapP
       let centerLat, centerLng, zoomLevel;
       
       if (eventsWithCoordinates.length === 1) {
-        // Single event - center on it with high zoom
+        // Single event - center on it with medium zoom to show surrounding area
         centerLat = eventsWithCoordinates[0].latitude!;
         centerLng = eventsWithCoordinates[0].longitude!;
-        zoomLevel = 12;
+        zoomLevel = 6;
         console.log('📍 Map centered on single event:', eventsWithCoordinates[0].title);
       } else if (eventsWithCoordinates.length > 1) {
-        // Multiple events - focus on first event but with medium zoom to show area
+        // Multiple events - focus on first event but with low zoom to show wider area
         centerLat = eventsWithCoordinates[0].latitude!;
         centerLng = eventsWithCoordinates[0].longitude!;
-        zoomLevel = 8;
+        zoomLevel = 4;
         console.log('📍 Map focused on first event:', eventsWithCoordinates[0].title);
       } else {
         // Fallback (shouldn't reach here due to earlier check)
