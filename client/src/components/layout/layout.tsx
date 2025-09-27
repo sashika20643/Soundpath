@@ -72,21 +72,29 @@ export function Layout({ children }: LayoutProps) {
                 </div>
               </div>
               
-              {/* Mobile Menu Button - Aligned Right */}
+              {/* Mobile Menu Button - Aligned Right with Dynamic Animation */}
               <button
                 onClick={toggleMobileMenu}
-                className="flex items-center justify-center w-12 h-12 rounded-xl border shadow-sm transition-all duration-300"
+                className="flex items-center justify-center w-12 h-12 rounded-xl border shadow-sm transition-all duration-300 mobile-tap relative overflow-hidden mobile-pulse"
                 style={{
-                  borderColor: "var(--color-light-gray)",
+                  borderColor: isMobileMenuOpen ? "var(--color-accent)" : "var(--color-light-gray)",
                   color: "var(--color-charcoal)",
-                  backgroundColor: "var(--color-soft-beige)",
+                  backgroundColor: isMobileMenuOpen ? "var(--color-accent)" : "var(--color-soft-beige)",
+                  transform: isMobileMenuOpen ? "scale(1.05)" : "scale(1)",
                 }}
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
+                {/* Animated Icon Container */}
+                <div className={`transition-all duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`}>
+                  {isMobileMenuOpen ? (
+                    <X className="w-6 h-6" />
+                  ) : (
+                    <Menu className="w-6 h-6" />
+                  )}
+                </div>
+                
+                {/* Ripple Effect */}
+                <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`} 
+                     style={{ backgroundColor: "var(--color-charcoal)" }} />
               </button>
             </div>
 
@@ -231,7 +239,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="space-y-2">
               <Link href="/" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 mobile-tap mobile-slide-in ${
                     location === "/" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
@@ -246,7 +254,7 @@ export function Layout({ children }: LayoutProps) {
 
               <Link href="/events" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 mobile-tap mobile-slide-in mobile-slide-in-delay-1 ${
                     location === "/events" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
@@ -261,7 +269,7 @@ export function Layout({ children }: LayoutProps) {
 
               <Link href="/map" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 mobile-tap mobile-slide-in mobile-slide-in-delay-2 ${
                     location === "/map" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
@@ -279,7 +287,7 @@ export function Layout({ children }: LayoutProps) {
               {isAdmin && (
                 <Link href="/dashboards/events" onClick={closeMobileMenu}>
                   <div
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 mobile-tap mobile-slide-in mobile-slide-in-delay-3 ${
                       location.startsWith("/dashboards") ? "font-semibold" : "font-medium"
                     }`}
                     style={{
@@ -297,7 +305,7 @@ export function Layout({ children }: LayoutProps) {
 
               <Link href="/contact" onClick={closeMobileMenu}>
                 <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 mobile-tap mobile-slide-in mobile-slide-in-delay-3 ${
                     location === "/contact" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
