@@ -132,7 +132,7 @@ export function RichTextEditor({
         placeholder={placeholder}
         style={{
           borderRadius: "6px",
-          backgroundColor: "#fcfbf8",
+          backgroundColor: "var(--color-warm-white)",
           height: height,
           minHeight: height,
         }}

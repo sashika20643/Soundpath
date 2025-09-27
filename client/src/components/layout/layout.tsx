@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Home, Music, User, LogIn, LogOut, Menu, X } from "lucide-react";
 import { APP_CONFIG } from "@shared/config";
 import { useAuth } from "@/contexts/auth-context";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import logo from "@/assets/symbolLogo.svg";
 
 interface LayoutProps {
@@ -71,6 +72,9 @@ export function Layout({ children }: LayoutProps) {
                   <span className="hidden xs:inline">Map</span>
                 </div>
               </div>
+              
+              {/* Theme Toggle for Mobile */}
+              <ThemeToggle size="icon" variant="ghost" />
               
               {/* Mobile Menu Button - Aligned Right with Dynamic Animation */}
               <button
@@ -170,8 +174,10 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </div>
 
-              {/* User Section */}
-              <div className="flex items-center gap-2">
+              {/* Theme Toggle and User Section */}
+              <div className="flex items-center gap-4">
+                <ThemeToggle size="icon" variant="ghost" />
+                
                 {isAdmin ? (
                   <div className="flex items-center gap-2">
                     <div

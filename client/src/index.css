@@ -564,3 +564,30 @@ body {
     @apply bg-purple-100 text-purple-800;
   }
 }
+
+.ql-container.ql-snow{
+        border: none !important;
+        }
+
+        /* Dark mode styles for Quill editor */
+        .dark .ql-toolbar.ql-snow {
+          background-color: var(--color-soft-beige) !important;
+          border-color: var(--color-light-gray) !important;
+        }
+
+        .dark .ql-toolbar.ql-snow .ql-stroke {
+          stroke: var(--color-charcoal) !important;
+        }
+
+        .dark .ql-toolbar.ql-snow .ql-fill {
+          fill: var(--color-charcoal) !important;
+        }
+
+        .dark .ql-editor {
+          background-color: var(--color-warm-white) !important;
+          color: var(--color-charcoal) !important;
+        }
+
+        .dark .ql-editor.ql-blank::before {
+          color: var(--color-mid-gray) !important;
+        }
