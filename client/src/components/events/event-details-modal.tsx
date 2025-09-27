@@ -60,6 +60,8 @@ export function EventDetailsModal({ isOpen, onClose, event }: EventDetailsModalP
                 src={event.heroImage} 
                 alt={event.title}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';

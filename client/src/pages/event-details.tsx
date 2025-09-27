@@ -283,6 +283,9 @@ export default function EventDetails() {
               className={`w-full h-full object-cover transition-all duration-1000 ${
                 imageLoaded ? "scale-100 blur-0" : "scale-110 blur-sm"
               }`}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               onLoad={() => setImageLoaded(true)}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
@@ -517,6 +520,8 @@ export default function EventDetails() {
                           src={relatedEvent.heroImage || musicDefaultImage}
                           alt={relatedEvent.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             if (target.src !== musicDefaultImage) {

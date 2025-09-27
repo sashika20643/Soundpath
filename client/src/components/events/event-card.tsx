@@ -25,6 +25,8 @@ export function EventCard({ event, index = 0, showNewBadge = false }: EventCardP
           src={event.heroImage || musicDefaultImage}
           alt={event.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             if (target.src !== musicDefaultImage) {

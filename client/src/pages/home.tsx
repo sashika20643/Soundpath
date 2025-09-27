@@ -220,6 +220,9 @@ export default function Home() {
               src="https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg"
               alt="Musical performance audience"
               className="w-full h-full object-cover"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
             {/* Strong dark overlay for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90"></div>
