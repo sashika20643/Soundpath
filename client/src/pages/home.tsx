@@ -1153,17 +1153,17 @@ export default function Home() {
                     type="submit"
                     data-testid="button-submit-event"
                     disabled={createEventMutation.isPending}
-                    className="btn-primary px-12 py-4 text-base font-medium uppercase tracking-wide flex items-center justify-center mx-auto mobile-tap mobile-bounce relative overflow-hidden group"
+                    className="btn-primary px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-medium uppercase tracking-wide flex items-center justify-center mx-auto mobile-tap mobile-bounce relative overflow-hidden group"
                   >
                     {createEventMutation.isPending ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-white mr-2 md:mr-3"></div>
                         <span className="relative z-10">Submitting Discovery...</span>
                       </>
                     ) : (
                       <>
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          <Send className="w-5 h-5" />
+                        <span className="relative z-10 flex items-center justify-center gap-1 md:gap-2">
+                          <Send className="w-4 h-4 md:w-5 md:h-5" />
                           <span>Submit Discovery</span>
                           <span className="transition-transform duration-300 group-hover:translate-x-1">✨</span>
                         </span>
