@@ -32,6 +32,7 @@ import { useEvents, useCreateEvent } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/hooks/use-toast";
 import { APP_CONFIG } from "@shared/config";
+import { preloadImage } from "@/lib/image-utils";
 import {
   MapPin,
   Calendar,
@@ -194,12 +195,18 @@ export default function Home() {
     }
   };
 
-  // Fetch continents on component mount
+  // Fetch continents and preload hero image on component mount
   useEffect(() => {
     const continents = getContinents();
     // You might want to store or process these continents further if needed
     // For now, we'll just log them to verify
     // console.log("Available continents:", continents);
+
+    // Preload critical hero background image for better perceived performance
+    const heroImageUrl = "https://thearmstronghotel.com/wp-content/uploads/2019/02/applause-audience-band-196652.jpg";
+    preloadImage(heroImageUrl, true).catch(() => {
+      console.warn("Failed to preload hero background image");
+    });
   }, []);
 
   return (

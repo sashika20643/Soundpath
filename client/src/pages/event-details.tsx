@@ -12,6 +12,8 @@ import {
 import musicDefaultImage from "@/assets/Musicdefault.jpg";
 import { Layout } from "@/components/layout/layout";
 import { EventCard } from "@/components/events/event-card";
+import { OptimizedImage } from "@/components/ui/optimized-image";
+import { preloadImage } from "@/lib/image-utils";
 import { useEvent, useEvents } from "@/hooks/use-events";
 import { useCategories } from "@/hooks/use-categories";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -83,10 +85,18 @@ export default function EventDetails() {
     // Reset scroll position to top when component mounts
     window.scrollTo(0, 0);
     
+    // Preload critical hero image for faster loading
+    if (event?.heroImage) {
+      preloadImage(event.heroImage, true).catch(() => {
+        // Fallback to default image if hero image fails
+        preloadImage(musicDefaultImage, true);
+      });
+    }
+    
     // Trigger fade-in animation after component mounts
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [event]);
 
   useEffect(() => {
     // Ensure we stay at top when event data loads
@@ -277,23 +287,16 @@ export default function EventDetails() {
           }`}
         >
           <div className="relative w-full h-full group">
-            <img
+            <OptimizedImage
               src={event.heroImage || musicDefaultImage}
               alt={event.title}
               className={`w-full h-full object-cover transition-all duration-1000 ${
                 imageLoaded ? "scale-100 blur-0" : "scale-110 blur-sm"
               }`}
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
+              fallbackSrc={musicDefaultImage}
+              priority={true}
+              sizes="100vw"
               onLoad={() => setImageLoaded(true)}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                if (target.src !== musicDefaultImage) {
-                  target.src = musicDefaultImage;
-                  setImageLoaded(true);
-                }
-              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent transition-opacity duration-500 group-hover:from-black/50"></div>
           </div>
@@ -516,18 +519,13 @@ export default function EventDetails() {
                     >
                       {/* Compact Image */}
                       <div className="relative h-32 overflow-hidden">
-                        <img
+                        <OptimizedImage
                           src={relatedEvent.heroImage || musicDefaultImage}
                           alt={relatedEvent.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          fallbackSrc={musicDefaultImage}
                           loading="lazy"
-                          decoding="async"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            if (target.src !== musicDefaultImage) {
-                              target.src = musicDefaultImage;
-                            }
-                          }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </div>
