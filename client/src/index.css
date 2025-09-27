@@ -7,7 +7,6 @@
 
 /* Kinfolk-inspired CSS Variables */
 :root {
-  /* Light theme colors */
   --color-cream: #faf8f4;
   --color-warm-white: #fcfbf8;
   --color-soft-beige: #f5f2ed;
@@ -27,19 +26,6 @@
   --spacing-lg: 4rem;
   --spacing-xl: 6rem;
   --spacing-2xl: 8rem;
-}
-
-/* Dark theme colors */
-.dark {
-  --color-cream: #1a1916;
-  --color-warm-white: #2d2b26;
-  --color-soft-beige: #3a3630;
-  --color-light-gray: #4a453f;
-  --color-mid-gray: #8a857f;
-  --color-dark-gray: #c5c0b5;
-  --color-charcoal: #f0ede8;
-  --color-black: #fcfbf8;
-  --color-accent: #d4b896;
 }
 
 /* Base typography and layout */
@@ -577,31 +563,4 @@ body {
   .category-badge-eventType {
     @apply bg-purple-100 text-purple-800;
   }
-}
-
-.ql-container.ql-snow{
-        border: none !important;
-        }
-
-        /* Dark mode styles for Quill editor */
-.dark .ql-toolbar.ql-snow {
-  background-color: var(--color-soft-beige) !important;
-  border-color: var(--color-light-gray) !important;
-}
-
-.dark .ql-toolbar.ql-snow .ql-stroke {
-  stroke: var(--color-charcoal) !important;
-}
-
-.dark .ql-toolbar.ql-snow .ql-fill {
-  fill: var(--color-charcoal) !important;
-}
-
-.dark .ql-editor {
-  background-color: var(--color-warm-white) !important;
-  color: var(--color-charcoal) !important;
-}
-
-.dark .ql-editor.ql-blank::before {
-  color: var(--color-mid-gray) !important;
 }

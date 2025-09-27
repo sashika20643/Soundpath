@@ -3,7 +3,6 @@ import { Link, useLocation } from "wouter";
 import { Home, Music, User, LogIn, LogOut, Menu, X } from "lucide-react";
 import { APP_CONFIG } from "@shared/config";
 import { useAuth } from "@/contexts/auth-context";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import logo from "@/assets/symbolLogo.svg";
 
 interface LayoutProps {
@@ -72,10 +71,7 @@ export function Layout({ children }: LayoutProps) {
                   <span className="hidden xs:inline">Map</span>
                 </div>
               </div>
-
-              {/* Theme Toggle for Mobile */}
-              <ThemeToggle size="icon" variant="ghost" />
-
+              
               {/* Mobile Menu Button - Aligned Right with Dynamic Animation */}
               <button
                 onClick={toggleMobileMenu}
@@ -95,9 +91,9 @@ export function Layout({ children }: LayoutProps) {
                     <Menu className="w-6 h-6" />
                   )}
                 </div>
-
+                
                 {/* Ripple Effect */}
-                <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`}
+                <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`} 
                      style={{ backgroundColor: "var(--color-charcoal)" }} />
               </button>
             </div>
@@ -174,10 +170,8 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </div>
 
-              {/* Theme Toggle and User Section */}
-              <div className="flex items-center gap-4">
-                <ThemeToggle size="icon" variant="ghost" />
-
+              {/* User Section */}
+              <div className="flex items-center gap-2">
                 {isAdmin ? (
                   <div className="flex items-center gap-2">
                     <div
@@ -389,7 +383,7 @@ export function Layout({ children }: LayoutProps) {
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "#fcfbf8" }}
+                style={{ color: "var(--color-warm-white)" }}
               >
                 Explore
               </h4>
@@ -398,7 +392,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Home
                   </Link>
@@ -407,7 +401,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/events"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     All Events
                   </Link>
@@ -416,7 +410,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/map"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Map
                   </Link>
@@ -427,7 +421,7 @@ export function Layout({ children }: LayoutProps) {
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "#fcfbf8" }}
+                style={{ color: "var(--color-warm-white)" }}
               >
                 Discover
               </h4>
@@ -436,7 +430,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#featured"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Featured Destinations
                   </a>
@@ -445,7 +439,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#discoveries"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Latest Discoveries
                   </a>
@@ -454,7 +448,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#hidden-gems"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Hidden Gems
                   </a>
@@ -465,7 +459,7 @@ export function Layout({ children }: LayoutProps) {
             <div>
               <h4
                 className="font-sans text-sm font-medium uppercase tracking-wide mb-4"
-                style={{ color: "#fcfbf8" }}
+                style={{ color: "var(--color-warm-white)" }}
               >
                 Get Involved
               </h4>
@@ -474,7 +468,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#submit"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Submit Discovery
                   </a>
@@ -483,7 +477,7 @@ export function Layout({ children }: LayoutProps) {
                   <Link
                     href="/contact"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Contact Us
                   </Link>
@@ -492,7 +486,7 @@ export function Layout({ children }: LayoutProps) {
                   <a
                     href="#hero"
                     className="text-sm hover:opacity-70 transition-opacity duration-300"
-                    style={{ color: "#aca599" }}
+                    style={{ color: "var(--color-mid-gray)" }}
                   >
                     Back to Top
                   </a>
