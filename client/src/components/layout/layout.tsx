@@ -24,10 +24,6 @@ export function Layout({ children }: LayoutProps) {
     setIsMobileMenuOpen(false);
   };
 
-  const handleBackdropClick = () => {
-    console.log('Closing mobile menu via backdrop click');
-    setIsMobileMenuOpen(false);
-  };
 
   return (
     <div
@@ -221,253 +217,131 @@ export function Layout({ children }: LayoutProps) {
         </div>
       </nav>
 
-      {/* Full Screen Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          {/* Invisible backdrop for click-outside */}
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-20" 
-            onClick={handleBackdropClick}
-          />
-          
-          {/* Menu content */}
-          <div 
-            className={`relative z-10 h-full transition-all duration-300 ease-in-out ${
-              isMobileMenuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
-            style={{
-              backgroundColor: "var(--color-warm-white)",
-            }}
-          >
-            <div className="flex flex-col h-full">
-          {/* Full Screen Menu Header */}
-          <div className="p-6 pb-8" style={{ backgroundColor: "var(--color-soft-beige)" }}>
-            <div className="flex items-center justify-between mb-6">
-              <Link href="/" onClick={closeMobileMenu}>
-                <div className="flex items-center gap-4">
-                  <img src={logo} alt="Sonic Paths Logo" className="h-12 w-auto" />
-                  <div>
-                    <span className="text-2xl font-bold" style={{ color: "var(--color-charcoal)" }}>
-                      {APP_CONFIG.name}
-                    </span>
-                    <p className="text-sm mt-1" style={{ color: "var(--color-mid-gray)" }}>
-                      {APP_CONFIG.tagline}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-              <button
-                onClick={closeMobileMenu}
-                className="w-12 h-12 flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110"
-                style={{ 
-                  color: "var(--color-mid-gray)",
-                  backgroundColor: "var(--color-warm-white)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+      {/* Mobile Navigation Dropdown */}
+      <div
+        className={`md:hidden border-t transition-all duration-300 ease-in-out overflow-hidden ${
+          isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}
+        style={{
+          backgroundColor: "var(--color-warm-white)",
+          borderColor: "var(--color-light-gray)",
+        }}
+      >
+        <div className="px-4 py-4 space-y-2">
+          <Link href="/" onClick={closeMobileMenu}>
+            <div
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                location === "/" ? "font-semibold" : "font-medium"
+              }`}
+              style={{
+                backgroundColor: location === "/" ? "var(--color-soft-beige)" : "transparent",
+                color: location === "/" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+              }}
+            >
+              <Home className="w-5 h-5" />
+              <span>Home</span>
+            </div>
+          </Link>
+
+          <Link href="/events" onClick={closeMobileMenu}>
+            <div
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                location === "/events" ? "font-semibold" : "font-medium"
+              }`}
+              style={{
+                backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "transparent",
+                color: location === "/events" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+              }}
+            >
+              <Music className="w-5 h-5" />
+              <span>Events</span>
+            </div>
+          </Link>
+
+          <Link href="/map" onClick={closeMobileMenu}>
+            <div
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                location === "/map" ? "font-semibold" : "font-medium"
+              }`}
+              style={{
+                backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
+                color: location === "/map" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+              }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+              </svg>
+              <span>Map</span>
+            </div>
+          </Link>
+
+          {isAdmin && (
+            <Link href="/dashboards/events" onClick={closeMobileMenu}>
+              <div
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  location.startsWith("/dashboards") ? "font-semibold" : "font-medium"
+                }`}
+                style={{
+                  backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "transparent",
+                  color: location.startsWith("/dashboards") ? "var(--color-charcoal)" : "var(--color-dark-gray)",
                 }}
               >
-                <X className="w-6 h-6" />
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                </svg>
+                <span>Dashboard</span>
+              </div>
+            </Link>
+          )}
+
+          <Link href="/contact" onClick={closeMobileMenu}>
+            <div
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                location === "/contact" ? "font-semibold" : "font-medium"
+              }`}
+              style={{
+                backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "transparent",
+                color: location === "/contact" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+              }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+              <span>Contact</span>
+            </div>
+          </Link>
+
+          {isAdmin && (
+            <div className="pt-2 mt-2 border-t" style={{ borderColor: "var(--color-light-gray)" }}>
+              <div
+                className="flex items-center gap-3 px-4 py-3 rounded-lg mb-2"
+                style={{
+                  backgroundColor: "var(--color-soft-beige)",
+                  color: "var(--color-charcoal)",
+                }}
+              >
+                <User className="w-5 h-5" />
+                <span className="font-medium">Admin</span>
+              </div>
+              <button
+                onClick={() => {
+                  logout();
+                  closeMobileMenu();
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200"
+                style={{
+                  color: "var(--color-charcoal)",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <LogOut className="w-5 h-5" />
+                <span>Logout</span>
               </button>
             </div>
-          </div>
-
-          {/* Full Screen Menu Navigation */}
-          <nav className="flex-1 px-6 py-4">
-            <div className="grid gap-4 max-w-md mx-auto">
-              <Link href="/" onClick={closeMobileMenu}>
-                <div
-                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/" ? "font-semibold shadow-lg" : "font-medium"
-                  }`}
-                  style={{
-                    backgroundColor: location === "/" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
-                    color: location === "/" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: "2px solid",
-                    borderColor: location === "/" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
-                  }}
-                >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                    backgroundColor: location === "/" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
-                  }}>
-                    <Home className="w-7 h-7" />
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-lg font-semibold">Home</span>
-                    <p className="text-sm mt-1 opacity-80">Discover music experiences worldwide</p>
-                  </div>
-                </div>
-              </Link>
-
-              <Link href="/events" onClick={closeMobileMenu}>
-                <div
-                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/events" ? "font-semibold shadow-lg" : "font-medium"
-                  }`}
-                  style={{
-                    backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
-                    color: location === "/events" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: "2px solid",
-                    borderColor: location === "/events" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
-                  }}
-                >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                    backgroundColor: location === "/events" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
-                  }}>
-                    <Music className="w-7 h-7" />
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-lg font-semibold">Events</span>
-                    <p className="text-sm mt-1 opacity-80">Browse all amazing music events</p>
-                  </div>
-                </div>
-              </Link>
-
-              <Link href="/map" onClick={closeMobileMenu}>
-                <div
-                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/map" ? "font-semibold shadow-lg" : "font-medium"
-                  }`}
-                  style={{
-                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
-                    color: location === "/map" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: "2px solid",
-                    borderColor: location === "/map" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
-                  }}
-                >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                    backgroundColor: location === "/map" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
-                  }}>
-                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-lg font-semibold">Map</span>
-                    <p className="text-sm mt-1 opacity-80">Explore global music locations</p>
-                  </div>
-                </div>
-              </Link>
-
-              {isAdmin && (
-                <Link href="/dashboards/events" onClick={closeMobileMenu}>
-                  <div
-                    className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
-                      location.startsWith("/dashboards") ? "font-semibold shadow-lg" : "font-medium"
-                    }`}
-                    style={{
-                      backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "var(--color-warm-white)",
-                      color: location.startsWith("/dashboards") ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                      border: "2px solid",
-                      borderColor: location.startsWith("/dashboards") ? "var(--color-mid-gray)" : "var(--color-light-gray)"
-                    }}
-                  >
-                    <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                      backgroundColor: location.startsWith("/dashboards") ? "var(--color-warm-white)" : "var(--color-soft-beige)"
-                    }}>
-                      <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-lg font-semibold">Dashboard</span>
-                      <p className="text-sm mt-1 opacity-80">Manage events & content</p>
-                    </div>
-                  </div>
-                </Link>
-              )}
-
-              <Link href="/contact" onClick={closeMobileMenu}>
-                <div
-                  className={`flex items-center gap-5 px-6 py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
-                    location === "/contact" ? "font-semibold shadow-lg" : "font-medium"
-                  }`}
-                  style={{
-                    backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "var(--color-warm-white)",
-                    color: location === "/contact" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
-                    border: "2px solid",
-                    borderColor: location === "/contact" ? "var(--color-mid-gray)" : "var(--color-light-gray)"
-                  }}
-                >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                    backgroundColor: location === "/contact" ? "var(--color-warm-white)" : "var(--color-soft-beige)"
-                  }}>
-                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-lg font-semibold">Contact</span>
-                    <p className="text-sm mt-1 opacity-80">Get in touch with our team</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </nav>
-
-          {/* Full Screen Menu Footer */}
-          <div className="px-6 py-8 mt-auto" style={{ backgroundColor: "var(--color-soft-beige)" }}>
-            {isAdmin ? (
-              <div className="space-y-4 max-w-md mx-auto">
-                <div
-                  className="flex items-center gap-5 px-6 py-5 rounded-2xl border-2 shadow-lg"
-                  style={{
-                    borderColor: "var(--color-mid-gray)",
-                    backgroundColor: "var(--color-warm-white)",
-                  }}
-                >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                    backgroundColor: "var(--color-soft-beige)"
-                  }}>
-                    <User className="w-7 h-7" style={{ color: "var(--color-mid-gray)" }} />
-                  </div>
-                  <div className="flex-1">
-                    <span className="font-bold text-lg" style={{ color: "var(--color-charcoal)" }}>
-                      Admin Access
-                    </span>
-                    <p className="text-sm mt-1 opacity-80">Administrative privileges</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    logout();
-                    closeMobileMenu();
-                  }}
-                  className="w-full flex items-center gap-5 px-6 py-5 rounded-2xl border-2 transition-all duration-300 hover:scale-[1.02]"
-                  style={{
-                    borderColor: "var(--color-light-gray)",
-                    color: "var(--color-charcoal)",
-                    backgroundColor: "var(--color-warm-white)",
-                  }}
-                >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-xl" style={{
-                    backgroundColor: "var(--color-soft-beige)"
-                  }}>
-                    <LogOut className="w-7 h-7" />
-                  </div>
-                  <div className="flex-1 text-left">
-                    <span className="font-semibold text-lg">Logout</span>
-                    <p className="text-sm mt-1 opacity-80">Sign out of your account</p>
-                  </div>
-                </button>
-              </div>
-            ) : (
-              <div className="text-center py-8 max-w-sm mx-auto">
-                <div className="mb-4">
-                  <span className="text-4xl">🎵</span>
-                </div>
-                <p className="text-lg font-medium mb-2" style={{ color: "var(--color-charcoal)" }}>
-                  Thanks for exploring {APP_CONFIG.name}!
-                </p>
-                <p className="text-base opacity-80" style={{ color: "var(--color-dark-gray)" }}>
-                  Discover amazing music experiences worldwide
-                </p>
-              </div>
-            )}
-          </div>
-            </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
