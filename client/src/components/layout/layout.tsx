@@ -46,7 +46,7 @@ export function Layout({ children }: LayoutProps) {
             {/* Logo */}
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
-                <img src={logo} alt="Soundpath Logo" className="h-10 w-auto" />
+                <img src={logo} alt="Soundpath Logo" className="h-12 w-auto" />
                 <div className="flex flex-col">
                   <span className="font-bold text-lg" style={{ color: "var(--color-charcoal)" }}>Sonic Paths</span>
                   <span className="text-xs hidden sm:block" style={{ color: "var(--color-mid-gray)" }}>
