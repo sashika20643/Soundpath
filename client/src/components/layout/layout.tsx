@@ -15,15 +15,14 @@ export function Layout({ children }: LayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
-    console.log('Toggling mobile menu:', !isMobileMenuOpen);
+    console.log("Toggling mobile menu:", !isMobileMenuOpen);
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const closeMobileMenu = () => {
-    console.log('Closing mobile menu');
+    console.log("Closing mobile menu");
     setIsMobileMenuOpen(false);
   };
-
 
   return (
     <div
@@ -46,10 +45,18 @@ export function Layout({ children }: LayoutProps) {
             {/* Logo */}
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
-                <img src={logo} alt="Soundpath Logo" className="h-12 w-auto" />
+                <img src={logo} alt="Soundpath Logo" className="h-14 w-auto" />
                 <div className="flex flex-col">
-                  <span className="font-bold text-lg" style={{ color: "var(--color-charcoal)" }}>Sonic Paths</span>
-                  <span className="text-xs hidden sm:block" style={{ color: "var(--color-mid-gray)" }}>
+                  <span
+                    className="font-bold text-lg"
+                    style={{ color: "var(--color-charcoal)" }}
+                  >
+                    Sonic Paths
+                  </span>
+                  <span
+                    className="text-xs hidden sm:block"
+                    style={{ color: "var(--color-mid-gray)" }}
+                  >
                     {APP_CONFIG.tagline}
                   </span>
                 </div>
@@ -60,41 +67,63 @@ export function Layout({ children }: LayoutProps) {
             <div className="md:hidden flex items-center gap-3">
               {/* Quick Stats or Info */}
               <div className="flex items-center gap-4 text-sm">
-                <div className="flex items-center gap-1" style={{ color: "var(--color-mid-gray)" }}>
+                <div
+                  className="flex items-center gap-1"
+                  style={{ color: "var(--color-mid-gray)" }}
+                >
                   <Music className="w-4 h-4" />
                   <span className="hidden xs:inline">Events</span>
                 </div>
-                <div className="flex items-center gap-1" style={{ color: "var(--color-mid-gray)" }}>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                <div
+                  className="flex items-center gap-1"
+                  style={{ color: "var(--color-mid-gray)" }}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   <span className="hidden xs:inline">Map</span>
                 </div>
               </div>
-              
+
               {/* Mobile Menu Button - Aligned Right with Dynamic Animation */}
               <button
                 onClick={toggleMobileMenu}
                 className="flex items-center justify-center w-12 h-12 rounded-xl border shadow-sm transition-all duration-300 mobile-tap relative overflow-hidden mobile-pulse"
                 style={{
-                  borderColor: isMobileMenuOpen ? "var(--color-accent)" : "var(--color-light-gray)",
+                  borderColor: isMobileMenuOpen
+                    ? "var(--color-accent)"
+                    : "var(--color-light-gray)",
                   color: "var(--color-charcoal)",
-                  backgroundColor: isMobileMenuOpen ? "var(--color-accent)" : "var(--color-soft-beige)",
+                  backgroundColor: isMobileMenuOpen
+                    ? "var(--color-accent)"
+                    : "var(--color-soft-beige)",
                   transform: isMobileMenuOpen ? "scale(1.05)" : "scale(1)",
                 }}
               >
                 {/* Animated Icon Container */}
-                <div className={`transition-all duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`}>
+                <div
+                  className={`transition-all duration-300 ${isMobileMenuOpen ? "rotate-180" : "rotate-0"}`}
+                >
                   {isMobileMenuOpen ? (
                     <X className="w-6 h-6" />
                   ) : (
                     <Menu className="w-6 h-6" />
                   )}
                 </div>
-                
+
                 {/* Ripple Effect */}
-                <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? 'scale-150 opacity-30' : 'scale-0 opacity-0'}`} 
-                     style={{ backgroundColor: "var(--color-charcoal)" }} />
+                <div
+                  className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? "scale-150 opacity-30" : "scale-0 opacity-0"}`}
+                  style={{ backgroundColor: "var(--color-charcoal)" }}
+                />
               </button>
             </div>
 
@@ -227,12 +256,14 @@ export function Layout({ children }: LayoutProps) {
         {/* Mobile Navigation Dropdown - Absolute positioned overlay */}
         <div
           className={`md:hidden absolute inset-x-0 top-full z-50 origin-top transition-all duration-200 ease-out border-t ${
-            isMobileMenuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+            isMobileMenuOpen
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-2 pointer-events-none"
           }`}
           style={{
             backgroundColor: "var(--color-warm-white)",
             borderColor: "var(--color-light-gray)",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
@@ -243,8 +274,14 @@ export function Layout({ children }: LayoutProps) {
                     location === "/" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/" ? "var(--color-soft-beige)" : "transparent",
-                    color: location === "/" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                    backgroundColor:
+                      location === "/"
+                        ? "var(--color-soft-beige)"
+                        : "transparent",
+                    color:
+                      location === "/"
+                        ? "var(--color-charcoal)"
+                        : "var(--color-dark-gray)",
                   }}
                 >
                   <Home className="w-5 h-5" />
@@ -258,8 +295,14 @@ export function Layout({ children }: LayoutProps) {
                     location === "/events" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/events" ? "var(--color-soft-beige)" : "transparent",
-                    color: location === "/events" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                    backgroundColor:
+                      location === "/events"
+                        ? "var(--color-soft-beige)"
+                        : "transparent",
+                    color:
+                      location === "/events"
+                        ? "var(--color-charcoal)"
+                        : "var(--color-dark-gray)",
                   }}
                 >
                   <Music className="w-5 h-5" />
@@ -273,12 +316,26 @@ export function Layout({ children }: LayoutProps) {
                     location === "/map" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
-                    color: location === "/map" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                    backgroundColor:
+                      location === "/map"
+                        ? "var(--color-soft-beige)"
+                        : "transparent",
+                    color:
+                      location === "/map"
+                        ? "var(--color-charcoal)"
+                        : "var(--color-dark-gray)",
                   }}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   <span>Map</span>
                 </div>
@@ -288,14 +345,24 @@ export function Layout({ children }: LayoutProps) {
                 <Link href="/dashboards/events" onClick={closeMobileMenu}>
                   <div
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 mobile-tap mobile-slide-in mobile-slide-in-delay-3 ${
-                      location.startsWith("/dashboards") ? "font-semibold" : "font-medium"
+                      location.startsWith("/dashboards")
+                        ? "font-semibold"
+                        : "font-medium"
                     }`}
                     style={{
-                      backgroundColor: location.startsWith("/dashboards") ? "var(--color-soft-beige)" : "transparent",
-                      color: location.startsWith("/dashboards") ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                      backgroundColor: location.startsWith("/dashboards")
+                        ? "var(--color-soft-beige)"
+                        : "transparent",
+                      color: location.startsWith("/dashboards")
+                        ? "var(--color-charcoal)"
+                        : "var(--color-dark-gray)",
                     }}
                   >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                     </svg>
                     <span>Dashboard</span>
@@ -309,11 +376,21 @@ export function Layout({ children }: LayoutProps) {
                     location === "/contact" ? "font-semibold" : "font-medium"
                   }`}
                   style={{
-                    backgroundColor: location === "/contact" ? "var(--color-soft-beige)" : "transparent",
-                    color: location === "/contact" ? "var(--color-charcoal)" : "var(--color-dark-gray)",
+                    backgroundColor:
+                      location === "/contact"
+                        ? "var(--color-soft-beige)"
+                        : "transparent",
+                    color:
+                      location === "/contact"
+                        ? "var(--color-charcoal)"
+                        : "var(--color-dark-gray)",
                   }}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
@@ -322,7 +399,10 @@ export function Layout({ children }: LayoutProps) {
               </Link>
 
               {isAdmin && (
-                <div className="pt-2 mt-2 border-t" style={{ borderColor: "var(--color-light-gray)" }}>
+                <div
+                  className="pt-2 mt-2 border-t"
+                  style={{ borderColor: "var(--color-light-gray)" }}
+                >
                   <div
                     className="flex items-center gap-3 px-4 py-3 rounded-lg mb-2"
                     style={{
