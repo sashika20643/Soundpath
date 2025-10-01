@@ -309,9 +309,16 @@
   transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+/* Only apply hidden state after page has loaded and scroll detection is active */
 .scroll-animate:not(.in-view) {
-  opacity: 0.4;
-  transform: translateY(30px);
+  opacity: 0.6;
+  transform: translateY(20px);
+}
+
+/* Ensure initial content is always visible during loading */
+.scroll-animate:not(.scroll-animation-ready):not(.in-view) {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Hero animation classes */

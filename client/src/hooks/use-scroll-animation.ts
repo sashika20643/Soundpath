@@ -53,8 +53,8 @@ export function useScrollAnimation() {
     const initializeWithRetries = () => {
       initializeElements();
       
-      // Retry after DOM updates
-      const timeouts = [100, 300, 500, 1000];
+      // Extended retry attempts for API-loaded content
+      const timeouts = [100, 300, 500, 1000, 1500, 2000];
       timeouts.forEach(delay => {
         setTimeout(() => {
           const newElements = element.querySelectorAll('.scroll-animate:not(.in-view)');
@@ -67,16 +67,53 @@ export function useScrollAnimation() {
       });
     };
 
+    // Monitor for new elements being added to DOM
+    const mutationObserver = new MutationObserver((mutations) => {
+      let shouldReinitialize = false;
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              const element = node as Element;
+              if (element.classList?.contains('scroll-animate') || 
+                  element.querySelector?.('.scroll-animate')) {
+                shouldReinitialize = true;
+              }
+            }
+          });
+        }
+      });
+      
+      if (shouldReinitialize) {
+        setTimeout(() => {
+          initializeElements();
+        }, 100);
+      }
+    });
+
+    // Start observing DOM changes
+    mutationObserver.observe(element, {
+      childList: true,
+      subtree: true
+    });
+
     // Initialize immediately and after animation frame
     requestAnimationFrame(() => {
       initializeWithRetries();
     });
 
     // Also initialize after a brief delay for dynamic content
-    const mainTimeout = setTimeout(initializeWithRetries, 50);
+    const mainTimeout = setTimeout(() => {
+      initializeWithRetries();
+      // Mark scroll animations as ready after initial setup
+      setTimeout(() => {
+        element.classList.add('scroll-animation-ready');
+      }, 500);
+    }, 50);
 
     return () => {
       clearTimeout(mainTimeout);
+      mutationObserver.disconnect();
       const animatedElements = element.querySelectorAll('.scroll-animate');
       animatedElements.forEach((el) => observer.unobserve(el));
     };
