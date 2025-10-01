@@ -251,14 +251,18 @@ export default function Home() {
           </div>
 
           <div className="max-w-6xl mx-auto text-center relative z-10">
-            <div className="scroll-animate mb-16">
-              <h1 className="font-serif text-hero mb-8 text-white drop-shadow-lg">
-                {APP_CONFIG.name}
+            <div className="mb-16">
+              <h1 className="font-serif text-hero mb-8 text-white drop-shadow-lg hero-title-animate text-shimmer">
+                {APP_CONFIG.name.split('').map((letter, index) => (
+                  <span key={index} className="letter-drop">
+                    {letter === ' ' ? '\u00A0' : letter}
+                  </span>
+                ))}
               </h1>
-              <p className="text-large font-light mb-6 text-white/90 drop-shadow-md">
+              <p className="text-large font-light mb-6 text-white/90 drop-shadow-md hero-subtitle-animate">
                 {APP_CONFIG.tagline}
               </p>
-              <p className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm">
+              <p className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm hero-description-animate">
                 Discover legendary venues, hidden amphitheaters, and
                 transcendent festivals in remarkable settings. Each destination
                 tells a story of where music and place create something
@@ -267,37 +271,40 @@ export default function Home() {
             </div>
 
             {/* Minimalist Action Buttons with Mobile Dynamics */}
-            <div className="scroll-animate scroll-animate-delay-1 flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <button className="px-8 py-3 text-sm font-medium rounded-lg border border-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50 mobile-tap mobile-pulse relative overflow-hidden group">
+            <div className="hero-buttons-animate flex flex-col sm:flex-row gap-6 justify-center mb-16">
+              <button className="px-8 py-3 text-sm font-medium rounded-lg border border-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50 mobile-tap mobile-pulse relative overflow-hidden group transform hover:scale-105">
                 <span className="relative z-10">Explore Destinations</span>
                 <div className="absolute inset-0 rounded-lg scale-0 bg-white/20 transition-transform duration-300 group-active:scale-100 md:hidden"></div>
+                <div className="absolute inset-0 rounded-lg opacity-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 group-hover:opacity-100 group-hover:animate-pulse"></div>
               </button>
               <Link href="/events">
-                <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg mobile-tap mobile-bounce relative overflow-hidden group">
+                <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg mobile-tap mobile-bounce relative overflow-hidden group transform hover:scale-105">
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Browse Collection
                     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                   </span>
                   <div className="absolute inset-0 rounded-lg scale-0 bg-black/10 transition-transform duration-300 group-active:scale-100 md:hidden"></div>
+                  <div className="absolute inset-0 rounded-lg opacity-0 bg-gradient-to-r from-transparent via-black/10 to-transparent -skew-x-12 group-hover:opacity-100 group-hover:animate-pulse"></div>
                 </button>
               </Link>
             </div>
 
             {/* Elegant Search */}
-            <div className="scroll-animate scroll-animate-delay-2 max-w-lg mx-auto">
-              <div className="relative">
+            <div className="hero-search-animate max-w-lg mx-auto">
+              <div className="relative group">
                 <Input
                   type="text"
                   placeholder="Search destinations, genres, experiences..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                  className="w-full py-4 px-6 border-2 border-white/50 focus:border-white bg-white/20 backdrop-blur-md text-white placeholder-white/80 text-center transition-all duration-300 shadow-lg"
+                  className="w-full py-4 px-6 border-2 border-white/50 focus:border-white bg-white/20 backdrop-blur-md text-white placeholder-white/80 text-center transition-all duration-300 shadow-lg transform group-focus-within:scale-105"
                   style={{
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
                   }}
                 />
+                <div className="absolute inset-0 rounded-lg opacity-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 group-focus-within:opacity-100 group-focus-within:animate-pulse pointer-events-none"></div>
               </div>
             </div>
           </div>

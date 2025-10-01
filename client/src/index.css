@@ -196,6 +196,98 @@
   }
 }
 
+/* Hero text animations */
+@keyframes heroTitleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.8);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(30px) scale(0.9);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes heroSubtitleSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes heroDescriptionFade {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroButtonPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-5deg);
+  }
+  70% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes heroSearchExpand {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.3) scaleY(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes letterDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) rotate(10deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(10px) rotate(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
 /* Mobile-specific hero enhancements */
 @media (max-width: 768px) {
   .mobile-gradient-shift {
@@ -216,6 +308,66 @@
   transform: translateY(0);
   transition: all 0.6s ease-out;
 }
+
+/* Hero animation classes */
+.hero-title-animate {
+  animation: heroTitleReveal 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  opacity: 0;
+}
+
+.hero-subtitle-animate {
+  animation: heroSubtitleSlide 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+.hero-description-animate {
+  animation: heroDescriptionFade 1s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+.hero-buttons-animate {
+  animation: heroButtonPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.9s forwards;
+  opacity: 0;
+}
+
+.hero-search-animate {
+  animation: heroSearchExpand 0.7s cubic-bezier(0.23, 1, 0.32, 1) 1.2s forwards;
+  opacity: 0;
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 2s ease-in-out infinite;
+}
+
+.letter-drop {
+  display: inline-block;
+  animation: letterDrop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+}
+
+/* Staggered letter animation delays */
+.letter-drop:nth-child(1) { animation-delay: 0.1s; }
+.letter-drop:nth-child(2) { animation-delay: 0.15s; }
+.letter-drop:nth-child(3) { animation-delay: 0.2s; }
+.letter-drop:nth-child(4) { animation-delay: 0.25s; }
+.letter-drop:nth-child(5) { animation-delay: 0.3s; }
+.letter-drop:nth-child(6) { animation-delay: 0.35s; }
+.letter-drop:nth-child(7) { animation-delay: 0.4s; }
+.letter-drop:nth-child(8) { animation-delay: 0.45s; }
+.letter-drop:nth-child(9) { animation-delay: 0.5s; }
+.letter-drop:nth-child(10) { animation-delay: 0.55s; }
+.letter-drop:nth-child(11) { animation-delay: 0.6s; }
+.letter-drop:nth-child(12) { animation-delay: 0.65s; }
 
 .scroll-animate.in-view {
   opacity: 1;
