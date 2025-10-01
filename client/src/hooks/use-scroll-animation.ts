@@ -13,9 +13,9 @@ export function useScrollAnimation() {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
           } else {
-            // Only remove in-view for elements below the fold to prevent flickering
+            // Only remove in-view for elements that are far below the viewport
             const rect = entry.target.getBoundingClientRect();
-            if (rect.top > window.innerHeight) {
+            if (rect.top > window.innerHeight + 200) {
               entry.target.classList.remove('in-view');
             }
           }
@@ -23,47 +23,61 @@ export function useScrollAnimation() {
       },
       {
         threshold: 0.1,
-        rootMargin: '100px 0px -50px 0px',
+        rootMargin: '50px 0px -100px 0px',
       }
     );
 
-    const animatedElements = element.querySelectorAll('.scroll-animate');
-    
-    // Initialize elements and check visibility
+    // Function to check if element is in viewport
+    const isInViewport = (el: Element) => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      return rect.top < windowHeight - 50 && rect.bottom > 50;
+    };
+
+    // Initialize elements
     const initializeElements = () => {
+      const animatedElements = element.querySelectorAll('.scroll-animate');
+      
       animatedElements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        
-        // More liberal initial visibility check
-        if (rect.top < windowHeight && rect.bottom > 0) {
+        // Check initial visibility
+        if (isInViewport(el)) {
           el.classList.add('in-view');
         }
         
+        // Start observing all elements
         observer.observe(el);
       });
     };
 
-    // Use requestAnimationFrame to ensure DOM is fully rendered
-    requestAnimationFrame(() => {
+    // Multiple initialization attempts to catch dynamic content
+    const initializeWithRetries = () => {
       initializeElements();
+      
+      // Retry after DOM updates
+      const timeouts = [100, 300, 500, 1000];
+      timeouts.forEach(delay => {
+        setTimeout(() => {
+          const newElements = element.querySelectorAll('.scroll-animate:not(.in-view)');
+          newElements.forEach((el) => {
+            if (isInViewport(el)) {
+              el.classList.add('in-view');
+            }
+          });
+        }, delay);
+      });
+    };
+
+    // Initialize immediately and after animation frame
+    requestAnimationFrame(() => {
+      initializeWithRetries();
     });
 
-    // Also check after a brief delay to catch any dynamically loaded content
-    const timeoutId = setTimeout(() => {
-      const newElements = element.querySelectorAll('.scroll-animate:not(.in-view)');
-      newElements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        
-        if (rect.top < windowHeight && rect.bottom > 0) {
-          el.classList.add('in-view');
-        }
-      });
-    }, 100);
+    // Also initialize after a brief delay for dynamic content
+    const mainTimeout = setTimeout(initializeWithRetries, 50);
 
     return () => {
-      clearTimeout(timeoutId);
+      clearTimeout(mainTimeout);
+      const animatedElements = element.querySelectorAll('.scroll-animate');
       animatedElements.forEach((el) => observer.unobserve(el));
     };
   }, []);
