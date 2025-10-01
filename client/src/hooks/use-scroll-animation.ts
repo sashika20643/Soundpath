@@ -22,9 +22,27 @@ export function useScrollAnimation() {
     );
 
     const animatedElements = element.querySelectorAll('.scroll-animate');
-    animatedElements.forEach((el) => observer.observe(el));
+    
+    // Check if elements are already in view on initial load
+    const checkInitialVisibility = () => {
+      animatedElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // If element is in viewport on initial load, add in-view class immediately
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          el.classList.add('in-view');
+        }
+        
+        observer.observe(el);
+      });
+    };
+
+    // Use a small delay to ensure DOM is fully rendered
+    const timeoutId = setTimeout(checkInitialVisibility, 100);
 
     return () => {
+      clearTimeout(timeoutId);
       animatedElements.forEach((el) => observer.unobserve(el));
     };
   }, []);
