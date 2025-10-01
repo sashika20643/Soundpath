@@ -13,27 +13,30 @@ export function useScrollAnimation() {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
           } else {
-            // Optional: Remove in-view when element leaves viewport
-            entry.target.classList.remove('in-view');
+            // Only remove in-view for elements below the fold to prevent flickering
+            const rect = entry.target.getBoundingClientRect();
+            if (rect.top > window.innerHeight) {
+              entry.target.classList.remove('in-view');
+            }
           }
         });
       },
       {
-        threshold: 0.2,
-        rootMargin: '0px 0px -50px 0px',
+        threshold: 0.1,
+        rootMargin: '100px 0px -50px 0px',
       }
     );
 
     const animatedElements = element.querySelectorAll('.scroll-animate');
     
-    // Add in-view class to elements already visible, observe all elements
+    // Initialize elements and check visibility
     const initializeElements = () => {
       animatedElements.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         
-        // If element is in viewport on initial load, add in-view class immediately
-        if (rect.top < windowHeight - 50 && rect.bottom > 50) {
+        // More liberal initial visibility check
+        if (rect.top < windowHeight && rect.bottom > 0) {
           el.classList.add('in-view');
         }
         
@@ -41,10 +44,26 @@ export function useScrollAnimation() {
       });
     };
 
-    // Initialize immediately
-    initializeElements();
+    // Use requestAnimationFrame to ensure DOM is fully rendered
+    requestAnimationFrame(() => {
+      initializeElements();
+    });
+
+    // Also check after a brief delay to catch any dynamically loaded content
+    const timeoutId = setTimeout(() => {
+      const newElements = element.querySelectorAll('.scroll-animate:not(.in-view)');
+      newElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          el.classList.add('in-view');
+        }
+      });
+    }, 100);
 
     return () => {
+      clearTimeout(timeoutId);
       animatedElements.forEach((el) => observer.unobserve(el));
     };
   }, []);
