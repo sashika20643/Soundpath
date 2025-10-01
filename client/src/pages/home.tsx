@@ -91,17 +91,14 @@ export default function Home() {
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
-  // Filter events to only include past events (date is older than current date)
-  const currentDate = new Date();
-  currentDate.setHours(23, 59, 59, 999); // End of today
+  // Show all events regardless of date for better user experience
+  const allEventsWithCoords = allEvents.filter(event => event.latitude && event.longitude);
 
-  const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
-
-  // Sort past events for latest discoveries (most recent by date) and hidden gems (oldest by date)
-  const sortedByDateDesc = pastEvents
+  // Sort events for latest discoveries (most recent by date) and hidden gems (oldest by date)
+  const sortedByDateDesc = allEventsWithCoords
     .slice()
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const sortedByDateAsc = pastEvents
+  const sortedByDateAsc = allEventsWithCoords
     .slice()
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -138,15 +135,10 @@ export default function Home() {
     (cat) => cat.type === "eventType",
   );
 
-  // Shuffle past events for random section - keeping for now but will replace
+  // Shuffle all events for random section
   useEffect(() => {
-    const currentDate = new Date();
-    currentDate.setHours(23, 59, 59, 999); // End of today
-
-    const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
-
-    if (pastEvents.length > 0) {
-      const shuffled = [...pastEvents].sort(() => Math.random() - 0.5);
+    if (allEvents.length > 0) {
+      const shuffled = [...allEvents].sort(() => Math.random() - 0.5);
       setRandomEvents(shuffled.slice(0, 6));
     }
   }, [allEvents]);
@@ -610,7 +602,7 @@ export default function Home() {
               </div>
             ) : null}
 
-            {latestEvents.length === 0 && !isLoading && (
+            {allEvents.length === 0 && !isLoading && (
               <div className="text-center py-20">
                 <div
                   className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
@@ -625,13 +617,13 @@ export default function Home() {
                   className="font-serif text-2xl mb-4"
                   style={{ color: "var(--color-charcoal)" }}
                 >
-                  No discoveries yet
+                  No events available
                 </h3>
                 <p
                   className="text-editorial"
                   style={{ color: "var(--color-mid-gray)" }}
                 >
-                  Be the first to share an extraordinary musical experience.
+                  Events will appear here once they are added to the collection.
                 </p>
               </div>
             )}
