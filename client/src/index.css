@@ -304,9 +304,9 @@
 
 /* Scroll animations - Fixed to prevent flickering */
 .scroll-animate {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.6s ease-out;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* Hero animation classes */
@@ -372,6 +372,19 @@
 .scroll-animate.in-view {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Enhanced scroll animation delays */
+.scroll-animate-delay-1.in-view {
+  transition-delay: 0.1s;
+}
+
+.scroll-animate-delay-2.in-view {
+  transition-delay: 0.2s;
+}
+
+.scroll-animate-delay-3.in-view {
+  transition-delay: 0.3s;
 }
 
 .scroll-animate-delay-1 {

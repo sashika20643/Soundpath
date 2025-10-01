@@ -84,7 +84,7 @@ export default function Home() {
     isLoading,
     error,
   } = useEvents({ approved: true });
-  
+
   // Filter featured events from allEvents in frontend
   const featuredEvents = allEvents.filter(event => event.featured === true);
   const featuredLoading = isLoading;
@@ -94,7 +94,7 @@ export default function Home() {
   // Filter events to only include past events (date is older than current date)
   const currentDate = new Date();
   currentDate.setHours(23, 59, 59, 999); // End of today
-  
+
   const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
 
   // Sort past events for latest discoveries (most recent by date) and hidden gems (oldest by date)
@@ -142,9 +142,9 @@ export default function Home() {
   useEffect(() => {
     const currentDate = new Date();
     currentDate.setHours(23, 59, 59, 999); // End of today
-    
+
     const pastEvents = allEvents.filter(event => new Date(event.date) < currentDate);
-    
+
     if (pastEvents.length > 0) {
       const shuffled = [...pastEvents].sort(() => Math.random() - 0.5);
       setRandomEvents(shuffled.slice(0, 6));
@@ -403,12 +403,9 @@ export default function Home() {
                   {featuredEvents.slice(0, 6).map((event, index) => (
                     <div
                       key={event.id}
-                      className="scroll-animate opacity-100 visible"
+                      className="scroll-animate"
                       style={{
-                        transitionDelay: `${index * 0.1}s`,
-                        animation: 'none',
-                        transform: 'none',
-                        transition: 'none'
+                        transitionDelay: `${index * 0.1}s`
                       }}
                     >
                       <EventCard event={event} index={index} />
@@ -595,11 +592,12 @@ export default function Home() {
                 {latestEvents.map((event, index) => (
                   <div
                     key={event.id}
-                    className="opacity-100 visible"
+                    className="scroll-animate"
                     style={{
                       animation: 'none',
                       transform: 'none',
-                      transition: 'none'
+                      transition: 'none',
+                      transitionDelay: `${index * 0.1}s`
                     }}
                   >
                     <EventCard
@@ -870,9 +868,9 @@ export default function Home() {
                           const partialMatch = availableCountries.find(country => 
                             country.name.toLowerCase().includes(value.toLowerCase()) && value.length >= 2
                           );
-                          
+
                           const matchingCountry = exactMatch || partialMatch;
-                          
+
                           if (matchingCountry) {
                             setSelectedCountryCode(matchingCountry.isoCode);
                             const cities = getCitiesForCountry(matchingCountry.isoCode);
@@ -1304,11 +1302,12 @@ export default function Home() {
                 {hiddenGems.map((event, index) => (
                   <div
                     key={event.id}
-                    className="opacity-100 visible"
+                    className="scroll-animate"
                     style={{
                       animation: 'none',
                       transform: 'none',
-                      transition: 'none'
+                      transition: 'none',
+                      transitionDelay: `${index * 0.1}s`
                     }}
                   >
                     <EventCard event={event} index={index} />
