@@ -586,9 +586,6 @@ export default function Home() {
                     key={event.id}
                     className="scroll-animate"
                     style={{
-                      animation: 'none',
-                      transform: 'none',
-                      transition: 'none',
                       transitionDelay: `${index * 0.1}s`
                     }}
                   >
@@ -1296,9 +1293,6 @@ export default function Home() {
                     key={event.id}
                     className="scroll-animate"
                     style={{
-                      animation: 'none',
-                      transform: 'none',
-                      transition: 'none',
                       transitionDelay: `${index * 0.1}s`
                     }}
                   >

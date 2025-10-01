@@ -12,25 +12,28 @@ export function useScrollAnimation() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
+          } else {
+            // Optional: Remove in-view when element leaves viewport
+            entry.target.classList.remove('in-view');
           }
         });
       },
       {
-        threshold: 0.15,
-        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
     const animatedElements = element.querySelectorAll('.scroll-animate');
     
-    // Check if elements are already in view on initial load
-    const checkInitialVisibility = () => {
+    // Add in-view class to elements already visible, observe all elements
+    const initializeElements = () => {
       animatedElements.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         
         // If element is in viewport on initial load, add in-view class immediately
-        if (rect.top < windowHeight && rect.bottom > 0) {
+        if (rect.top < windowHeight - 50 && rect.bottom > 50) {
           el.classList.add('in-view');
         }
         
@@ -38,11 +41,10 @@ export function useScrollAnimation() {
       });
     };
 
-    // Use a small delay to ensure DOM is fully rendered
-    const timeoutId = setTimeout(checkInitialVisibility, 100);
+    // Initialize immediately
+    initializeElements();
 
     return () => {
-      clearTimeout(timeoutId);
       animatedElements.forEach((el) => observer.unobserve(el));
     };
   }, []);
