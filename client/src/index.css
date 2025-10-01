@@ -302,21 +302,14 @@
   }
 }
 
-/* Scroll animations - Show cards immediately, animate only on scroll */
+/* Scroll animations - Start hidden and animate in on scroll */
 .scroll-animate {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(40px);
   transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-/* Only apply hidden state after page has loaded and scroll detection is active */
-.scroll-animate:not(.in-view) {
-  opacity: 0.6;
-  transform: translateY(20px);
-}
-
-/* Ensure initial content is always visible during loading */
-.scroll-animate:not(.scroll-animation-ready):not(.in-view) {
+.scroll-animate.in-view {
   opacity: 1;
   transform: translateY(0);
 }

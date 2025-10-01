@@ -12,82 +12,53 @@ export function useScrollAnimation() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-view');
-          } else {
-            // Only remove in-view for elements that are far below the viewport
-            const rect = entry.target.getBoundingClientRect();
-            if (rect.top > window.innerHeight + 200) {
-              entry.target.classList.remove('in-view');
-            }
           }
         });
       },
       {
         threshold: 0.1,
-        rootMargin: '50px 0px -100px 0px',
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
-    // Function to check if element is in viewport
-    const isInViewport = (el: Element) => {
-      const rect = el.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      return rect.top < windowHeight - 50 && rect.bottom > 50;
-    };
-
-    // Initialize elements
+    // Function to initialize scroll animations
     const initializeElements = () => {
       const animatedElements = element.querySelectorAll('.scroll-animate');
       
       animatedElements.forEach((el) => {
-        // Check initial visibility
-        if (isInViewport(el)) {
+        // Check if element is already in viewport on load
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (rect.top < windowHeight - 100) {
           el.classList.add('in-view');
         }
         
-        // Start observing all elements
+        // Start observing for future scroll events
         observer.observe(el);
       });
     };
 
-    // Multiple initialization attempts to catch dynamic content
-    const initializeWithRetries = () => {
-      initializeElements();
-      
-      // Extended retry attempts for API-loaded content
-      const timeouts = [100, 300, 500, 1000, 1500, 2000];
-      timeouts.forEach(delay => {
-        setTimeout(() => {
-          const newElements = element.querySelectorAll('.scroll-animate:not(.in-view)');
-          newElements.forEach((el) => {
-            if (isInViewport(el)) {
-              el.classList.add('in-view');
-            }
-          });
-        }, delay);
-      });
-    };
-
-    // Monitor for new elements being added to DOM
+    // Monitor for new elements being added to DOM (for dynamic content)
     const mutationObserver = new MutationObserver((mutations) => {
-      let shouldReinitialize = false;
+      let hasNewElements = false;
+      
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
           mutation.addedNodes.forEach((node) => {
             if (node.nodeType === Node.ELEMENT_NODE) {
-              const element = node as Element;
-              if (element.classList?.contains('scroll-animate') || 
-                  element.querySelector?.('.scroll-animate')) {
-                shouldReinitialize = true;
+              const nodeElement = node as Element;
+              if (nodeElement.classList?.contains('scroll-animate') || 
+                  nodeElement.querySelector?.('.scroll-animate')) {
+                hasNewElements = true;
               }
             }
           });
         }
       });
       
-      if (shouldReinitialize) {
-        setTimeout(() => {
-          initializeElements();
-        }, 100);
+      if (hasNewElements) {
+        setTimeout(initializeElements, 100);
       }
     });
 
@@ -97,22 +68,16 @@ export function useScrollAnimation() {
       subtree: true
     });
 
-    // Initialize immediately and after animation frame
-    requestAnimationFrame(() => {
-      initializeWithRetries();
+    // Initialize immediately
+    initializeElements();
+    
+    // Retry initialization for dynamic content
+    const retryTimeouts = [300, 800, 1500];
+    retryTimeouts.forEach(delay => {
+      setTimeout(initializeElements, delay);
     });
 
-    // Also initialize after a brief delay for dynamic content
-    const mainTimeout = setTimeout(() => {
-      initializeWithRetries();
-      // Mark scroll animations as ready after initial setup
-      setTimeout(() => {
-        element.classList.add('scroll-animation-ready');
-      }, 500);
-    }, 50);
-
     return () => {
-      clearTimeout(mainTimeout);
       mutationObserver.disconnect();
       const animatedElements = element.querySelectorAll('.scroll-animate');
       animatedElements.forEach((el) => observer.unobserve(el));

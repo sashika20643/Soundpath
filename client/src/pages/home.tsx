@@ -56,10 +56,10 @@ import {
   type InsertEvent,
 } from "@shared/schema";
 import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
-import { 
-  getContinents, 
-  getCountriesForContinent, 
-  getCitiesForCountry, 
+import {
+  getContinents,
+  getCountriesForContinent,
+  getCitiesForCountry,
   searchCities,
   getCountryByName
 } from "@/lib/locations";
@@ -201,6 +201,14 @@ export default function Home() {
     });
   }, []);
 
+  // Function to shuffle random events (used for "Discover More" button)
+  const shuffleRandomEvents = () => {
+    if (allEvents.length > 0) {
+      const shuffled = [...allEvents].sort(() => Math.random() - 0.5);
+      setRandomEvents(shuffled.slice(0, 6));
+    }
+  };
+
   return (
     <Layout>
       <div
@@ -304,160 +312,151 @@ export default function Home() {
         </section>
 
         {/* Featured Events Section */}
-        {featuredEvents.length > 0 && (
-          <section
-            id="featured"
-            className="section-padding"
-            style={{ backgroundColor: "var(--color-cream)" }}
-          >
-            <div className="max-w-7xl mx-auto">
-              <div className="scroll-animate text-center mb-20">
-                <h2
-                  className="font-serif text-section-title mb-8"
-                  style={{ color: "var(--color-charcoal)" }}
-                >
-                  Featured Destinations
-                </h2>
-                <p
-                  className="text-editorial max-w-2xl mx-auto"
-                  style={{ color: "var(--color-dark-gray)" }}
-                >
-                  Handpicked extraordinary musical experiences that define the essence
-                  of sonic exploration. These destinations represent the pinnacle of
-                  where music and place create magic.
-                </p>
-              </div>
+        <section className="section-padding">
+          <div className="max-w-7xl mx-auto">
+            <div className="scroll-animate mb-16 text-center">
+              <h2
+                className="font-serif text-section-title mb-8"
+                style={{ color: "var(--color-charcoal)" }}
+              >
+                Featured Destinations
+              </h2>
+              <p
+                className="text-editorial max-w-2xl mx-auto"
+                style={{ color: "var(--color-dark-gray)" }}
+              >
+                Handpicked extraordinary musical experiences that define the essence
+                of sonic exploration. These destinations represent the pinnacle of
+                where music and place create magic.
+              </p>
+            </div>
 
-              {featuredLoading ? (
-                <div className="grid-magazine">
-                  {[...Array(6)].map((_, i) => (
+            {featuredLoading ? (
+              <div className="grid-magazine">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                    style={{ transitionDelay: `${i * 0.1}s` }}
+                  >
                     <div
-                      key={i}
-                      className="card-minimal rounded-lg overflow-hidden opacity-100"
-                      style={{ 
-                        transitionDelay: `${i * 0.1}s`,
-                        animation: 'none'
-                      }}
-                    >
+                      className="h-80 animate-pulse"
+                      style={{ backgroundColor: "var(--color-light-gray)" }}
+                    ></div>
+                    <div className="p-8">
                       <div
-                        className="h-80 animate-pulse"
+                        className="h-6 animate-pulse rounded mb-3"
                         style={{ backgroundColor: "var(--color-light-gray)" }}
                       ></div>
-                      <div className="p-8">
+                      <div className="flex gap-4 mb-4">
                         <div
-                          className="h-6 animate-pulse rounded mb-3"
+                          className="h-4 animate-pulse rounded w-24"
                           style={{ backgroundColor: "var(--color-light-gray)" }}
                         ></div>
-                        <div className="flex gap-4 mb-4">
-                          <div
-                            className="h-4 animate-pulse rounded w-24"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                          <div
-                            className="h-4 animate-pulse rounded w-32"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                        </div>
-                        <div className="flex gap-2 mb-4">
-                          <div
-                            className="h-6 animate-pulse rounded-full w-16"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                          <div
-                            className="h-6 animate-pulse rounded-full w-20"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                        </div>
-                        <div className="space-y-2 mb-6">
-                          <div
-                            className="h-4 animate-pulse rounded"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                          <div
-                            className="h-4 animate-pulse rounded w-4/5"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                          <div
-                            className="h-4 animate-pulse rounded w-3/5"
-                            style={{ backgroundColor: "var(--color-light-gray)" }}
-                          ></div>
-                        </div>
                         <div
-                          className="h-10 animate-pulse rounded"
+                          className="h-4 animate-pulse rounded w-32"
                           style={{ backgroundColor: "var(--color-light-gray)" }}
                         ></div>
                       </div>
+                      <div className="flex gap-2 mb-4">
+                        <div
+                          className="h-6 animate-pulse rounded-full w-16"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-6 animate-pulse rounded-full w-20"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div className="space-y-2 mb-6">
+                        <div
+                          className="h-4 animate-pulse rounded"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-4/5"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                        <div
+                          className="h-4 animate-pulse rounded w-3/5"
+                          style={{ backgroundColor: "var(--color-light-gray)" }}
+                        ></div>
+                      </div>
+                      <div
+                        className="h-10 animate-pulse rounded"
+                        style={{ backgroundColor: "var(--color-light-gray)" }}
+                      ></div>
                     </div>
-                  ))}
-                </div>
-              ) : featuredEvents.length > 0 ? (
-                <div className="grid-magazine">
-                  {featuredEvents.slice(0, 6).map((event, index) => (
-                    <div
-                      key={event.id}
-                      className="scroll-animate"
-                      style={{
-                        transitionDelay: `${index * 0.1}s`
-                      }}
-                    >
-                      <EventCard event={event} index={index} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-20">
+                  </div>
+                ))}
+              </div>
+            ) : featuredEvents.length > 0 ? (
+              <div className="grid-magazine">
+                {featuredEvents.slice(0, 6).map((event, index) => (
                   <div
-                    className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
+                    key={event.id}
+                    className="scroll-animate"
                     style={{
-                      borderColor: "var(--color-light-gray)",
-                      color: "var(--color-mid-gray)",
+                      transitionDelay: `${index * 0.1}s`
                     }}
                   >
-                    <Star className="w-10 h-10" />
+                    <EventCard event={event} index={index} />
                   </div>
-                  <h3
-                    className="font-serif text-2xl mb-4"
-                    style={{ color: "var(--color-charcoal)" }}
-                  >
-                    No Featured Events Yet
-                  </h3>
-                  <p
-                    className="text-editorial"
-                    style={{ color: "var(--color-mid-gray)" }}
-                  >
-                    Featured events will appear here once they are marked as featured.
-                  </p>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <div
+                  className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
+                  style={{
+                    borderColor: "var(--color-light-gray)",
+                    color: "var(--color-mid-gray)",
+                  }}
+                >
+                  <Star className="w-10 h-10" />
                 </div>
-              )}
+                <h3
+                  className="font-serif text-2xl mb-4"
+                  style={{ color: "var(--color-charcoal)" }}
+                >
+                  No Featured Events Yet
+                </h3>
+                <p
+                  className="text-editorial"
+                  style={{ color: "var(--color-mid-gray)" }}
+                >
+                  Featured events will appear here once they are marked as featured.
+                </p>
+              </div>
+            )}
 
-              {/* View All Featured Events Button */}
-              {featuredEvents.length > 6 && (
-                <div className="scroll-animate scroll-animate-delay-2 text-center mt-16">
-                  <Link href="/events?featured=true">
-                    <button
-                      className="px-8 py-3 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-lg hover:scale-105"
-                      style={{
-                        borderColor: "var(--color-light-gray)",
-                        color: "var(--color-charcoal)",
-                        backgroundColor: "transparent",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
-                        e.currentTarget.style.borderColor = "var(--color-mid-gray)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.borderColor = "var(--color-light-gray)";
-                      }}
-                    >
-                      View All Featured Events
-                    </button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
+            {/* View All Featured Events Button */}
+            {featuredEvents.length > 6 && (
+              <div className="scroll-animate scroll-animate-delay-2 text-center mt-16">
+                <Link href="/events?featured=true">
+                  <button
+                    className="px-8 py-3 text-sm font-medium rounded-lg border transition-all duration-300 hover:shadow-lg hover:scale-105"
+                    style={{
+                      borderColor: "var(--color-light-gray)",
+                      color: "var(--color-charcoal)",
+                      backgroundColor: "transparent",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                      e.currentTarget.style.borderColor = "var(--color-mid-gray)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "transparent";
+                      e.currentTarget.style.borderColor = "var(--color-light-gray)";
+                    }}
+                  >
+                    View All Featured Events
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* World Map Section - Editorial Style */}
         <section
@@ -523,7 +522,7 @@ export default function Home() {
                   <div
                     key={i}
                     className="card-minimal rounded-lg overflow-hidden opacity-100"
-                    style={{ 
+                    style={{
                       transitionDelay: `${i * 0.1}s`,
                       animation: 'none'
                     }}
@@ -651,7 +650,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="scroll-animate scroll-animate-delay-1 form-minimal">
+            <div
+              className="scroll-animate scroll-animate-delay-1 form-minimal"
+            >
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-12"
@@ -782,7 +783,7 @@ export default function Home() {
                       {showContinentSuggestions && getContinents().length > 0 && form.watch("continent") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
                           {getContinents()
-                            .filter(continent => 
+                            .filter(continent =>
                               continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
                             )
                             .slice(0, 5)
@@ -851,10 +852,10 @@ export default function Home() {
                           setShowCountrySuggestions(value.length > 0);
 
                           // Find matching country (both exact and partial matches for autocomplete)
-                          const exactMatch = availableCountries.find(country => 
+                          const exactMatch = availableCountries.find(country =>
                             country.name.toLowerCase() === value.toLowerCase()
                           );
-                          const partialMatch = availableCountries.find(country => 
+                          const partialMatch = availableCountries.find(country =>
                             country.name.toLowerCase().includes(value.toLowerCase()) && value.length >= 2
                           );
 
@@ -869,7 +870,7 @@ export default function Home() {
                             }
                           } else if (value.length >= 3) {
                             // Try to find country by name with more liberal matching
-                            const liberalMatch = availableCountries.find(country => 
+                            const liberalMatch = availableCountries.find(country =>
                               country.name.toLowerCase().includes(value.toLowerCase())
                             );
                             if (liberalMatch) {
@@ -893,7 +894,7 @@ export default function Home() {
                       {showCountrySuggestions && availableCountries.length > 0 && form.watch("country") && (
                         <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
                           {availableCountries
-                            .filter(country => 
+                            .filter(country =>
                               country.name.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
                             )
                             .slice(0, 10)
@@ -959,7 +960,7 @@ export default function Home() {
                           setShowCitySuggestions(true);
 
                           // Find matching city and use its coordinates
-                          const matchingCity = availableCities.find(city => 
+                          const matchingCity = availableCities.find(city =>
                             city.name.toLowerCase() === value.toLowerCase()
                           );
                           if (matchingCity && matchingCity.latitude && matchingCity.longitude) {
@@ -1229,8 +1230,8 @@ export default function Home() {
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={i}
-                    className="card-minimal rounded-lg overflow-hidden opacity-100"
-                    style={{ 
+                    className="scroll-animate card-minimal rounded-lg overflow-hidden"
+                    style={{
                       transitionDelay: `${i * 0.15}s`,
                       animation: 'none'
                     }}
