@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, Music, User, LogIn, LogOut, Menu, X } from "lucide-react";
+import { Home, Music, User, LogIn, LogOut, Menu, X, Search } from "lucide-react";
 import { APP_CONFIG } from "@shared/config";
 import { useAuth } from "@/contexts/auth-context";
 import logo from "@/assets/symbolLogo.svg";
