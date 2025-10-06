@@ -13,6 +13,8 @@ export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
   const { isAdmin, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [mobileSearchQuery, setMobileSearchQuery] = useState("");
 
   const toggleMobileMenu = () => {
     console.log("Toggling mobile menu:", !isMobileMenuOpen);
@@ -22,6 +24,19 @@ export function Layout({ children }: LayoutProps) {
   const closeMobileMenu = () => {
     console.log("Closing mobile menu");
     setIsMobileMenuOpen(false);
+  };
+
+  const handleMobileSearch = () => {
+    if (mobileSearchQuery.trim()) {
+      window.location.href = `/events?search=${encodeURIComponent(mobileSearchQuery.trim())}`;
+      setIsMobileSearchOpen(false);
+      setMobileSearchQuery("");
+    }
+  };
+
+  const closeMobileSearch = () => {
+    setIsMobileSearchOpen(false);
+    setMobileSearchQuery("");
   };
 
   return (
@@ -63,25 +78,26 @@ export function Layout({ children }: LayoutProps) {
               </div>
             </Link>
 
-            {/* Mobile Search Pill - Middle */}
-            <div className="md:hidden flex-1 mx-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search destinations, genres, experiences..."
-                  className="w-full py-2 px-4 text-sm rounded-full border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
-                  style={{
-                    borderColor: "var(--color-light-gray)",
-                    backgroundColor: "var(--color-soft-beige)",
-                    color: "var(--color-charcoal)",
-                  }}
-                />
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: "var(--color-mid-gray)" }} />
-              </div>
-            </div>
-
-            {/* Mobile Icons - Right (3 icons) */}
+            {/* Mobile Icons - Right (4 icons including search) */}
             <div className="md:hidden flex items-center gap-2">
+              {/* Search Icon */}
+              <button
+                onClick={() => setIsMobileSearchOpen(true)}
+                className="p-2 rounded-lg transition-all duration-300 mobile-tap"
+                style={{
+                  color: "var(--color-charcoal)",
+                  backgroundColor: "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
+              >
+                <Search className="w-5 h-5" />
+              </button>
+
               {/* Music Note Icon (Genres) */}
               <button
                 className="p-2 rounded-lg transition-all duration-300 mobile-tap"
@@ -455,6 +471,82 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Search Modal */}
+      {isMobileSearchOpen && (
+        <div className="md:hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-md rounded-lg p-6 relative"
+            style={{ backgroundColor: "var(--color-warm-white)" }}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeMobileSearch}
+              className="absolute top-4 right-4 p-2 rounded-lg transition-all duration-300"
+              style={{
+                color: "var(--color-charcoal)",
+                backgroundColor: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+              }}
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Search header */}
+            <div className="mb-6">
+              <h3
+                className="text-xl font-serif mb-2"
+                style={{ color: "var(--color-charcoal)" }}
+              >
+                Search Destinations
+              </h3>
+              <p
+                className="text-sm"
+                style={{ color: "var(--color-mid-gray)" }}
+              >
+                Find musical experiences around the world
+              </p>
+            </div>
+
+            {/* Search input */}
+            <div className="relative mb-6">
+              <input
+                type="text"
+                placeholder="Search destinations, genres, experiences..."
+                value={mobileSearchQuery}
+                onChange={(e) => setMobileSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleMobileSearch()}
+                className="w-full py-4 px-6 text-base rounded-lg border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                style={{
+                  borderColor: "var(--color-light-gray)",
+                  backgroundColor: "var(--color-soft-beige)",
+                  color: "var(--color-charcoal)",
+                }}
+                autoFocus
+              />
+              <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: "var(--color-mid-gray)" }} />
+            </div>
+
+            {/* Search button */}
+            <button
+              onClick={handleMobileSearch}
+              disabled={!mobileSearchQuery.trim()}
+              className="w-full py-3 px-6 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{
+                backgroundColor: mobileSearchQuery.trim() ? "var(--color-accent)" : "var(--color-light-gray)",
+                color: mobileSearchQuery.trim() ? "var(--color-warm-white)" : "var(--color-mid-gray)",
+              }}
+            >
+              Search Events
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
