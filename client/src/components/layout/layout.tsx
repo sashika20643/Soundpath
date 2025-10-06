@@ -34,21 +34,21 @@ export function Layout({ children }: LayoutProps) {
     >
       {/* Navigation Bar */}
       <nav
-        className="relative z-50 border-b"
+        className="sticky top-0 z-50 border-b"
         style={{
           backgroundColor: "var(--color-warm-white)",
           borderColor: "var(--color-light-gray)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
-            {/* Logo */}
+            {/* Logo + Wordmark */}
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
-                <img src={logo} alt="Soundpath Logo" className="h-14 w-auto" />
+                <img src={logo} alt="Sonic Paths Logo" className="h-10 md:h-14 w-auto" />
                 <div className="flex flex-col">
                   <span
-                    className="font-bold text-lg"
+                    className="font-bold text-sm md:text-lg"
                     style={{ color: "var(--color-charcoal)" }}
                   >
                     Sonic Paths
@@ -63,23 +63,59 @@ export function Layout({ children }: LayoutProps) {
               </div>
             </Link>
 
-            {/* Mobile Navigation Content */}
-            <div className="md:hidden flex items-center gap-3">
-              {/* Quick Stats or Info */}
-              <div className="flex items-center gap-4 text-sm">
-                <div
-                  className="flex items-center gap-1"
-                  style={{ color: "var(--color-mid-gray)" }}
-                >
-                  <Music className="w-4 h-4" />
-                  <span className="hidden xs:inline">Events</span>
-                </div>
-                <div
-                  className="flex items-center gap-1"
-                  style={{ color: "var(--color-mid-gray)" }}
+            {/* Mobile Search Pill - Middle */}
+            <div className="md:hidden flex-1 mx-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search destinations, genres, experiences..."
+                  className="w-full py-2 px-4 text-sm rounded-full border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                  style={{
+                    borderColor: "var(--color-light-gray)",
+                    backgroundColor: "var(--color-soft-beige)",
+                    color: "var(--color-charcoal)",
+                  }}
+                />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: "var(--color-mid-gray)" }} />
+              </div>
+            </div>
+
+            {/* Mobile Icons - Right (3 icons) */}
+            <div className="md:hidden flex items-center gap-2">
+              {/* Music Note Icon (Genres) */}
+              <button
+                className="p-2 rounded-lg transition-all duration-300 mobile-tap"
+                style={{
+                  color: "var(--color-charcoal)",
+                  backgroundColor: "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
+              >
+                <Music className="w-5 h-5" />
+              </button>
+
+              {/* Location Pin Icon (Map) */}
+              <Link href="/map">
+                <button
+                  className="p-2 rounded-lg transition-all duration-300 mobile-tap"
+                  style={{
+                    color: "var(--color-charcoal)",
+                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = location === "/map" ? "var(--color-soft-beige)" : "transparent";
+                  }}
                 >
                   <svg
-                    className="w-4 h-4"
+                    className="w-5 h-5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -89,41 +125,27 @@ export function Layout({ children }: LayoutProps) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="hidden xs:inline">Map</span>
-                </div>
-              </div>
+                </button>
+              </Link>
 
-              {/* Mobile Menu Button - Aligned Right with Dynamic Animation */}
+              {/* Hamburger Icon (Menu) */}
               <button
                 onClick={toggleMobileMenu}
-                className="flex items-center justify-center w-12 h-12 rounded-xl border shadow-sm transition-all duration-300 mobile-tap relative overflow-hidden mobile-pulse"
+                className="p-2 rounded-lg transition-all duration-300 mobile-tap relative overflow-hidden"
                 style={{
-                  borderColor: isMobileMenuOpen
-                    ? "var(--color-accent)"
-                    : "var(--color-light-gray)",
                   color: "var(--color-charcoal)",
-                  backgroundColor: isMobileMenuOpen
-                    ? "var(--color-accent)"
-                    : "var(--color-soft-beige)",
-                  transform: isMobileMenuOpen ? "scale(1.05)" : "scale(1)",
+                  backgroundColor: isMobileMenuOpen ? "var(--color-soft-beige)" : "transparent",
                 }}
               >
-                {/* Animated Icon Container */}
                 <div
                   className={`transition-all duration-300 ${isMobileMenuOpen ? "rotate-180" : "rotate-0"}`}
                 >
                   {isMobileMenuOpen ? (
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5" />
                   ) : (
-                    <Menu className="w-6 h-6" />
+                    <Menu className="w-5 h-5" />
                   )}
                 </div>
-
-                {/* Ripple Effect */}
-                <div
-                  className={`absolute inset-0 rounded-xl transition-all duration-500 ${isMobileMenuOpen ? "scale-150 opacity-30" : "scale-0 opacity-0"}`}
-                  style={{ backgroundColor: "var(--color-charcoal)" }}
-                />
               </button>
             </div>
 
