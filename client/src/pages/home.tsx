@@ -1343,7 +1343,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 💎 Hidden Gems Section - Oldest Events */}
+        {/*  Hidden Gems Section - Oldest Events */}
         <section
           id="hidden-gems"
           className="section-padding"
@@ -1355,7 +1355,7 @@ export default function Home() {
                 className="font-serif text-section-title mb-8"
                 style={{ color: "var(--color-charcoal)" }}
               >
-                💎 Hidden Gems
+                Hidden Gems
               </h2>
               <p
                 className="text-editorial max-w-2xl mx-auto"
