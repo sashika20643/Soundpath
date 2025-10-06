@@ -78,6 +78,9 @@
   p {
     margin-bottom: var(--spacing-sm);
     color: var(--color-dark-gray);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.7;
   }
 }
 
@@ -103,6 +106,7 @@
     line-height: 1.8;
     font-weight: 400;
     color: var(--color-dark-gray);
+    font-family: var(--font-sans);
   }
 
   /* Generous spacing following Kinfolk aesthetic */
@@ -165,6 +169,8 @@
       font-size: 1rem;
       line-height: 1.6;
       margin-bottom: var(--spacing-sm);
+      font-family: var(--font-sans);
+      font-weight: 400;
     }
 
     /* Enhanced mobile touch feedback */
