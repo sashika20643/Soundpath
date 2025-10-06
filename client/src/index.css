@@ -689,13 +689,16 @@
   }
 }
 
-/* Full-bleed image containers */
-.image-full-bleed {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  margin-top: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+/* Fade in up animation for featured content */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Card styling with earth tones */

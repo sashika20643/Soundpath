@@ -68,6 +68,175 @@ import {
   getCountryByName,
 } from "@/lib/locations";
 
+// Featured Carousel Component
+function FeaturedCarousel({ 
+  featuredEvents, 
+  formatLocation 
+}: { 
+  featuredEvents: Event[], 
+  formatLocation: (event: Event) => string 
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-switch events every 8 seconds
+  useEffect(() => {
+    if (featuredEvents.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => 
+        prevIndex === featuredEvents.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [featuredEvents.length]);
+
+  const currentEvent = featuredEvents[currentIndex];
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  return (
+    <div className="relative w-full min-h-screen flex items-center">
+      {/* Full-width spotlight layout with proper containment */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+        
+        {/* Large Hero Image */}
+        <div className="scroll-animate order-2 lg:order-1">
+          <div className="relative aspect-[4/5] overflow-hidden">
+            <img
+              key={currentEvent.id}
+              src={currentEvent.heroImage || "/src/assets/Musicdefault.jpg"}
+              alt={currentEvent.title}
+              className="w-full h-full object-cover transition-all duration-1000 ease-in-out hover:scale-105"
+              style={{
+                filter: "brightness(0.9) contrast(1.1)"
+              }}
+            />
+            {/* Subtle overlay for better text contrast on image */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"
+            ></div>
+          </div>
+        </div>
+
+        {/* Editorial Content */}
+        <div className="scroll-animate scroll-animate-delay-1 order-1 lg:order-2 space-y-6 lg:space-y-8 lg:pl-8">
+          
+          {/* Small uppercase label */}
+          <div 
+            className="font-sans text-xs uppercase tracking-widest font-medium opacity-0 animate-[fadeInUp_1s_ease-out_forwards]"
+            style={{ 
+              color: "var(--color-mid-gray)", 
+              letterSpacing: "0.15em",
+              animationDelay: "0.2s"
+            }}
+          >
+            Featured Destination
+          </div>
+
+          {/* Large headline with fade animation */}
+          <h2 
+            key={`title-${currentEvent.id}`}
+            className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-tight opacity-0 animate-[fadeInUp_1s_ease-out_forwards]"
+            style={{ 
+              color: "var(--color-charcoal)",
+              lineHeight: "1.1",
+              fontWeight: "400",
+              animationDelay: "0.4s"
+            }}
+          >
+            {currentEvent.title}
+          </h2>
+
+          {/* Location and date info */}
+          <div className="flex flex-col space-y-2 opacity-0 animate-[fadeInUp_1s_ease-out_forwards]" style={{ animationDelay: "0.6s" }}>
+            <div 
+              className="flex items-center gap-3 font-sans text-sm"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
+              <MapPin className="w-4 h-4" />
+              <span>{formatLocation(currentEvent)}</span>
+            </div>
+            <div 
+              className="flex items-center gap-3 font-sans text-sm"
+              style={{ color: "var(--color-dark-gray)" }}
+            >
+              <Calendar className="w-4 h-4" />
+              <span>{new Date(currentEvent.date).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}</span>
+            </div>
+          </div>
+
+          {/* Quote-style description */}
+          <blockquote key={`desc-${currentEvent.id}`} className="relative opacity-0 animate-[fadeInUp_1s_ease-out_forwards]" style={{ animationDelay: "0.8s" }}>
+            <div 
+              className="absolute -left-3 lg:-left-4 -top-1 lg:-top-2 text-4xl lg:text-6xl opacity-20"
+              style={{ color: "var(--color-sage)" }}
+            >
+              "
+            </div>
+            <p 
+              className="text-editorial font-light leading-relaxed italic pl-6 lg:pl-8"
+              style={{ 
+                color: "var(--color-dark-gray)",
+                fontSize: "clamp(1rem, 2.5vw, 1.125rem)",
+                lineHeight: "1.8"
+              }}
+            >
+              {currentEvent.shortDescription}
+            </p>
+          </blockquote>
+
+          {/* Call-to-action button */}
+          <div className="pt-4 opacity-0 animate-[fadeInUp_1s_ease-out_forwards]" style={{ animationDelay: "1s" }}>
+            <Link href={`/event/${currentEvent.id}`}>
+              <button 
+                className="btn-minimal group relative overflow-hidden"
+                style={{
+                  padding: "1rem 2.5rem",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  letterSpacing: "0.5px",
+                  textTransform: "uppercase",
+                  fontFamily: "var(--font-sans)"
+                }}
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  Discover Festival
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </span>
+              </button>
+            </Link>
+          </div>
+
+          {/* Navigation dots if multiple featured events */}
+          {featuredEvents.length > 1 && (
+            <div className="flex gap-3 pt-4 opacity-0 animate-[fadeInUp_1s_ease-out_forwards]" style={{ animationDelay: "1.2s" }}>
+              {featuredEvents.slice(0, 5).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`h-2 rounded-full transition-all duration-500 cursor-pointer hover:opacity-75 ${
+                    index === currentIndex ? 'w-8 bg-[var(--color-sage)]' : 'w-2 bg-[var(--color-light-gray)]'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                ></button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   usePageMetadata("home");
 
@@ -340,12 +509,12 @@ export default function Home() {
 
         {/* Featured Spotlight Section - Kinfolk Magazine Style */}
         <section 
-          className="image-full-bleed"
+          className="overflow-hidden"
           style={{ backgroundColor: "var(--color-warm-white)" }}
         >
           {featuredLoading ? (
             <div className="relative w-full min-h-screen flex items-center">
-              <div className="max-w-7xl mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                 {/* Loading skeleton for image */}
                 <div className="order-2 lg:order-1">
                   <div 
@@ -355,27 +524,27 @@ export default function Home() {
                 </div>
                 
                 {/* Loading skeleton for content */}
-                <div className="order-1 lg:order-2 space-y-8">
+                <div className="order-1 lg:order-2 space-y-6 lg:space-y-8">
                   <div className="space-y-4">
                     <div
                       className="h-4 animate-pulse rounded w-32"
                       style={{ backgroundColor: "var(--color-light-gray)" }}
                     ></div>
                     <div
-                      className="h-16 animate-pulse rounded w-full"
+                      className="h-12 lg:h-16 animate-pulse rounded w-full"
                       style={{ backgroundColor: "var(--color-light-gray)" }}
                     ></div>
                     <div className="space-y-2">
                       <div
-                        className="h-6 animate-pulse rounded w-full"
+                        className="h-4 animate-pulse rounded w-full"
                         style={{ backgroundColor: "var(--color-light-gray)" }}
                       ></div>
                       <div
-                        className="h-6 animate-pulse rounded w-4/5"
+                        className="h-4 animate-pulse rounded w-4/5"
                         style={{ backgroundColor: "var(--color-light-gray)" }}
                       ></div>
                       <div
-                        className="h-6 animate-pulse rounded w-3/5"
+                        className="h-4 animate-pulse rounded w-3/5"
                         style={{ backgroundColor: "var(--color-light-gray)" }}
                       ></div>
                     </div>
@@ -388,141 +557,10 @@ export default function Home() {
               </div>
             </div>
           ) : featuredEvents.length > 0 ? (
-            <div className="relative w-full min-h-screen flex items-center">
-              {/* Full-width spotlight layout */}
-              <div className="max-w-7xl mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                
-                {/* Large Hero Image */}
-                <div className="scroll-animate order-2 lg:order-1">
-                  <div className="relative aspect-[4/5] overflow-hidden">
-                    <img
-                      src={featuredEvents[0].heroImage || "/src/assets/Musicdefault.jpg"}
-                      alt={featuredEvents[0].title}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                      style={{
-                        filter: "brightness(0.9) contrast(1.1)"
-                      }}
-                    />
-                    {/* Subtle overlay for better text contrast on image */}
-                    <div 
-                      className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Editorial Content */}
-                <div className="scroll-animate scroll-animate-delay-1 order-1 lg:order-2 space-y-8 lg:pl-8">
-                  
-                  {/* Small uppercase label */}
-                  <div 
-                    className="font-sans text-xs uppercase tracking-widest font-medium"
-                    style={{ color: "var(--color-mid-gray)", letterSpacing: "0.15em" }}
-                  >
-                    Featured Destination
-                  </div>
-
-                  {/* Large headline */}
-                  <h2 
-                    className="font-serif text-5xl lg:text-6xl leading-tight"
-                    style={{ 
-                      color: "var(--color-charcoal)",
-                      lineHeight: "1.1",
-                      fontWeight: "400"
-                    }}
-                  >
-                    {featuredEvents[0].title}
-                  </h2>
-
-                  {/* Location and date info */}
-                  <div className="flex flex-col space-y-2">
-                    <div 
-                      className="flex items-center gap-3 font-sans text-sm"
-                      style={{ color: "var(--color-dark-gray)" }}
-                    >
-                      <MapPin className="w-4 h-4" />
-                      <span>{formatLocation(featuredEvents[0])}</span>
-                    </div>
-                    <div 
-                      className="flex items-center gap-3 font-sans text-sm"
-                      style={{ color: "var(--color-dark-gray)" }}
-                    >
-                      <Calendar className="w-4 h-4" />
-                      <span>{new Date(featuredEvents[0].date).toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                      })}</span>
-                    </div>
-                  </div>
-
-                  {/* Quote-style description */}
-                  <blockquote className="relative">
-                    <div 
-                      className="absolute -left-4 -top-2 text-6xl opacity-20"
-                      style={{ color: "var(--color-sage)" }}
-                    >
-                      "
-                    </div>
-                    <p 
-                      className="text-editorial font-light leading-relaxed italic pl-8"
-                      style={{ 
-                        color: "var(--color-dark-gray)",
-                        fontSize: "1.125rem",
-                        lineHeight: "1.8"
-                      }}
-                    >
-                      {featuredEvents[0].shortDescription}
-                    </p>
-                  </blockquote>
-
-                  {/* Call-to-action button */}
-                  <div className="pt-4">
-                    <Link href={`/event/${featuredEvents[0].id}`}>
-                      <button 
-                        className="btn-minimal group relative overflow-hidden"
-                        style={{
-                          padding: "1rem 2.5rem",
-                          fontSize: "0.875rem",
-                          fontWeight: "500",
-                          letterSpacing: "0.5px",
-                          textTransform: "uppercase",
-                          fontFamily: "var(--font-sans)"
-                        }}
-                      >
-                        <span className="relative z-10 flex items-center gap-3">
-                          Discover Festival
-                          <span className="transition-transform duration-300 group-hover:translate-x-1">
-                            →
-                          </span>
-                        </span>
-                      </button>
-                    </Link>
-                  </div>
-
-                  {/* Navigation dots if multiple featured events */}
-                  {featuredEvents.length > 1 && (
-                    <div className="flex gap-3 pt-4">
-                      {featuredEvents.slice(0, 5).map((_, index) => (
-                        <button
-                          key={index}
-                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                            index === 0 ? 'w-8' : ''
-                          }`}
-                          style={{
-                            backgroundColor: index === 0 
-                              ? "var(--color-sage)" 
-                              : "var(--color-light-gray)"
-                          }}
-                        ></button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            <FeaturedCarousel featuredEvents={featuredEvents} formatLocation={formatLocation} />
           ) : (
             <div className="relative w-full min-h-screen flex items-center justify-center">
-              <div className="text-center py-20">
+              <div className="text-center py-20 px-4">
                 <div
                   className="w-20 h-20 mx-auto mb-8 rounded-full border-2 flex items-center justify-center"
                   style={{
