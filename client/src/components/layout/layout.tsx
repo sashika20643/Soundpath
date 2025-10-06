@@ -1,6 +1,15 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, Music, User, LogIn, LogOut, Menu, X, Search } from "lucide-react";
+import {
+  Home,
+  Music,
+  User,
+  LogIn,
+  LogOut,
+  Menu,
+  X,
+  Search,
+} from "lucide-react";
 import { APP_CONFIG } from "@shared/config";
 import { useAuth } from "@/contexts/auth-context";
 import logo from "@/assets/symbolLogo.svg";
@@ -60,11 +69,18 @@ export function Layout({ children }: LayoutProps) {
             {/* Logo + Wordmark */}
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity duration-300">
-                <img src={logo} alt="Sonic Paths Logo" className="h-10 md:h-14 w-auto" />
+                <img
+                  src={logo}
+                  alt="Sonic Paths Logo"
+                  className="h-16 md:h-16 w-auto"
+                />
                 <div className="flex flex-col">
                   <span
                     className="font-bold text-sm md:text-lg"
-                    style={{ color: "var(--color-charcoal)" }}
+                    style={{
+                      color: "var(--color-charcoal)",
+                      fontSize: "1.5rem",
+                    }}
                   >
                     Sonic Paths
                   </span>
@@ -89,7 +105,8 @@ export function Layout({ children }: LayoutProps) {
                   backgroundColor: "transparent",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                  e.currentTarget.style.backgroundColor =
+                    "var(--color-soft-beige)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = "transparent";
@@ -106,7 +123,8 @@ export function Layout({ children }: LayoutProps) {
                   backgroundColor: "transparent",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                  e.currentTarget.style.backgroundColor =
+                    "var(--color-soft-beige)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = "transparent";
@@ -121,13 +139,20 @@ export function Layout({ children }: LayoutProps) {
                   className="p-2 rounded-lg transition-all duration-300 mobile-tap"
                   style={{
                     color: "var(--color-charcoal)",
-                    backgroundColor: location === "/map" ? "var(--color-soft-beige)" : "transparent",
+                    backgroundColor:
+                      location === "/map"
+                        ? "var(--color-soft-beige)"
+                        : "transparent",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                    e.currentTarget.style.backgroundColor =
+                      "var(--color-soft-beige)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = location === "/map" ? "var(--color-soft-beige)" : "transparent";
+                    e.currentTarget.style.backgroundColor =
+                      location === "/map"
+                        ? "var(--color-soft-beige)"
+                        : "transparent";
                   }}
                 >
                   <svg
@@ -150,7 +175,9 @@ export function Layout({ children }: LayoutProps) {
                 className="p-2 rounded-lg transition-all duration-300 mobile-tap relative overflow-hidden"
                 style={{
                   color: "var(--color-charcoal)",
-                  backgroundColor: isMobileMenuOpen ? "var(--color-soft-beige)" : "transparent",
+                  backgroundColor: isMobileMenuOpen
+                    ? "var(--color-soft-beige)"
+                    : "transparent",
                 }}
               >
                 <div
@@ -488,7 +515,8 @@ export function Layout({ children }: LayoutProps) {
                 backgroundColor: "transparent",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-soft-beige)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "transparent";
@@ -505,10 +533,7 @@ export function Layout({ children }: LayoutProps) {
               >
                 Search Destinations
               </h3>
-              <p
-                className="text-sm"
-                style={{ color: "var(--color-mid-gray)" }}
-              >
+              <p className="text-sm" style={{ color: "var(--color-mid-gray)" }}>
                 Find musical experiences around the world
               </p>
             </div>
@@ -529,7 +554,10 @@ export function Layout({ children }: LayoutProps) {
                 }}
                 autoFocus
               />
-              <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: "var(--color-mid-gray)" }} />
+              <Search
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
+                style={{ color: "var(--color-mid-gray)" }}
+              />
             </div>
 
             {/* Search button */}
@@ -538,8 +566,12 @@ export function Layout({ children }: LayoutProps) {
               disabled={!mobileSearchQuery.trim()}
               className="w-full py-3 px-6 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
-                backgroundColor: mobileSearchQuery.trim() ? "var(--color-accent)" : "var(--color-light-gray)",
-                color: mobileSearchQuery.trim() ? "var(--color-warm-white)" : "var(--color-mid-gray)",
+                backgroundColor: mobileSearchQuery.trim()
+                  ? "var(--color-accent)"
+                  : "var(--color-light-gray)",
+                color: mobileSearchQuery.trim()
+                  ? "var(--color-warm-white)"
+                  : "var(--color-mid-gray)",
               }}
             >
               Search Events

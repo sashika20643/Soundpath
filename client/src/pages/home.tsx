@@ -55,13 +55,17 @@ import {
   type Event,
   type InsertEvent,
 } from "@shared/schema";
-import { getContinentCoordinates, getCountryCoordinates, getCityCoordinates } from "@/lib/coordinates";
+import {
+  getContinentCoordinates,
+  getCountryCoordinates,
+  getCityCoordinates,
+} from "@/lib/coordinates";
 import {
   getContinents,
   getCountriesForContinent,
   getCitiesForCountry,
   searchCities,
-  getCountryByName
+  getCountryByName,
 } from "@/lib/locations";
 
 export default function Home() {
@@ -71,9 +75,14 @@ export default function Home() {
   const [randomEvents, setRandomEvents] = useState<Event[]>([]);
   const [selectedContinent, setSelectedContinent] = useState<string>("");
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
-  const [availableCountries, setAvailableCountries] = useState<Array<{isoCode: string, name: string}>>([]);
-  const [availableCities, setAvailableCities] = useState<Array<{name: string, latitude?: string, longitude?: string}>>([]);
-  const [showContinentSuggestions, setShowContinentSuggestions] = useState(false);
+  const [availableCountries, setAvailableCountries] = useState<
+    Array<{ isoCode: string; name: string }>
+  >([]);
+  const [availableCities, setAvailableCities] = useState<
+    Array<{ name: string; latitude?: string; longitude?: string }>
+  >([]);
+  const [showContinentSuggestions, setShowContinentSuggestions] =
+    useState(false);
   const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const { toast } = useToast();
@@ -86,13 +95,15 @@ export default function Home() {
   } = useEvents({ approved: true });
 
   // Filter featured events from allEvents in frontend
-  const featuredEvents = allEvents.filter(event => event.featured === true);
+  const featuredEvents = allEvents.filter((event) => event.featured === true);
   const featuredLoading = isLoading;
   const { data: categories = [] } = useCategories();
   const createEventMutation = useCreateEvent();
 
   // Show all events regardless of date for better user experience
-  const allEventsWithCoords = allEvents.filter(event => event.latitude && event.longitude);
+  const allEventsWithCoords = allEvents.filter(
+    (event) => event.latitude && event.longitude,
+  );
 
   // Sort events for latest discoveries (most recent by date) and hidden gems (oldest by date)
   const sortedByDateDesc = allEventsWithCoords
@@ -220,7 +231,10 @@ export default function Home() {
         }}
       >
         {/* Hero Section - Enhanced with Mobile Dynamics */}
-        <section id="hero" className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden">
+        <section
+          id="hero"
+          className="section-padding-large min-h-screen flex items-center justify-center relative overflow-hidden"
+        >
           {/* Dynamic Background with Parallax Effect*/}
           <div className="absolute inset-0 z-0">
             <img
@@ -228,8 +242,8 @@ export default function Home() {
               alt="Musical performance audience"
               className="w-full h-full object-cover transition-transform duration-1000 ease-out mobile-parallax-bg"
               style={{
-                transform: 'scale(1.05) translateZ(0)',
-                willChange: 'transform',
+                transform: "scale(1.05) translateZ(0)",
+                willChange: "transform",
               }}
               loading="eager"
               decoding="async"
@@ -240,11 +254,26 @@ export default function Home() {
             <div className="absolute inset-0 mobile-gradient-shift md:hidden"></div>
             {/* Floating particles for mobile */}
             <div className="absolute inset-0 pointer-events-none md:hidden">
-              <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/30 rounded-full mobile-float" style={{ animationDelay: '0s' }}></div>
-              <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-white/40 rounded-full mobile-float" style={{ animationDelay: '2s' }}></div>
-              <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white/25 rounded-full mobile-float" style={{ animationDelay: '4s' }}></div>
-              <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-white/35 rounded-full mobile-float" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute bottom-1/4 right-2/3 w-2 h-2 bg-white/20 rounded-full mobile-float" style={{ animationDelay: '3s' }}></div>
+              <div
+                className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/30 rounded-full mobile-float"
+                style={{ animationDelay: "0s" }}
+              ></div>
+              <div
+                className="absolute top-1/3 right-1/3 w-1 h-1 bg-white/40 rounded-full mobile-float"
+                style={{ animationDelay: "2s" }}
+              ></div>
+              <div
+                className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white/25 rounded-full mobile-float"
+                style={{ animationDelay: "4s" }}
+              ></div>
+              <div
+                className="absolute top-2/3 right-1/4 w-1 h-1 bg-white/35 rounded-full mobile-float"
+                style={{ animationDelay: "1s" }}
+              ></div>
+              <div
+                className="absolute bottom-1/4 right-2/3 w-2 h-2 bg-white/20 rounded-full mobile-float"
+                style={{ animationDelay: "3s" }}
+              ></div>
             </div>
             {/* Dynamic center focus overlay */}
             <div className="absolute inset-0 bg-radial-gradient from-black/40 via-transparent to-black/60"></div>
@@ -253,9 +282,9 @@ export default function Home() {
           <div className="max-w-6xl mx-auto text-center relative z-10">
             <div className="mb-16">
               <h1 className="font-serif text-hero mb-8 text-white drop-shadow-lg hero-title-animate text-shimmer">
-                {APP_CONFIG.name.split('').map((letter, index) => (
+                {APP_CONFIG.name.split("").map((letter, index) => (
                   <span key={index} className="letter-drop">
-                    {letter === ' ' ? '\u00A0' : letter}
+                    {letter === " " ? "\u00A0" : letter}
                   </span>
                 ))}
               </h1>
@@ -263,10 +292,7 @@ export default function Home() {
                 {APP_CONFIG.tagline}
               </p>
               <p className="text-editorial max-w-3xl mx-auto mb-12 text-white/80 drop-shadow-sm hero-description-animate">
-                Discover legendary venues, hidden amphitheaters, and
-                transcendent festivals in remarkable settings. Each destination
-                tells a story of where music and place create something
-                extraordinary.
+                Venues, festivals, and hidden bars where place makes the sound
               </p>
             </div>
 
@@ -280,8 +306,10 @@ export default function Home() {
               <Link href="/events">
                 <button className="px-8 py-3 text-sm font-medium rounded-lg bg-white/90 text-gray-900 transition-all duration-300 hover:bg-white hover:shadow-lg mobile-tap mobile-bounce relative overflow-hidden group transform hover:scale-105">
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                    Browse Collection
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                    Browse Paths{" "}
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                      →
+                    </span>
                   </span>
                   <div className="absolute inset-0 rounded-lg scale-0 bg-black/10 transition-transform duration-300 group-active:scale-100 md:hidden"></div>
                   <div className="absolute inset-0 rounded-lg opacity-0 bg-gradient-to-r from-transparent via-black/10 to-transparent -skew-x-12 group-hover:opacity-100 group-hover:animate-pulse"></div>
@@ -308,7 +336,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
         </section>
 
         {/* Featured Events Section */}
@@ -325,9 +352,9 @@ export default function Home() {
                 className="text-editorial max-w-2xl mx-auto"
                 style={{ color: "var(--color-dark-gray)" }}
               >
-                Handpicked extraordinary musical experiences that define the essence
-                of sonic exploration. These destinations represent the pinnacle of
-                where music and place create magic.
+                Handpicked extraordinary musical experiences that define the
+                essence of sonic exploration. These destinations represent the
+                pinnacle of where music and place create magic.
               </p>
             </div>
 
@@ -397,7 +424,7 @@ export default function Home() {
                     key={event.id}
                     className="scroll-animate"
                     style={{
-                      transitionDelay: `${index * 0.1}s`
+                      transitionDelay: `${index * 0.1}s`,
                     }}
                   >
                     <EventCard event={event} index={index} />
@@ -425,7 +452,8 @@ export default function Home() {
                   className="text-editorial"
                   style={{ color: "var(--color-mid-gray)" }}
                 >
-                  Featured events will appear here once they are marked as featured.
+                  Featured events will appear here once they are marked as
+                  featured.
                 </p>
               </div>
             )}
@@ -442,12 +470,15 @@ export default function Home() {
                       backgroundColor: "transparent",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "var(--color-soft-beige)";
-                      e.currentTarget.style.borderColor = "var(--color-mid-gray)";
+                      e.currentTarget.style.backgroundColor =
+                        "var(--color-soft-beige)";
+                      e.currentTarget.style.borderColor =
+                        "var(--color-mid-gray)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.borderColor = "var(--color-light-gray)";
+                      e.currentTarget.style.borderColor =
+                        "var(--color-light-gray)";
                     }}
                   >
                     View All Featured Events
@@ -524,7 +555,7 @@ export default function Home() {
                     className="card-minimal rounded-lg overflow-hidden opacity-100"
                     style={{
                       transitionDelay: `${i * 0.1}s`,
-                      animation: 'none'
+                      animation: "none",
                     }}
                   >
                     <div
@@ -585,7 +616,7 @@ export default function Home() {
                     key={event.id}
                     className="scroll-animate"
                     style={{
-                      transitionDelay: `${index * 0.1}s`
+                      transitionDelay: `${index * 0.1}s`,
                     }}
                   >
                     <EventCard
@@ -650,9 +681,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div
-              className="scroll-animate scroll-animate-delay-1 form-minimal"
-            >
+            <div className="scroll-animate scroll-animate-delay-1 form-minimal">
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-12"
@@ -765,7 +794,8 @@ export default function Home() {
                           setSelectedContinent(value);
                           setShowContinentSuggestions(true);
                           // Auto-generate coordinates for continent center
-                          const continentCoords = getContinentCoordinates(value);
+                          const continentCoords =
+                            getContinentCoordinates(value);
                           if (continentCoords) {
                             form.setValue("latitude", continentCoords.lat);
                             form.setValue("longitude", continentCoords.lng);
@@ -778,47 +808,67 @@ export default function Home() {
                           setSelectedCountryCode("");
                         }}
                         onFocus={() => setShowContinentSuggestions(true)}
-                        onBlur={() => setTimeout(() => setShowContinentSuggestions(false), 200)}
+                        onBlur={() =>
+                          setTimeout(
+                            () => setShowContinentSuggestions(false),
+                            200,
+                          )
+                        }
                       />
-                      {showContinentSuggestions && getContinents().length > 0 && form.watch("continent") && (
-                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                          {getContinents()
-                            .filter(continent =>
-                              continent.toLowerCase().includes(form.watch("continent")?.toLowerCase() || "")
-                            )
-                            .slice(0, 5)
-                            .map(continent => (
-                              <button
-                                key={continent}
-                                type="button"
-                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  form.setValue("continent", continent);
-                                  setSelectedContinent(continent);
-                                  setShowContinentSuggestions(false);
-                                  const continentCoords = getContinentCoordinates(continent);
-                                  if (continentCoords) {
-                                    form.setValue("latitude", continentCoords.lat);
-                                    form.setValue("longitude", continentCoords.lng);
-                                  }
-                                  // Load countries for the selected continent
-                                  const countries = getCountriesForContinent(continent);
-                                  setAvailableCountries(countries);
+                      {showContinentSuggestions &&
+                        getContinents().length > 0 &&
+                        form.watch("continent") && (
+                          <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                            {getContinents()
+                              .filter((continent) =>
+                                continent
+                                  .toLowerCase()
+                                  .includes(
+                                    form.watch("continent")?.toLowerCase() ||
+                                      "",
+                                  ),
+                              )
+                              .slice(0, 5)
+                              .map((continent) => (
+                                <button
+                                  key={continent}
+                                  type="button"
+                                  className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    form.setValue("continent", continent);
+                                    setSelectedContinent(continent);
+                                    setShowContinentSuggestions(false);
+                                    const continentCoords =
+                                      getContinentCoordinates(continent);
+                                    if (continentCoords) {
+                                      form.setValue(
+                                        "latitude",
+                                        continentCoords.lat,
+                                      );
+                                      form.setValue(
+                                        "longitude",
+                                        continentCoords.lng,
+                                      );
+                                    }
+                                    // Load countries for the selected continent
+                                    const countries =
+                                      getCountriesForContinent(continent);
+                                    setAvailableCountries(countries);
 
-                                  // Reset country and city when continent changes
-                                  form.setValue("country", "");
-                                  setAvailableCities([]);
-                                  form.setValue("city", "");
-                                  setSelectedCountryCode("");
-                                }}
-                              >
-                                {continent}
-                              </button>
-                            ))}
-                        </div>
-                      )}
+                                    // Reset country and city when continent changes
+                                    form.setValue("country", "");
+                                    setAvailableCities([]);
+                                    form.setValue("city", "");
+                                    setSelectedCountryCode("");
+                                  }}
+                                >
+                                  {continent}
+                                </button>
+                              ))}
+                          </div>
+                        )}
                     </div>
                     {form.formState.errors.continent && (
                       <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
@@ -852,30 +902,43 @@ export default function Home() {
                           setShowCountrySuggestions(value.length > 0);
 
                           // Find matching country (both exact and partial matches for autocomplete)
-                          const exactMatch = availableCountries.find(country =>
-                            country.name.toLowerCase() === value.toLowerCase()
+                          const exactMatch = availableCountries.find(
+                            (country) =>
+                              country.name.toLowerCase() ===
+                              value.toLowerCase(),
                           );
-                          const partialMatch = availableCountries.find(country =>
-                            country.name.toLowerCase().includes(value.toLowerCase()) && value.length >= 2
+                          const partialMatch = availableCountries.find(
+                            (country) =>
+                              country.name
+                                .toLowerCase()
+                                .includes(value.toLowerCase()) &&
+                              value.length >= 2,
                           );
 
                           const matchingCountry = exactMatch || partialMatch;
 
                           if (matchingCountry) {
                             setSelectedCountryCode(matchingCountry.isoCode);
-                            const cities = getCitiesForCountry(matchingCountry.isoCode);
+                            const cities = getCitiesForCountry(
+                              matchingCountry.isoCode,
+                            );
                             setAvailableCities(cities);
                             if (exactMatch) {
                               form.setValue("city", ""); // Only reset city on exact match
                             }
                           } else if (value.length >= 3) {
                             // Try to find country by name with more liberal matching
-                            const liberalMatch = availableCountries.find(country =>
-                              country.name.toLowerCase().includes(value.toLowerCase())
+                            const liberalMatch = availableCountries.find(
+                              (country) =>
+                                country.name
+                                  .toLowerCase()
+                                  .includes(value.toLowerCase()),
                             );
                             if (liberalMatch) {
                               setSelectedCountryCode(liberalMatch.isoCode);
-                              const cities = getCitiesForCountry(liberalMatch.isoCode);
+                              const cities = getCitiesForCountry(
+                                liberalMatch.isoCode,
+                              );
                               setAvailableCities(cities);
                             }
                           }
@@ -888,45 +951,66 @@ export default function Home() {
                           }
                         }}
                         onFocus={() => setShowCountrySuggestions(true)}
-                        onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 150)}
+                        onBlur={() =>
+                          setTimeout(
+                            () => setShowCountrySuggestions(false),
+                            150,
+                          )
+                        }
                         disabled={!selectedContinent}
                       />
-                      {showCountrySuggestions && availableCountries.length > 0 && form.watch("country") && (
-                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                          {availableCountries
-                            .filter(country =>
-                              country.name.toLowerCase().includes(form.watch("country")?.toLowerCase() || "")
-                            )
-                            .slice(0, 10)
-                            .map(country => (
-                              <button
-                                key={country.isoCode}
-                                type="button"
-                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  form.setValue("country", country.name);
-                                  setSelectedCountryCode(country.isoCode);
-                                  setShowCountrySuggestions(false);
+                      {showCountrySuggestions &&
+                        availableCountries.length > 0 &&
+                        form.watch("country") && (
+                          <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                            {availableCountries
+                              .filter((country) =>
+                                country.name
+                                  .toLowerCase()
+                                  .includes(
+                                    form.watch("country")?.toLowerCase() || "",
+                                  ),
+                              )
+                              .slice(0, 10)
+                              .map((country) => (
+                                <button
+                                  key={country.isoCode}
+                                  type="button"
+                                  className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    form.setValue("country", country.name);
+                                    setSelectedCountryCode(country.isoCode);
+                                    setShowCountrySuggestions(false);
 
-                                  // Load cities for this country
-                                  const cities = getCitiesForCountry(country.isoCode);
-                                  setAvailableCities(cities);
-                                  form.setValue("city", ""); // Reset city
+                                    // Load cities for this country
+                                    const cities = getCitiesForCountry(
+                                      country.isoCode,
+                                    );
+                                    setAvailableCities(cities);
+                                    form.setValue("city", ""); // Reset city
 
-                                  const countryCoords = getCountryCoordinates(country.name);
-                                  if (countryCoords) {
-                                    form.setValue("latitude", countryCoords.lat);
-                                    form.setValue("longitude", countryCoords.lng);
-                                  }
-                                }}
-                              >
-                                {country.name}
-                              </button>
-                            ))}
-                        </div>
-                      )}
+                                    const countryCoords = getCountryCoordinates(
+                                      country.name,
+                                    );
+                                    if (countryCoords) {
+                                      form.setValue(
+                                        "latitude",
+                                        countryCoords.lat,
+                                      );
+                                      form.setValue(
+                                        "longitude",
+                                        countryCoords.lng,
+                                      );
+                                    }
+                                  }}
+                                >
+                                  {country.name}
+                                </button>
+                              ))}
+                          </div>
+                        )}
                     </div>
                     {form.formState.errors.country && (
                       <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
@@ -960,31 +1044,62 @@ export default function Home() {
                           setShowCitySuggestions(true);
 
                           // Find matching city and use its coordinates
-                          const matchingCity = availableCities.find(city =>
-                            city.name.toLowerCase() === value.toLowerCase()
+                          const matchingCity = availableCities.find(
+                            (city) =>
+                              city.name.toLowerCase() === value.toLowerCase(),
                           );
-                          if (matchingCity && matchingCity.latitude && matchingCity.longitude) {
-                            form.setValue("latitude", parseFloat(matchingCity.latitude));
-                            form.setValue("longitude", parseFloat(matchingCity.longitude));
-                            form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                          if (
+                            matchingCity &&
+                            matchingCity.latitude &&
+                            matchingCity.longitude
+                          ) {
+                            form.setValue(
+                              "latitude",
+                              parseFloat(matchingCity.latitude),
+                            );
+                            form.setValue(
+                              "longitude",
+                              parseFloat(matchingCity.longitude),
+                            );
+                            form.setValue(
+                              "locationName",
+                              `${value}, ${form.watch("country")}, ${selectedContinent}`,
+                            );
                           } else {
                             // Fallback to approximate coordinates
-                            const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", value);
+                            const cityCoords = getCityCoordinates(
+                              selectedContinent,
+                              form.watch("country") || "",
+                              value,
+                            );
                             if (cityCoords) {
                               form.setValue("latitude", cityCoords.lat);
                               form.setValue("longitude", cityCoords.lng);
-                              form.setValue("locationName", `${value}, ${form.watch("country")}, ${selectedContinent}`);
+                              form.setValue(
+                                "locationName",
+                                `${value}, ${form.watch("country")}, ${selectedContinent}`,
+                              );
                             }
                           }
                         }}
                         onFocus={() => setShowCitySuggestions(true)}
-                        onBlur={() => setTimeout(() => setShowCitySuggestions(false), 150)}
-                        disabled={!selectedCountryCode && !form.watch("country")}
+                        onBlur={() =>
+                          setTimeout(() => setShowCitySuggestions(false), 150)
+                        }
+                        disabled={
+                          !selectedCountryCode && !form.watch("country")
+                        }
                       />
-                      {showCitySuggestions && selectedCountryCode && form.watch("city") && (
-                        <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
-                          {searchCities(selectedCountryCode, form.watch("city") || "", undefined, 10)
-                            .map(city => (
+                      {showCitySuggestions &&
+                        selectedCountryCode &&
+                        form.watch("city") && (
+                          <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-b-md shadow-lg max-h-40 overflow-y-auto">
+                            {searchCities(
+                              selectedCountryCode,
+                              form.watch("city") || "",
+                              undefined,
+                              10,
+                            ).map((city) => (
                               <button
                                 key={city.name}
                                 type="button"
@@ -996,23 +1111,39 @@ export default function Home() {
                                   setShowCitySuggestions(false);
 
                                   if (city.latitude && city.longitude) {
-                                    form.setValue("latitude", parseFloat(city.latitude));
-                                    form.setValue("longitude", parseFloat(city.longitude));
+                                    form.setValue(
+                                      "latitude",
+                                      parseFloat(city.latitude),
+                                    );
+                                    form.setValue(
+                                      "longitude",
+                                      parseFloat(city.longitude),
+                                    );
                                   } else {
-                                    const cityCoords = getCityCoordinates(selectedContinent, form.watch("country") || "", city.name);
+                                    const cityCoords = getCityCoordinates(
+                                      selectedContinent,
+                                      form.watch("country") || "",
+                                      city.name,
+                                    );
                                     if (cityCoords) {
                                       form.setValue("latitude", cityCoords.lat);
-                                      form.setValue("longitude", cityCoords.lng);
+                                      form.setValue(
+                                        "longitude",
+                                        cityCoords.lng,
+                                      );
                                     }
                                   }
-                                  form.setValue("locationName", `${city.name}, ${form.watch("country")}, ${selectedContinent}`);
+                                  form.setValue(
+                                    "locationName",
+                                    `${city.name}, ${form.watch("country")}, ${selectedContinent}`,
+                                  );
                                 }}
                               >
                                 {city.name}
                               </button>
                             ))}
-                        </div>
-                      )}
+                          </div>
+                        )}
                     </div>
                     {form.formState.errors.city && (
                       <p className="text-sm mt-2" style={{ color: "#dc2626" }}>
@@ -1023,27 +1154,28 @@ export default function Home() {
                 </div>
 
                 {/* Display selected location coordinates */}
-                {form.watch("latitude") !== undefined && form.watch("longitude") !== undefined && (
-                  <div
-                    className="mt-4 p-4 rounded-lg"
-                    style={{ backgroundColor: "var(--color-soft-beige)" }}
-                  >
-                    <p
-                      className="text-sm"
-                      style={{ color: "var(--color-dark-gray)" }}
+                {form.watch("latitude") !== undefined &&
+                  form.watch("longitude") !== undefined && (
+                    <div
+                      className="mt-4 p-4 rounded-lg"
+                      style={{ backgroundColor: "var(--color-soft-beige)" }}
                     >
-                      <strong>Location:</strong> {form.watch("city")},{" "}
-                      {form.watch("country")}, {form.watch("continent")}
-                    </p>
-                    <p
-                      className="text-xs mt-1"
-                      style={{ color: "var(--color-mid-gray)" }}
-                    >
-                      Coordinates: {form.watch("latitude")?.toFixed(6)},{" "}
-                      {form.watch("longitude")?.toFixed(6)}
-                    </p>
-                  </div>
-                )}
+                      <p
+                        className="text-sm"
+                        style={{ color: "var(--color-dark-gray)" }}
+                      >
+                        <strong>Location:</strong> {form.watch("city")},{" "}
+                        {form.watch("country")}, {form.watch("continent")}
+                      </p>
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--color-mid-gray)" }}
+                      >
+                        Coordinates: {form.watch("latitude")?.toFixed(6)},{" "}
+                        {form.watch("longitude")?.toFixed(6)}
+                      </p>
+                    </div>
+                  )}
 
                 {/* Instagram Link */}
                 <div className="space-y-8">
@@ -1153,18 +1285,27 @@ export default function Home() {
                     {createEventMutation.isPending ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-white mr-2 md:mr-3"></div>
-                        <span className="relative z-10">Submitting Discovery...</span>
+                        <span className="relative z-10">
+                          Submitting Discovery...
+                        </span>
                       </>
                     ) : (
                       <>
                         <span className="relative z-10 flex items-center justify-center gap-1 md:gap-2">
                           <Send className="w-4 h-4 md:w-5 md:h-5" />
                           <span>Submit Discovery</span>
-                          <span className="transition-transform duration-300 group-hover:translate-x-1">✨</span>
+                          <span className="transition-transform duration-300 group-hover:translate-x-1">
+                            ✨
+                          </span>
                         </span>
                         {/* Ripple effect for mobile */}
-                        <div className="absolute inset-0 rounded-lg scale-0 transition-transform duration-300 group-active:scale-100 md:hidden"
-                             style={{ backgroundColor: "var(--color-accent)", opacity: 0.2 }}></div>
+                        <div
+                          className="absolute inset-0 rounded-lg scale-0 transition-transform duration-300 group-active:scale-100 md:hidden"
+                          style={{
+                            backgroundColor: "var(--color-accent)",
+                            opacity: 0.2,
+                          }}
+                        ></div>
                       </>
                     )}
                   </button>
@@ -1233,7 +1374,7 @@ export default function Home() {
                     className="scroll-animate card-minimal rounded-lg overflow-hidden"
                     style={{
                       transitionDelay: `${i * 0.15}s`,
-                      animation: 'none'
+                      animation: "none",
                     }}
                   >
                     <div
@@ -1294,7 +1435,7 @@ export default function Home() {
                     key={event.id}
                     className="scroll-animate"
                     style={{
-                      transitionDelay: `${index * 0.1}s`
+                      transitionDelay: `${index * 0.1}s`,
                     }}
                   >
                     <EventCard event={event} index={index} />
