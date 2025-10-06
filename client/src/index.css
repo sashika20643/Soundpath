@@ -143,6 +143,30 @@
       padding: 0 var(--spacing-sm);
     }
 
+    /* Mobile typography adjustments */
+    h1 {
+      font-size: clamp(2rem, 8vw, 3rem);
+      margin-bottom: var(--spacing-sm);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 6vw, 2.25rem);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: var(--spacing-sm);
+    }
+
     /* Enhanced mobile touch feedback */
     .mobile-tap {
       transform: scale(1);
@@ -151,6 +175,52 @@
 
     .mobile-tap:active {
       transform: scale(0.97);
+    }
+
+    /* Mobile button styles with earth tones */
+    .btn-primary {
+      padding: 0.875rem 2rem;
+      font-size: 0.8125rem;
+      letter-spacing: 0.75px;
+      font-weight: 600;
+      border-radius: 3px;
+      text-transform: uppercase;
+      font-family: var(--font-sans);
+    }
+
+    .btn-minimal {
+      padding: 0.875rem 2rem;
+      font-size: 0.8125rem;
+      letter-spacing: 0.75px;
+      font-weight: 500;
+      border-radius: 3px;
+      border-width: 2px;
+    }
+
+    /* Mobile form elements */
+    .form-minimal input,
+    .form-minimal textarea,
+    .form-minimal select {
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border-width: 2px;
+      font-family: var(--font-sans);
+    }
+
+    /* Mobile card styling */
+    .card-minimal {
+      border-radius: 6px;
+      padding: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+      background: var(--color-warm-white);
+      border: 1px solid var(--color-light-gray);
+      box-shadow: 0 2px 8px rgba(58, 58, 50, 0.08);
+    }
+
+    .card-minimal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(58, 58, 50, 0.12);
     }
 
     /* Floating animations for mobile cards */
@@ -185,6 +255,34 @@
     /* Bounce effect for buttons */
     .mobile-bounce {
       animation: mobileBounce 0.6s ease-out;
+    }
+
+    /* Mobile navigation styles */
+    .mobile-nav-item {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: 4px;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      letter-spacing: 0.25px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile search styles */
+    .mobile-search-input {
+      background: var(--color-warm-white);
+      border: 2px solid var(--color-light-gray);
+      color: var(--color-charcoal);
+      font-family: var(--font-sans);
+      border-radius: 8px;
+      padding: 1rem 3rem 1rem 1.25rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-search-input:focus {
+      border-color: var(--color-sage);
+      box-shadow: 0 0 0 4px rgba(156, 175, 136, 0.1);
+      outline: none;
     }
   }
 }
